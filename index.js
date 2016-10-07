@@ -16,8 +16,8 @@ status.codes.forEach(function (code) {
 
   const name = getName(code);
   const responder = code >= 400 ?
-    createErrorResponse(code) :
-    createResponse(code);
+    createErrorResponse(code, name) :
+    createResponse(code, name);
 
   exports[code] = exports[name] = responder;
 });
@@ -34,18 +34,25 @@ function getName (code) {
   return status[code].replace(/[\s+-]/g, "");
 }
 
-function createErrorResponse (code) {
-  return function ErrorResponse (body, headers) {
+function createErrorResponse (code, name) {
+  return _setName(function ErrorResponse (body, headers) {
     const err = Object.create(errProto);
     Error.captureStackTrace(err, ErrorResponse);
     return _decorate(err, code, body, headers);
-  }
+  }, name)
 }
 
-function createResponse (code) {
-  return function Response (body, headers) {
+function createResponse (code, name) {
+  return _setName(function Response (body, headers) {
     return _decorate(Object.create(proto), code, body, headers);
-  }
+  }, name)
+}
+
+function _setName (fn, name) {
+  return Object.defineProperty(fn, "name", {
+    configurable: true,
+    value: name,
+  });
 }
 
 function _decorate (resp, code, body, headers) {

@@ -14,6 +14,10 @@ Object.keys(Responses)
       const resp = Ctor();
       const {statusCode} = resp;
 
+      it(`It has a \`.name\` of ${ResponseType} for debugging purposes`, function () {
+        expect(Ctor.name).toBe(ResponseType);
+      });
+
       it(`Response[${statusCode}] === Response.${ResponseType}`, function () {
         expect(Responses[statusCode]).toBe(Responses[ResponseType]);
       });
