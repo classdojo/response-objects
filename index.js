@@ -21,6 +21,8 @@ status.codes.forEach(function (code) {
 
   exports[code] = exports[name] = responder;
 });
+// annoying to have to remember this alias
+exports.Ok = exports.OK;
 
 function toJSON () {
   return { body: this.body, status: this.status, headers: this.headers };
@@ -36,6 +38,7 @@ function getName (code) {
 
 function createErrorResponse (code, name) {
   return _setName(function ErrorResponse (body, headers) {
+    if (body && body[MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
     const err = Object.create(errProto);
     Error.captureStackTrace(err, ErrorResponse);
     return _decorate(err, code, body, headers);
@@ -44,6 +47,7 @@ function createErrorResponse (code, name) {
 
 function createResponse (code, name) {
   return _setName(function Response (body, headers) {
+    if (body && body[MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
     return _decorate(Object.create(proto), code, body, headers);
   }, name)
 }

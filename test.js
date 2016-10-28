@@ -1,25 +1,31 @@
 const expect = require("expect");
 
 const status = require("statuses");
-const Responses = require("./");
+const R = require("./");
 
-Object.keys(Responses)
+const aliases = [ "Ok" ];
+
+const noTest = [ "MARKER" ];
+
+const someResponse = R.Ok();
+
+Object.keys(R)
   .filter(isNaN)
-  .forEach(function (ResponseType) {
-    if (ResponseType === "MARKER") return;
+  .filter(name => !aliases.includes(name))
+  .forEach(function (Name) {
+    if (noTest.includes(Name)) return;
 
-    describe(`${ResponseType}`, function () {
-      const Ctor = Responses[ResponseType]
-
+    describe(`${Name}`, function () {
+      const Ctor = R[Name];
       const resp = Ctor();
       const {statusCode} = resp;
 
-      it(`It has a \`.name\` of ${ResponseType} for debugging purposes`, function () {
-        expect(Ctor.name).toBe(ResponseType);
+      it(`Constructor has a \`.name\` of ${Name} for debugging purposes`, function () {
+        expect(Ctor.name).toBe(Name);
       });
 
-      it(`Response[${statusCode}] === Response.${ResponseType}`, function () {
-        expect(Responses[statusCode]).toBe(Responses[ResponseType]);
+      it(`Responses[${statusCode}] === Responses.${Name}`, function () {
+        expect(R[statusCode]).toBe(R[Name]);
       });
 
       if (statusCode >= 400) {
@@ -31,9 +37,9 @@ Object.keys(Responses)
 
       it("has expected properties", function () {
         expect(resp.body).toBe(status[statusCode]);
-        expect(resp[Responses.MARKER]).toBe(true);
+        expect(resp[R.MARKER]).toBe(true);
         expect(resp.headers).toEqual({});
-      })
+      });
 
       it("toJSON() works", function () {
         expect(resp.toJSON()).toEqual({
@@ -44,20 +50,38 @@ Object.keys(Responses)
       });
 
       it("toString() works", function () {
-        const str = `Responses.${ResponseType} ${JSON.stringify(resp)}`
-        expect(resp.toString()).toEqual(str);
+        expect(resp.toString()).toEqual(`Responses.${Name} ${JSON.stringify(resp)}`);
       });
 
       it("can receive body argument", function () {
-        const custom = Ctor("custom body");
-        expect(custom.body).toBe("custom body");
+        expect(Ctor("custom body").body).toBe("custom body");
+      });
+
+      it("body defaults to status text if null/undefined", function () {
+        expect(Ctor().body).toBe(status[statusCode]);
+      });
+
+      it("throws if body argument is already a response", function () {
+        expect(() => Ctor(someResponse)).toThrow(/Object is already a response/);
       });
 
       it("can receive headers argument", function () {
-        const custom = Ctor(null, {"x-header": "ok!"});
-        expect(resp.body).toBe(status[statusCode]);
-        expect(custom.headers["x-header"]).toBe("ok!");
+        const withHeaders = Ctor(null, {"x-header": "value"});
+        expect(withHeaders.headers["x-header"]).toBe("value");
       });
+
     });
 
+  });
+
+  describe("aliases", function () {
+    it("'OK' is aliased to 'Ok'", function () {
+      expect(R.OK).toBe(R.Ok);
+    });
+  });
+
+  describe("symbols", function () {
+    it("R.MARKER is a symbol", function () {
+      expect(R.MARKER).toBeA("symbol");
+    });
   });
