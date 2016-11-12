@@ -1,9 +1,9 @@
-# responses
+# response-objects
 
 Value objects representing HTTP responses
 
 ```
-npm i -S @nickbottomley/responses
+npm i -S response-objects
 ```
 
 Requires Node.js 4+
