@@ -51,7 +51,7 @@ Available methods:
 R.Continue === R[100] 
 R.SwitchingProtocols === R[101] 
 R.Processing === R[102] 
-R.OK === R[200] 
+R.OK === R[200] (alias: R.Ok)
 R.Created === R[201] 
 R.Accepted === R[202] 
 R.NonAuthoritativeInformation === R[203] 
