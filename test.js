@@ -85,3 +85,17 @@ Object.keys(R)
       expect(R.MARKER).toBeA("symbol");
     });
   });
+
+  // rough measurements:
+  // 1.5s with Object.create() constructors
+  // 2.2s with `new` constructors
+  // 4.8s with `new` constructors + failed `this instanceof` checks
+  describe("create 1e7 instances", function () {
+    it("is fast enough", function () {
+      const body = {}, headers = {};
+      let i = 0;
+      while (++i < 1e7) {
+        R.Ok(body, headers);
+      }
+    });
+  });
