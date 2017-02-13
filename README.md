@@ -14,7 +14,7 @@ This package is general-purpose, but is particularly useful with [koa-detour](ht
 // this isn't a complete working example, it just shows the concepts
 const Koa = require("koa");
 const Router = require("koa-detour");
-const R = require("@nickbottomley/responses");
+const R = require("response-objects");
 
 const app = new Koa()
 const router = new Router();
@@ -44,6 +44,14 @@ router.route("/user", {
 })
 
 app.use(router);
+```
+
+As an integration point, there is an exported `MARKER` symbol value, which can be used to identify response objects produced by this library.
+
+```
+const R = require("response-objects");
+const resp = R.Ok("it worked!");
+console.log(resp[R.MARKER]); // true
 ```
 
 Available methods:
