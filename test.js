@@ -17,7 +17,7 @@ Object.keys(R)
 
     describe(`${Name}`, function () {
       const Ctor = R[Name];
-      const resp = Ctor();
+      const resp = Ctor("body");
       const {statusCode} = resp;
 
       it(`Constructor has a \`.name\` of ${Name} for debugging purposes`, function () {
@@ -36,7 +36,7 @@ Object.keys(R)
       }
 
       it("has expected properties", function () {
-        expect(resp.body).toBe(status[statusCode]);
+        expect(resp.body).toBe("body");
         expect(resp[R.MARKER]).toBe(true);
         expect(resp.headers).toEqual({});
       });
@@ -55,10 +55,6 @@ Object.keys(R)
 
       it("can receive body argument", function () {
         expect(Ctor("custom body").body).toBe("custom body");
-      });
-
-      it("body defaults to status text if null/undefined", function () {
-        expect(Ctor().body).toBe(status[statusCode]);
       });
 
       it("throws if body argument is already a response", function () {
