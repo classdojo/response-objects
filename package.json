@@ -3,6 +3,10 @@
   "version": "0.3.1",
   "description": "",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nickb1080/response-objects.git"
+  },
   "scripts": {
     "test": "mocha --timeout 3000"
   },
