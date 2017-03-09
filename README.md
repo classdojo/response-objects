@@ -19,28 +19,24 @@ const R = require("response-objects");
 const app = new Koa()
 const router = new Router();
 router.route("/user", {
-  GET (ctx) {
+  async GET (ctx) {
     if (!areUsersConnected(ctx.userId, ctx.params.id)) {
       // router handles sending this as a 403
       throw R.Forbidden("You are not connected to that user")
     }
 
-    return getUser().then(user => {
-      // router handles sending this as a 200
-      return R.OK(user)
-    });
+    // router handles sending this as a 200
+    return R.Ok(await getUser())
   },
-  POST (ctx) {
+  async POST (ctx) {
     if (ctx.body.username == null) {
       // router handles sending this as 400
       throw R.BadRequest("Username is required");
     }
 
-    return createUser(ctx.body).then(user => {
-      // router handles sending this as a 201
-      return R.Created(user);
-    });
-  }
+    // router handles sending this as a 201
+    return R.Created(await createUser(ctx.body));
+  },
 })
 
 app.use(router);
