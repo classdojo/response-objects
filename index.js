@@ -6,8 +6,6 @@ const proto = { toJSON, toString, headers: {}, [MARKER]: true };
 
 const errProto = Object.assign(Object.create(Error.prototype), proto);
 
-exports.MARKER = MARKER;
-
 status.codes.forEach(function (code) {
   // 306 is "Unused"
   // 418 is "I'm a Teapot"
@@ -15,14 +13,14 @@ status.codes.forEach(function (code) {
   if (code === 306 || code === 418) return;
 
   const name = getName(code);
-  const responder = code >= 400 ?
+  const responseCtor = code >= 400 ?
     createErrorResponse(code, name) :
     createResponse(code, name);
 
-  exports[code] = exports[name] = responder;
+  exports[code] = exports[name] = responseCtor;
 });
-// annoying to have to remember this alias
 exports.Ok = exports.OK;
+exports.MARKER = MARKER;
 
 function toJSON () {
   return { body: this.body, status: this.status, headers: this.headers };
@@ -65,9 +63,3 @@ function _decorate (resp, code, body, headers) {
   if (headers) resp.headers = headers;
   return resp;
 }
-
-// function fromError (err) {
-//   const statusCode = err.statusCode || err.status || err.code;
-//   if (!exports.hasOwnProperty(statusCode)) return err;
-//   return exports[statusCode]();
-// }
