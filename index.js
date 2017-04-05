@@ -59,7 +59,7 @@ function _setName (fn, name) {
 
 function _decorate (resp, code, body, headers) {
   resp.status = resp.statusCode = code;
-  if (body) resp.body = body;
-  if (headers) resp.headers = headers;
+  if (body != null) resp.body = body;
+  if (headers != null) resp.headers = headers;
   return resp;
 }
