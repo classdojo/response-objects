@@ -1,6 +1,6 @@
 const status = require("statuses");
 
-const MARKER = Symbol("RESPONSES_MARKER");
+const MARKER = Symbol.for("@@response-objects/MARKER");
 
 const proto = { toJSON, toString, headers: {}, [MARKER]: true };
 

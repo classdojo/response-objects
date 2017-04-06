@@ -12,9 +12,8 @@ const someResponse = R.Ok();
 Object.keys(R)
   .filter(isNaN)
   .filter(name => !aliases.includes(name))
+  .filter(name => !noTest.includes(name))
   .forEach(function (Name) {
-    if (noTest.includes(Name)) return;
-
     describe(`${Name}`, function () {
       const Ctor = R[Name];
       const resp = Ctor("body");
