@@ -40,14 +40,14 @@ function createErrorResponse (code, name) {
     const err = Object.create(errProto);
     Error.captureStackTrace(err, ErrorResponse);
     return _decorate(err, code, body, headers);
-  }, name)
+  }, name);
 }
 
 function createResponse (code, name) {
   return _setName(function Response (body, headers) {
     if (body && body[MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
     return _decorate(Object.create(proto), code, body, headers);
-  }, name)
+  }, name);
 }
 
 function _setName (fn, name) {

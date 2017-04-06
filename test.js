@@ -88,6 +88,11 @@ Object.keys(R)
     it("R.MARKER is a symbol", function () {
       expect(R.MARKER).toBeA("symbol");
     });
+
+    it("is in the symbol registry", function () {
+      const s = Symbol.for("@@response-objects/MARKER");
+      expect(s).toBe(R.MARKER);
+    });
   });
 
   // rough measurements:
