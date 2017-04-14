@@ -8,7 +8,7 @@ npm i -S response-objects
 
 Requires Node.js 4+
 
-This package is general-purpose, but is particularly useful with [koa-detour](http://github.com/nickb1080/koa-detour). Put simply, the idea is to raise the level of abstraction by having routes or resources return objects or throw errors that represent HTTP responses, rather than imperatively doing things like `res.write()` (or in Koa `ctx.body = ...`)
+This package is general-purpose, but is particularly useful with [koa-detour](http://github.com/bttmly/koa-detour). Put simply, the idea is to raise the level of abstraction by having routes or resources return objects or throw errors that represent HTTP responses, rather than imperatively doing things like `res.write()` (or in Koa `ctx.body = ...`)
 
 ```js
 // this isn't a complete working example, it just shows the concepts

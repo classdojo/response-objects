@@ -5,12 +5,12 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/nickb1080/response-objects.git"
+    "url": "git://github.com/bttmly/response-objects.git"
   },
   "scripts": {
     "test": "mocha --timeout 3000"
   },
-  "author": "Nick Bottomley (github.com/nickb1080)",
+  "author": "Nick Bottomley (github.com/bttmly)",
   "license": "MIT",
   "dependencies": {
     "statuses": "1.3.0"
