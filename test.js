@@ -5,7 +5,7 @@ const R = require("./");
 
 const aliases = [ "Ok" ];
 
-const noTest = [ "MARKER" ];
+const noTest = [ "MARKER", "createDefaultBody" ];
 
 const someResponse = R.Ok();
 
@@ -84,16 +84,22 @@ Object.keys(R)
     });
   });
 
-  describe("symbols", function () {
+  describe("miscellaneous", function () {
     it("R.MARKER is a symbol", function () {
       expect(R.MARKER).toBeA("symbol");
     });
 
-    it("is in the symbol registry", function () {
+    it("R.MARKER is in the symbol registry", function () {
       const s = Symbol.for("@@response-objects/MARKER");
       expect(s).toBe(R.MARKER);
     });
+
+    it("createDefaultBody", function () {
+      R.createDefaultBody(() => ({}));
+      expect(R.Ok().body).toEqual({});
+    });
   });
+
 
   // rough measurements:
   // 1.5s with Object.create() constructors
