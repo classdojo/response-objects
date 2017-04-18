@@ -5,7 +5,7 @@ const R = require("./");
 
 const aliases = [ "Ok" ];
 
-const noTest = [ "MARKER", "createDefaultBody" ];
+const noTest = [ "MARKER", "setBodyCreator" ];
 
 const someResponse = R.Ok();
 
@@ -95,8 +95,17 @@ Object.keys(R)
     });
 
     it("createDefaultBody", function () {
-      R.createDefaultBody(() => ({}));
-      expect(R.Ok().body).toEqual({});
+      const _headers = {};
+
+      R.setBodyCreator((code, body, headers) => {
+        expect(code).toBe(200);
+        expect(body).toBe("success");
+        expect(headers).toBe(_headers);
+        return { status: body };
+      });
+
+      expect(R.Ok("success", _headers).body).toEqual({ status: "success" });
+      resetBodyCreator();
     });
   });
 
@@ -114,3 +123,7 @@ Object.keys(R)
       }
     });
   });
+
+function resetBodyCreator () {
+  R.setBodyCreator((code, body) => body != null ? body : status[code]);
+}

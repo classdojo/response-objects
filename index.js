@@ -59,10 +59,10 @@ function _setName (fn, name) {
 
 function _decorate (resp, code, body, headers) {
   resp.status = resp.statusCode = code;
-  resp.body = body != null ? body : defaultBody(code, headers);
+  resp.body = bodyCreator(code, body, headers);
   if (headers != null) resp.headers = headers;
   return resp;
 }
 
-let defaultBody = (code /*, headers */ ) => status[code];
-exports.createDefaultBody = f => defaultBody = f;
+let bodyCreator = (code, body /*, headers */) => body != null ? body : status[code];
+exports.setBodyCreator = f => bodyCreator = f;
