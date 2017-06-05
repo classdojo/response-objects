@@ -38,8 +38,9 @@ function createErrorResponse (code, name) {
   return _setName(function ErrorResponse (body, headers) {
     if (body && body[MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
     const err = Object.create(errProto);
+    _decorate(err, code, body, headers);
     Error.captureStackTrace(err, ErrorResponse);
-    return _decorate(err, code, body, headers);
+    return err;
   }, name);
 }
 
