@@ -1,6 +1,6 @@
 {
   "name": "response-objects",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "simple value objects representing HTTP responses",
   "main": "index.js",
   "repository": {
