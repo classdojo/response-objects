@@ -6,6 +6,17 @@ const proto = { toJSON, toString, headers: {}, [MARKER]: true };
 
 const errProto = Object.assign(Object.create(Error.prototype), proto);
 
+function genericResponse(code, body, headers) {
+  const name = getName(code);
+  const responseCtor = code >= 400 ?
+    createErrorResponse(code, name) :
+    createResponse(code, name);
+
+  return responseCtor(body, headers)
+}
+
+module.exports = genericResponse;
+
 status.codes.forEach(function (code) {
   // 306 is "Unused"
   // 418 is "I'm a Teapot"
@@ -17,10 +28,10 @@ status.codes.forEach(function (code) {
     createErrorResponse(code, name) :
     createResponse(code, name);
 
-  exports[code] = exports[name] = responseCtor;
+  module.exports[code] = module.exports[name] = responseCtor;
 });
-exports.Ok = exports.OK;
-exports.MARKER = MARKER;
+module.exports.Ok = module.exports.OK;
+module.exports.MARKER = MARKER;
 
 function toJSON () {
   return { body: this.body, status: this.status, headers: this.headers };
@@ -66,4 +77,4 @@ function _decorate (resp, code, body, headers) {
 }
 
 let bodyCreator = (code, body /*, headers */) => body != null ? body : status[code];
-exports.setBodyCreator = f => bodyCreator = f;
+module.exports.setBodyCreator = f => bodyCreator = f;
