@@ -31,7 +31,7 @@ declare module "response-objects" {
 
     function Unauthorized(): ErrorResponseObject;
 
-    function Forbidden(): ErrorResponseObject;
+    function Forbidden(message?: string): ErrorResponseObject;
 
     function BadRequest(message?: string): ErrorResponseObject;
 
