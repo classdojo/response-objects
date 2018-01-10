@@ -42,7 +42,11 @@ function toString () {
 }
 
 function getName (code) {
-  return status[code].replace(/[\s+-]/g, "");
+  const name = status[code];
+  if (!name) {
+    throw new Error(`Unable to find status for ${code}`);
+  }
+  return name.replace(/[\s+-]/g, "");
 }
 
 function createErrorResponse (code, name) {
@@ -76,5 +80,5 @@ function _decorate (resp, code, body, headers) {
   return resp;
 }
 
-let bodyCreator = (code, body /*, headers */) => body != null ? body : status[code];
+let bodyCreator = (code, body /*, headers */) => body != null ? body : (status[code] || `Unknown status for ${code}`);
 module.exports.setBodyCreator = f => bodyCreator = f;
