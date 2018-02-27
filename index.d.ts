@@ -4,6 +4,14 @@ declare module "response-objects" {
   namespace ResponseObjects {
     let MARKER: any;
 
+    export interface R<Body> {
+      body: Body,
+      status: number,
+      headers?: {
+        [index: string]: string;
+      }
+    }
+
     export interface BaseResponseObject {
       body?: any;
       status: number;
