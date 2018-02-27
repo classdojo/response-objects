@@ -1,11 +1,11 @@
 const expect = require("expect");
 
 const status = require("statuses");
-const R = require("./");
+const R = require("../dist");
 
 const aliases = [ "Ok" ];
 
-const noTest = [ "MARKER", "setBodyCreator" ];
+const noTest = [ "MARKER", "setBodyCreator", "default" ];
 
 const someResponse = R.Ok();
 
@@ -16,6 +16,9 @@ Object.keys(R)
   .forEach(function (Name) {
     describe(`${Name}`, function () {
       const Ctor = R[Name];
+
+      // console.log("xxxxxxxx", Name, Ctor)
+
       const resp = Ctor("body");
       const {statusCode} = resp;
 
@@ -23,9 +26,11 @@ Object.keys(R)
         expect(Ctor.name).toBe(Name);
       });
 
-      it(`Responses[${statusCode}] === Responses.${Name}`, function () {
-        expect(R[statusCode]).toBe(R[Name]);
-      });
+      // NOTE: having R(status, body, headers) means R[status](body, headers) isn't needed any more
+
+      // it(`Responses[${statusCode}] === Responses.${Name}`, function () {
+      //   expect(R[statusCode]).toBe(R[Name]);
+      // });
 
       if (statusCode >= 400) {
         it("is an error", function () {
