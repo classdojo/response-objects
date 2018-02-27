@@ -2,7 +2,8 @@
   "name": "response-objects",
   "version": "0.10.2",
   "description": "simple value objects representing HTTP responses",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git://github.com/bttmly/response-objects.git"
