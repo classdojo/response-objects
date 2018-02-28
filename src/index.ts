@@ -1,11 +1,10 @@
 import status = require("statuses");
 
 function R_ (code: number, body?: any, headers?: any): ResponseObject {
-  const name = getName(code);
-  const responseCtor = code >= 400 ?
-    createErrorResponse(code, name) :
-    createResponse(code, name);
-  return responseCtor(body, headers);
+  return (code >= 400 ?
+    createErrorResponse(code) :
+    createResponse(code)
+  )(body, headers);
 }
 exports = R_;
 export default R_;
@@ -33,7 +32,8 @@ export const setBodyCreator = (fn: BodyCreator) => { bodyCreator = fn; }
 export const MARKER = Symbol.for("@@response-objects/MARKER");
 
 const proto: ResponseObject = { toJSON, toString, status: 0, statusCode: 0, headers: {}, [MARKER]: true };
-function createResponse (code: number, name: string): RConstructor {
+function createResponse (code: number): RConstructor {
+  const name = getName(code)
   return _setName(function Response (body?: any, headers?: object) {
     if (body && body[MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
     return _decorate(Object.create(proto), code, body, headers);
@@ -41,7 +41,8 @@ function createResponse (code: number, name: string): RConstructor {
 }
 
 const errProto: ResponseObject = Object.assign(Object.create(Error.prototype), proto);
-function createErrorResponse (code: number, name: string): RErrorConstructor {
+function createErrorResponse (code: number): RErrorConstructor {
+  const name = getName(code)
   return _setName(function ErrorResponse (body?: any, headers?: object) {
     if (body && body[MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
     const err = Object.create(errProto);
@@ -59,151 +60,151 @@ export type RErrorConstructor = (body?: any, headers?: object) => ErrorResponseO
 */
 
 // 1xx
-export const Continue = createResponse(100, "Continue");
-export const SwitchingProtocols = createResponse(101, "SwitchingProtocols");
-export const Processing = createResponse(102, "Processing");
+export const Continue = createResponse(100);
+export const SwitchingProtocols = createResponse(101);
+export const Processing = createResponse(102);
 
 // 2xx
-export const OK = createResponse(200, "OK");
-export const Ok = OK;
-export const Created = createResponse(201, "Created");
-export const Accepted = createResponse(202, "Accepted");
-export const NonAuthoritativeInformation = createResponse(203, "NonAuthoritativeInformation");
-export const NoContent = createResponse(204, "NoContent");
-export const ResetContent = createResponse(205, "ResetContent");
-export const PartialContent = createResponse(206, "PartialContent");
-export const MultiStatus = createResponse(207, "MultiStatus");
-export const AlreadyReported = createResponse(208, "AlreadyReported");
-export const IMUsed = createResponse(226, "IMUsed");
+export const OK = createResponse(200)
+export const Ok = OK
+export const Created = createResponse(201)
+export const Accepted = createResponse(202)
+export const NonAuthoritativeInformation = createResponse(203)
+export const NoContent = createResponse(204)
+export const ResetContent = createResponse(205)
+export const PartialContent = createResponse(206)
+export const MultiStatus = createResponse(207)
+export const AlreadyReported = createResponse(208)
+export const IMUsed = createResponse(226)
 
 // 3xx
-export const MultipleChoices = createResponse(300, "MultipleChoices");
-export const MovedPermanently = createResponse(301, "MovedPermanently");
-export const Found = createResponse(302, "Found");
-export const SeeOther = createResponse(303, "SeeOther");
-export const NotModified = createResponse(304, "NotModified");
-export const UseProxy = createResponse(305, "UseProxy");
-export const TemporaryRedirect = createResponse(307, "TemporaryRedirect");
-export const PermanentRedirect = createResponse(308, "PermanentRedirect");
+export const MultipleChoices = createResponse(300)
+export const MovedPermanently = createResponse(301)
+export const Found = createResponse(302)
+export const SeeOther = createResponse(303)
+export const NotModified = createResponse(304)
+export const UseProxy = createResponse(305)
+export const TemporaryRedirect = createResponse(307)
+export const PermanentRedirect = createResponse(308)
 
 // 4xx
-export const BadRequest = createErrorResponse(400, "BadRequest")
-export const Unauthorized = createErrorResponse(401, "Unauthorized")
-export const PaymentRequired = createErrorResponse(402, "PaymentRequired")
-export const Forbidden = createErrorResponse(403, "Forbidden")
-export const NotFound = createErrorResponse(404, "NotFound")
-export const MethodNotAllowed = createErrorResponse(405, "MethodNotAllowed")
-export const NotAcceptable = createErrorResponse(406, "NotAcceptable")
-export const ProxyAuthenticationRequired = createErrorResponse(407, "ProxyAuthenticationRequired")
-export const RequestTimeout = createErrorResponse(408, "RequestTimeout")
-export const Conflict = createErrorResponse(409, "Conflict")
-export const Gone = createErrorResponse(410, "Gone")
-export const LengthRequired = createErrorResponse(411, "LengthRequired")
-export const PreconditionFailed = createErrorResponse(412, "PreconditionFailed")
-export const PayloadTooLarge = createErrorResponse(413, "PayloadTooLarge")
-export const URITooLong = createErrorResponse(414, "URITooLong")
-export const UnsupportedMediaType = createErrorResponse(415, "UnsupportedMediaType")
-export const RangeNotSatisfiable = createErrorResponse(416, "RangeNotSatisfiable")
-export const ExpectationFailed = createErrorResponse(417, "ExpectationFailed")
-export const MisdirectedRequest = createErrorResponse(421, "MisdirectedRequest")
-export const UnprocessableEntity = createErrorResponse(422, "UnprocessableEntity")
-export const Locked = createErrorResponse(423, "Locked")
-export const FailedDependency = createErrorResponse(424, "FailedDependency")
-export const UnorderedCollection = createErrorResponse(425, "UnorderedCollection")
-export const UpgradeRequired = createErrorResponse(426, "UpgradeRequired")
-export const PreconditionRequired = createErrorResponse(428, "PreconditionRequired")
-export const TooManyRequests = createErrorResponse(429, "TooManyRequests")
-export const RequestHeaderFieldsTooLarge = createErrorResponse(431, "RequestHeaderFieldsTooLarge")
-export const UnavailableForLegalReasons = createErrorResponse(451, "UnavailableForLegalReasons")
+export const BadRequest = createErrorResponse(400)
+export const Unauthorized = createErrorResponse(401)
+export const PaymentRequired = createErrorResponse(402)
+export const Forbidden = createErrorResponse(403)
+export const NotFound = createErrorResponse(404)
+export const MethodNotAllowed = createErrorResponse(405)
+export const NotAcceptable = createErrorResponse(406)
+export const ProxyAuthenticationRequired = createErrorResponse(407)
+export const RequestTimeout = createErrorResponse(408)
+export const Conflict = createErrorResponse(409)
+export const Gone = createErrorResponse(410)
+export const LengthRequired = createErrorResponse(411)
+export const PreconditionFailed = createErrorResponse(412)
+export const PayloadTooLarge = createErrorResponse(413)
+export const URITooLong = createErrorResponse(414)
+export const UnsupportedMediaType = createErrorResponse(415)
+export const RangeNotSatisfiable = createErrorResponse(416)
+export const ExpectationFailed = createErrorResponse(417)
+export const MisdirectedRequest = createErrorResponse(421)
+export const UnprocessableEntity = createErrorResponse(422)
+export const Locked = createErrorResponse(423)
+export const FailedDependency = createErrorResponse(424)
+export const UnorderedCollection = createErrorResponse(425)
+export const UpgradeRequired = createErrorResponse(426)
+export const PreconditionRequired = createErrorResponse(428)
+export const TooManyRequests = createErrorResponse(429)
+export const RequestHeaderFieldsTooLarge = createErrorResponse(431)
+export const UnavailableForLegalReasons = createErrorResponse(451)
 
 // 5xx
-export const InternalServerError = createErrorResponse(500, "InternalServerError")
-export const NotImplemented = createErrorResponse(501, "NotImplemented")
-export const BadGateway = createErrorResponse(502, "BadGateway")
-export const ServiceUnavailable = createErrorResponse(503, "ServiceUnavailable")
-export const GatewayTimeout = createErrorResponse(504, "GatewayTimeout")
-export const HTTPVersionNotSupported = createErrorResponse(505, "HTTPVersionNotSupported")
-export const VariantAlsoNegotiates = createErrorResponse(506, "VariantAlsoNegotiates")
-export const InsufficientStorage = createErrorResponse(507, "InsufficientStorage")
-export const LoopDetected = createErrorResponse(508, "LoopDetected")
-export const BandwidthLimitExceeded = createErrorResponse(509, "BandwidthLimitExceeded")
-export const NotExtended = createErrorResponse(510, "NotExtended")
-export const NetworkAuthenticationRequired = createErrorResponse(511, "NetworkAuthenticationRequired")
+export const InternalServerError = createErrorResponse(500)
+export const NotImplemented = createErrorResponse(501)
+export const BadGateway = createErrorResponse(502)
+export const ServiceUnavailable = createErrorResponse(503)
+export const GatewayTimeout = createErrorResponse(504)
+export const HTTPVersionNotSupported = createErrorResponse(505)
+export const VariantAlsoNegotiates = createErrorResponse(506)
+export const InsufficientStorage = createErrorResponse(507)
+export const LoopDetected = createErrorResponse(508)
+export const BandwidthLimitExceeded = createErrorResponse(509)
+export const NotExtended = createErrorResponse(510)
+export const NetworkAuthenticationRequired = createErrorResponse(511)
 
 /*
   Attach all exports to R_ as well
 */
 namespace R_ {
-  export const Continue = createResponse(100, "Continue");
-  export const SwitchingProtocols = createResponse(101, "SwitchingProtocols");
-  export const Processing = createResponse(102, "Processing");
+  export const Continue = createResponse(100);
+  export const SwitchingProtocols = createResponse(101);
+  export const Processing = createResponse(102);
 
   // 2xx
-  export const OK = createResponse(200, "OK");
+  export const OK = createResponse(200);
   export const Ok = OK;
-  export const Created = createResponse(201, "Created");
-  export const Accepted = createResponse(202, "Accepted");
-  export const NonAuthoritativeInformation = createResponse(203, "NonAuthoritativeInformation");
-  export const NoContent = createResponse(204, "NoContent");
-  export const ResetContent = createResponse(205, "ResetContent");
-  export const PartialContent = createResponse(206, "PartialContent");
-  export const MultiStatus = createResponse(207, "MultiStatus");
-  export const AlreadyReported = createResponse(208, "AlreadyReported");
-  export const IMUsed = createResponse(226, "IMUsed");
+  export const Created = createResponse(201);
+  export const Accepted = createResponse(202);
+  export const NonAuthoritativeInformation = createResponse(203);
+  export const NoContent = createResponse(204);
+  export const ResetContent = createResponse(205);
+  export const PartialContent = createResponse(206);
+  export const MultiStatus = createResponse(207);
+  export const AlreadyReported = createResponse(208);
+  export const IMUsed = createResponse(226);
 
   // 3xx
-  export const MultipleChoices = createResponse(300, "MultipleChoices");
-  export const MovedPermanently = createResponse(301, "MovedPermanently");
-  export const Found = createResponse(302, "Found");
-  export const SeeOther = createResponse(303, "SeeOther");
-  export const NotModified = createResponse(304, "NotModified");
-  export const UseProxy = createResponse(305, "UseProxy");
-  export const TemporaryRedirect = createResponse(307, "TemporaryRedirect");
-  export const PermanentRedirect = createResponse(308, "PermanentRedirect");
+  export const MultipleChoices = createResponse(300);
+  export const MovedPermanently = createResponse(301);
+  export const Found = createResponse(302);
+  export const SeeOther = createResponse(303);
+  export const NotModified = createResponse(304);
+  export const UseProxy = createResponse(305);
+  export const TemporaryRedirect = createResponse(307);
+  export const PermanentRedirect = createResponse(308);
 
   // 4xx
-  export const BadRequest = createErrorResponse(400, "BadRequest")
-  export const Unauthorized = createErrorResponse(401, "Unauthorized")
-  export const PaymentRequired = createErrorResponse(402, "PaymentRequired")
-  export const Forbidden = createErrorResponse(403, "Forbidden")
-  export const NotFound = createErrorResponse(404, "NotFound")
-  export const MethodNotAllowed = createErrorResponse(405, "MethodNotAllowed")
-  export const NotAcceptable = createErrorResponse(406, "NotAcceptable")
-  export const ProxyAuthenticationRequired = createErrorResponse(407, "ProxyAuthenticationRequired")
-  export const RequestTimeout = createErrorResponse(408, "RequestTimeout")
-  export const Conflict = createErrorResponse(409, "Conflict")
-  export const Gone = createErrorResponse(410, "Gone")
-  export const LengthRequired = createErrorResponse(411, "LengthRequired")
-  export const PreconditionFailed = createErrorResponse(412, "PreconditionFailed")
-  export const PayloadTooLarge = createErrorResponse(413, "PayloadTooLarge")
-  export const URITooLong = createErrorResponse(414, "URITooLong")
-  export const UnsupportedMediaType = createErrorResponse(415, "UnsupportedMediaType")
-  export const RangeNotSatisfiable = createErrorResponse(416, "RangeNotSatisfiable")
-  export const ExpectationFailed = createErrorResponse(417, "ExpectationFailed")
-  export const MisdirectedRequest = createErrorResponse(421, "MisdirectedRequest")
-  export const UnprocessableEntity = createErrorResponse(422, "UnprocessableEntity")
-  export const Locked = createErrorResponse(423, "Locked")
-  export const FailedDependency = createErrorResponse(424, "FailedDependency")
-  export const UnorderedCollection = createErrorResponse(425, "UnorderedCollection")
-  export const UpgradeRequired = createErrorResponse(426, "UpgradeRequired")
-  export const PreconditionRequired = createErrorResponse(428, "PreconditionRequired")
-  export const TooManyRequests = createErrorResponse(429, "TooManyRequests")
-  export const RequestHeaderFieldsTooLarge = createErrorResponse(431, "RequestHeaderFieldsTooLarge")
-  export const UnavailableForLegalReasons = createErrorResponse(451, "UnavailableForLegalReasons")
+  export const BadRequest = createErrorResponse(400)
+  export const Unauthorized = createErrorResponse(401)
+  export const PaymentRequired = createErrorResponse(402)
+  export const Forbidden = createErrorResponse(403)
+  export const NotFound = createErrorResponse(404)
+  export const MethodNotAllowed = createErrorResponse(405)
+  export const NotAcceptable = createErrorResponse(406)
+  export const ProxyAuthenticationRequired = createErrorResponse(407)
+  export const RequestTimeout = createErrorResponse(408)
+  export const Conflict = createErrorResponse(409)
+  export const Gone = createErrorResponse(410)
+  export const LengthRequired = createErrorResponse(411)
+  export const PreconditionFailed = createErrorResponse(412)
+  export const PayloadTooLarge = createErrorResponse(413)
+  export const URITooLong = createErrorResponse(414)
+  export const UnsupportedMediaType = createErrorResponse(415)
+  export const RangeNotSatisfiable = createErrorResponse(416)
+  export const ExpectationFailed = createErrorResponse(417)
+  export const MisdirectedRequest = createErrorResponse(421)
+  export const UnprocessableEntity = createErrorResponse(422)
+  export const Locked = createErrorResponse(423)
+  export const FailedDependency = createErrorResponse(424)
+  export const UnorderedCollection = createErrorResponse(425)
+  export const UpgradeRequired = createErrorResponse(426)
+  export const PreconditionRequired = createErrorResponse(428)
+  export const TooManyRequests = createErrorResponse(429)
+  export const RequestHeaderFieldsTooLarge = createErrorResponse(431)
+  export const UnavailableForLegalReasons = createErrorResponse(451)
 
   // 5xx
-  export const InternalServerError = createErrorResponse(500, "InternalServerError")
-  export const NotImplemented = createErrorResponse(501, "NotImplemented")
-  export const BadGateway = createErrorResponse(502, "BadGateway")
-  export const ServiceUnavailable = createErrorResponse(503, "ServiceUnavailable")
-  export const GatewayTimeout = createErrorResponse(504, "GatewayTimeout")
-  export const HTTPVersionNotSupported = createErrorResponse(505, "HTTPVersionNotSupported")
-  export const VariantAlsoNegotiates = createErrorResponse(506, "VariantAlsoNegotiates")
-  export const InsufficientStorage = createErrorResponse(507, "InsufficientStorage")
-  export const LoopDetected = createErrorResponse(508, "LoopDetected")
-  export const BandwidthLimitExceeded = createErrorResponse(509, "BandwidthLimitExceeded")
-  export const NotExtended = createErrorResponse(510, "NotExtended")
-  export const NetworkAuthenticationRequired = createErrorResponse(511, "NetworkAuthenticationRequired")
+  export const InternalServerError = createErrorResponse(500)
+  export const NotImplemented = createErrorResponse(501)
+  export const BadGateway = createErrorResponse(502)
+  export const ServiceUnavailable = createErrorResponse(503)
+  export const GatewayTimeout = createErrorResponse(504)
+  export const HTTPVersionNotSupported = createErrorResponse(505)
+  export const VariantAlsoNegotiates = createErrorResponse(506)
+  export const InsufficientStorage = createErrorResponse(507)
+  export const LoopDetected = createErrorResponse(508)
+  export const BandwidthLimitExceeded = createErrorResponse(509)
+  export const NotExtended = createErrorResponse(510)
+  export const NetworkAuthenticationRequired = createErrorResponse(511)
 }
 
 function _decorate (resp: ResponseObject, code: number, body?: any, headers?: object) {

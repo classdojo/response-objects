@@ -2,11 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const status = require("statuses");
 function R_(code, body, headers) {
-    const name = getName(code);
-    const responseCtor = code >= 400 ?
-        createErrorResponse(code, name) :
-        createResponse(code, name);
-    return responseCtor(body, headers);
+    return (code >= 400 ?
+        createErrorResponse(code) :
+        createResponse(code))(body, headers);
 }
 exports = R_;
 exports.default = R_;
@@ -14,7 +12,8 @@ let bodyCreator = (code, body) => body != null ? body : (status[code] || `Unknow
 exports.setBodyCreator = (fn) => { bodyCreator = fn; };
 exports.MARKER = Symbol.for("@@response-objects/MARKER");
 const proto = { toJSON, toString, status: 0, statusCode: 0, headers: {}, [exports.MARKER]: true };
-function createResponse(code, name) {
+function createResponse(code) {
+    const name = getName(code);
     return _setName(function Response(body, headers) {
         if (body && body[exports.MARKER])
             throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
@@ -22,7 +21,8 @@ function createResponse(code, name) {
     }, name);
 }
 const errProto = Object.assign(Object.create(Error.prototype), proto);
-function createErrorResponse(code, name) {
+function createErrorResponse(code) {
+    const name = getName(code);
     return _setName(function ErrorResponse(body, headers) {
         if (body && body[exports.MARKER])
             throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
@@ -36,142 +36,142 @@ function createErrorResponse(code, name) {
   Named module exports
 */
 // 1xx
-exports.Continue = createResponse(100, "Continue");
-exports.SwitchingProtocols = createResponse(101, "SwitchingProtocols");
-exports.Processing = createResponse(102, "Processing");
+exports.Continue = createResponse(100);
+exports.SwitchingProtocols = createResponse(101);
+exports.Processing = createResponse(102);
 // 2xx
-exports.OK = createResponse(200, "OK");
+exports.OK = createResponse(200);
 exports.Ok = exports.OK;
-exports.Created = createResponse(201, "Created");
-exports.Accepted = createResponse(202, "Accepted");
-exports.NonAuthoritativeInformation = createResponse(203, "NonAuthoritativeInformation");
-exports.NoContent = createResponse(204, "NoContent");
-exports.ResetContent = createResponse(205, "ResetContent");
-exports.PartialContent = createResponse(206, "PartialContent");
-exports.MultiStatus = createResponse(207, "MultiStatus");
-exports.AlreadyReported = createResponse(208, "AlreadyReported");
-exports.IMUsed = createResponse(226, "IMUsed");
+exports.Created = createResponse(201);
+exports.Accepted = createResponse(202);
+exports.NonAuthoritativeInformation = createResponse(203);
+exports.NoContent = createResponse(204);
+exports.ResetContent = createResponse(205);
+exports.PartialContent = createResponse(206);
+exports.MultiStatus = createResponse(207);
+exports.AlreadyReported = createResponse(208);
+exports.IMUsed = createResponse(226);
 // 3xx
-exports.MultipleChoices = createResponse(300, "MultipleChoices");
-exports.MovedPermanently = createResponse(301, "MovedPermanently");
-exports.Found = createResponse(302, "Found");
-exports.SeeOther = createResponse(303, "SeeOther");
-exports.NotModified = createResponse(304, "NotModified");
-exports.UseProxy = createResponse(305, "UseProxy");
-exports.TemporaryRedirect = createResponse(307, "TemporaryRedirect");
-exports.PermanentRedirect = createResponse(308, "PermanentRedirect");
+exports.MultipleChoices = createResponse(300);
+exports.MovedPermanently = createResponse(301);
+exports.Found = createResponse(302);
+exports.SeeOther = createResponse(303);
+exports.NotModified = createResponse(304);
+exports.UseProxy = createResponse(305);
+exports.TemporaryRedirect = createResponse(307);
+exports.PermanentRedirect = createResponse(308);
 // 4xx
-exports.BadRequest = createErrorResponse(400, "BadRequest");
-exports.Unauthorized = createErrorResponse(401, "Unauthorized");
-exports.PaymentRequired = createErrorResponse(402, "PaymentRequired");
-exports.Forbidden = createErrorResponse(403, "Forbidden");
-exports.NotFound = createErrorResponse(404, "NotFound");
-exports.MethodNotAllowed = createErrorResponse(405, "MethodNotAllowed");
-exports.NotAcceptable = createErrorResponse(406, "NotAcceptable");
-exports.ProxyAuthenticationRequired = createErrorResponse(407, "ProxyAuthenticationRequired");
-exports.RequestTimeout = createErrorResponse(408, "RequestTimeout");
-exports.Conflict = createErrorResponse(409, "Conflict");
-exports.Gone = createErrorResponse(410, "Gone");
-exports.LengthRequired = createErrorResponse(411, "LengthRequired");
-exports.PreconditionFailed = createErrorResponse(412, "PreconditionFailed");
-exports.PayloadTooLarge = createErrorResponse(413, "PayloadTooLarge");
-exports.URITooLong = createErrorResponse(414, "URITooLong");
-exports.UnsupportedMediaType = createErrorResponse(415, "UnsupportedMediaType");
-exports.RangeNotSatisfiable = createErrorResponse(416, "RangeNotSatisfiable");
-exports.ExpectationFailed = createErrorResponse(417, "ExpectationFailed");
-exports.MisdirectedRequest = createErrorResponse(421, "MisdirectedRequest");
-exports.UnprocessableEntity = createErrorResponse(422, "UnprocessableEntity");
-exports.Locked = createErrorResponse(423, "Locked");
-exports.FailedDependency = createErrorResponse(424, "FailedDependency");
-exports.UnorderedCollection = createErrorResponse(425, "UnorderedCollection");
-exports.UpgradeRequired = createErrorResponse(426, "UpgradeRequired");
-exports.PreconditionRequired = createErrorResponse(428, "PreconditionRequired");
-exports.TooManyRequests = createErrorResponse(429, "TooManyRequests");
-exports.RequestHeaderFieldsTooLarge = createErrorResponse(431, "RequestHeaderFieldsTooLarge");
-exports.UnavailableForLegalReasons = createErrorResponse(451, "UnavailableForLegalReasons");
+exports.BadRequest = createErrorResponse(400);
+exports.Unauthorized = createErrorResponse(401);
+exports.PaymentRequired = createErrorResponse(402);
+exports.Forbidden = createErrorResponse(403);
+exports.NotFound = createErrorResponse(404);
+exports.MethodNotAllowed = createErrorResponse(405);
+exports.NotAcceptable = createErrorResponse(406);
+exports.ProxyAuthenticationRequired = createErrorResponse(407);
+exports.RequestTimeout = createErrorResponse(408);
+exports.Conflict = createErrorResponse(409);
+exports.Gone = createErrorResponse(410);
+exports.LengthRequired = createErrorResponse(411);
+exports.PreconditionFailed = createErrorResponse(412);
+exports.PayloadTooLarge = createErrorResponse(413);
+exports.URITooLong = createErrorResponse(414);
+exports.UnsupportedMediaType = createErrorResponse(415);
+exports.RangeNotSatisfiable = createErrorResponse(416);
+exports.ExpectationFailed = createErrorResponse(417);
+exports.MisdirectedRequest = createErrorResponse(421);
+exports.UnprocessableEntity = createErrorResponse(422);
+exports.Locked = createErrorResponse(423);
+exports.FailedDependency = createErrorResponse(424);
+exports.UnorderedCollection = createErrorResponse(425);
+exports.UpgradeRequired = createErrorResponse(426);
+exports.PreconditionRequired = createErrorResponse(428);
+exports.TooManyRequests = createErrorResponse(429);
+exports.RequestHeaderFieldsTooLarge = createErrorResponse(431);
+exports.UnavailableForLegalReasons = createErrorResponse(451);
 // 5xx
-exports.InternalServerError = createErrorResponse(500, "InternalServerError");
-exports.NotImplemented = createErrorResponse(501, "NotImplemented");
-exports.BadGateway = createErrorResponse(502, "BadGateway");
-exports.ServiceUnavailable = createErrorResponse(503, "ServiceUnavailable");
-exports.GatewayTimeout = createErrorResponse(504, "GatewayTimeout");
-exports.HTTPVersionNotSupported = createErrorResponse(505, "HTTPVersionNotSupported");
-exports.VariantAlsoNegotiates = createErrorResponse(506, "VariantAlsoNegotiates");
-exports.InsufficientStorage = createErrorResponse(507, "InsufficientStorage");
-exports.LoopDetected = createErrorResponse(508, "LoopDetected");
-exports.BandwidthLimitExceeded = createErrorResponse(509, "BandwidthLimitExceeded");
-exports.NotExtended = createErrorResponse(510, "NotExtended");
-exports.NetworkAuthenticationRequired = createErrorResponse(511, "NetworkAuthenticationRequired");
+exports.InternalServerError = createErrorResponse(500);
+exports.NotImplemented = createErrorResponse(501);
+exports.BadGateway = createErrorResponse(502);
+exports.ServiceUnavailable = createErrorResponse(503);
+exports.GatewayTimeout = createErrorResponse(504);
+exports.HTTPVersionNotSupported = createErrorResponse(505);
+exports.VariantAlsoNegotiates = createErrorResponse(506);
+exports.InsufficientStorage = createErrorResponse(507);
+exports.LoopDetected = createErrorResponse(508);
+exports.BandwidthLimitExceeded = createErrorResponse(509);
+exports.NotExtended = createErrorResponse(510);
+exports.NetworkAuthenticationRequired = createErrorResponse(511);
 /*
   Attach all exports to R_ as well
 */
 (function (R_) {
-    R_.Continue = createResponse(100, "Continue");
-    R_.SwitchingProtocols = createResponse(101, "SwitchingProtocols");
-    R_.Processing = createResponse(102, "Processing");
+    R_.Continue = createResponse(100);
+    R_.SwitchingProtocols = createResponse(101);
+    R_.Processing = createResponse(102);
     // 2xx
-    R_.OK = createResponse(200, "OK");
+    R_.OK = createResponse(200);
     R_.Ok = R_.OK;
-    R_.Created = createResponse(201, "Created");
-    R_.Accepted = createResponse(202, "Accepted");
-    R_.NonAuthoritativeInformation = createResponse(203, "NonAuthoritativeInformation");
-    R_.NoContent = createResponse(204, "NoContent");
-    R_.ResetContent = createResponse(205, "ResetContent");
-    R_.PartialContent = createResponse(206, "PartialContent");
-    R_.MultiStatus = createResponse(207, "MultiStatus");
-    R_.AlreadyReported = createResponse(208, "AlreadyReported");
-    R_.IMUsed = createResponse(226, "IMUsed");
+    R_.Created = createResponse(201);
+    R_.Accepted = createResponse(202);
+    R_.NonAuthoritativeInformation = createResponse(203);
+    R_.NoContent = createResponse(204);
+    R_.ResetContent = createResponse(205);
+    R_.PartialContent = createResponse(206);
+    R_.MultiStatus = createResponse(207);
+    R_.AlreadyReported = createResponse(208);
+    R_.IMUsed = createResponse(226);
     // 3xx
-    R_.MultipleChoices = createResponse(300, "MultipleChoices");
-    R_.MovedPermanently = createResponse(301, "MovedPermanently");
-    R_.Found = createResponse(302, "Found");
-    R_.SeeOther = createResponse(303, "SeeOther");
-    R_.NotModified = createResponse(304, "NotModified");
-    R_.UseProxy = createResponse(305, "UseProxy");
-    R_.TemporaryRedirect = createResponse(307, "TemporaryRedirect");
-    R_.PermanentRedirect = createResponse(308, "PermanentRedirect");
+    R_.MultipleChoices = createResponse(300);
+    R_.MovedPermanently = createResponse(301);
+    R_.Found = createResponse(302);
+    R_.SeeOther = createResponse(303);
+    R_.NotModified = createResponse(304);
+    R_.UseProxy = createResponse(305);
+    R_.TemporaryRedirect = createResponse(307);
+    R_.PermanentRedirect = createResponse(308);
     // 4xx
-    R_.BadRequest = createErrorResponse(400, "BadRequest");
-    R_.Unauthorized = createErrorResponse(401, "Unauthorized");
-    R_.PaymentRequired = createErrorResponse(402, "PaymentRequired");
-    R_.Forbidden = createErrorResponse(403, "Forbidden");
-    R_.NotFound = createErrorResponse(404, "NotFound");
-    R_.MethodNotAllowed = createErrorResponse(405, "MethodNotAllowed");
-    R_.NotAcceptable = createErrorResponse(406, "NotAcceptable");
-    R_.ProxyAuthenticationRequired = createErrorResponse(407, "ProxyAuthenticationRequired");
-    R_.RequestTimeout = createErrorResponse(408, "RequestTimeout");
-    R_.Conflict = createErrorResponse(409, "Conflict");
-    R_.Gone = createErrorResponse(410, "Gone");
-    R_.LengthRequired = createErrorResponse(411, "LengthRequired");
-    R_.PreconditionFailed = createErrorResponse(412, "PreconditionFailed");
-    R_.PayloadTooLarge = createErrorResponse(413, "PayloadTooLarge");
-    R_.URITooLong = createErrorResponse(414, "URITooLong");
-    R_.UnsupportedMediaType = createErrorResponse(415, "UnsupportedMediaType");
-    R_.RangeNotSatisfiable = createErrorResponse(416, "RangeNotSatisfiable");
-    R_.ExpectationFailed = createErrorResponse(417, "ExpectationFailed");
-    R_.MisdirectedRequest = createErrorResponse(421, "MisdirectedRequest");
-    R_.UnprocessableEntity = createErrorResponse(422, "UnprocessableEntity");
-    R_.Locked = createErrorResponse(423, "Locked");
-    R_.FailedDependency = createErrorResponse(424, "FailedDependency");
-    R_.UnorderedCollection = createErrorResponse(425, "UnorderedCollection");
-    R_.UpgradeRequired = createErrorResponse(426, "UpgradeRequired");
-    R_.PreconditionRequired = createErrorResponse(428, "PreconditionRequired");
-    R_.TooManyRequests = createErrorResponse(429, "TooManyRequests");
-    R_.RequestHeaderFieldsTooLarge = createErrorResponse(431, "RequestHeaderFieldsTooLarge");
-    R_.UnavailableForLegalReasons = createErrorResponse(451, "UnavailableForLegalReasons");
+    R_.BadRequest = createErrorResponse(400);
+    R_.Unauthorized = createErrorResponse(401);
+    R_.PaymentRequired = createErrorResponse(402);
+    R_.Forbidden = createErrorResponse(403);
+    R_.NotFound = createErrorResponse(404);
+    R_.MethodNotAllowed = createErrorResponse(405);
+    R_.NotAcceptable = createErrorResponse(406);
+    R_.ProxyAuthenticationRequired = createErrorResponse(407);
+    R_.RequestTimeout = createErrorResponse(408);
+    R_.Conflict = createErrorResponse(409);
+    R_.Gone = createErrorResponse(410);
+    R_.LengthRequired = createErrorResponse(411);
+    R_.PreconditionFailed = createErrorResponse(412);
+    R_.PayloadTooLarge = createErrorResponse(413);
+    R_.URITooLong = createErrorResponse(414);
+    R_.UnsupportedMediaType = createErrorResponse(415);
+    R_.RangeNotSatisfiable = createErrorResponse(416);
+    R_.ExpectationFailed = createErrorResponse(417);
+    R_.MisdirectedRequest = createErrorResponse(421);
+    R_.UnprocessableEntity = createErrorResponse(422);
+    R_.Locked = createErrorResponse(423);
+    R_.FailedDependency = createErrorResponse(424);
+    R_.UnorderedCollection = createErrorResponse(425);
+    R_.UpgradeRequired = createErrorResponse(426);
+    R_.PreconditionRequired = createErrorResponse(428);
+    R_.TooManyRequests = createErrorResponse(429);
+    R_.RequestHeaderFieldsTooLarge = createErrorResponse(431);
+    R_.UnavailableForLegalReasons = createErrorResponse(451);
     // 5xx
-    R_.InternalServerError = createErrorResponse(500, "InternalServerError");
-    R_.NotImplemented = createErrorResponse(501, "NotImplemented");
-    R_.BadGateway = createErrorResponse(502, "BadGateway");
-    R_.ServiceUnavailable = createErrorResponse(503, "ServiceUnavailable");
-    R_.GatewayTimeout = createErrorResponse(504, "GatewayTimeout");
-    R_.HTTPVersionNotSupported = createErrorResponse(505, "HTTPVersionNotSupported");
-    R_.VariantAlsoNegotiates = createErrorResponse(506, "VariantAlsoNegotiates");
-    R_.InsufficientStorage = createErrorResponse(507, "InsufficientStorage");
-    R_.LoopDetected = createErrorResponse(508, "LoopDetected");
-    R_.BandwidthLimitExceeded = createErrorResponse(509, "BandwidthLimitExceeded");
-    R_.NotExtended = createErrorResponse(510, "NotExtended");
-    R_.NetworkAuthenticationRequired = createErrorResponse(511, "NetworkAuthenticationRequired");
+    R_.InternalServerError = createErrorResponse(500);
+    R_.NotImplemented = createErrorResponse(501);
+    R_.BadGateway = createErrorResponse(502);
+    R_.ServiceUnavailable = createErrorResponse(503);
+    R_.GatewayTimeout = createErrorResponse(504);
+    R_.HTTPVersionNotSupported = createErrorResponse(505);
+    R_.VariantAlsoNegotiates = createErrorResponse(506);
+    R_.InsufficientStorage = createErrorResponse(507);
+    R_.LoopDetected = createErrorResponse(508);
+    R_.BandwidthLimitExceeded = createErrorResponse(509);
+    R_.NotExtended = createErrorResponse(510);
+    R_.NetworkAuthenticationRequired = createErrorResponse(511);
 })(R_ || (R_ = {}));
 function _decorate(resp, code, body, headers) {
     resp.status = resp.statusCode = code;
