@@ -16,8 +16,9 @@ export interface ResponseObject extends BaseResponseObject {
 export interface ErrorResponseObject extends ResponseObject, Error {
 }
 export declare type BodyCreator = (code: number, body?: any, headers?: object) => any;
-export declare const setBodyCreator: (fn: BodyCreator) => void;
-export declare const MARKER: symbol;
+declare const _setBodyCreator: (fn: BodyCreator) => void;
+declare const _MARKER: symbol;
+export { _MARKER as MARKER, _setBodyCreator as setBodyCreator };
 export declare type RConstructor = (body?: any, headers?: object) => ResponseObject;
 export declare type RErrorConstructor = (body?: any, headers?: object) => ErrorResponseObject;
 export declare const Continue: RConstructor;
@@ -145,4 +146,6 @@ declare namespace R_ {
     const BandwidthLimitExceeded: RErrorConstructor;
     const NotExtended: RErrorConstructor;
     const NetworkAuthenticationRequired: RErrorConstructor;
+    const setBodyCreator: (fn: BodyCreator) => void;
+    const MARKER: symbol;
 }

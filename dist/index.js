@@ -9,13 +9,15 @@ function R_(code, body, headers) {
 exports = R_;
 exports.default = R_;
 let bodyCreator = (code, body) => body != null ? body : (status[code] || `Unknown status for ${code}`);
-exports.setBodyCreator = (fn) => { bodyCreator = fn; };
-exports.MARKER = Symbol.for("@@response-objects/MARKER");
-const proto = { toJSON, toString, status: 0, statusCode: 0, headers: {}, [exports.MARKER]: true };
+const _setBodyCreator = (fn) => { bodyCreator = fn; };
+exports.setBodyCreator = _setBodyCreator;
+const _MARKER = Symbol.for("@@response-objects/MARKER");
+exports.MARKER = _MARKER;
+const proto = { toJSON, toString, status: 0, statusCode: 0, headers: {}, [_MARKER]: true };
 function createResponse(code) {
     const name = getName(code);
     return _setName(function Response(body, headers) {
-        if (body && body[exports.MARKER])
+        if (body && body[_MARKER])
             throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
         return _decorate(Object.create(proto), code, body, headers);
     }, name);
@@ -24,7 +26,7 @@ const errProto = Object.assign(Object.create(Error.prototype), proto);
 function createErrorResponse(code) {
     const name = getName(code);
     return _setName(function ErrorResponse(body, headers) {
-        if (body && body[exports.MARKER])
+        if (body && body[_MARKER])
             throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
         const err = Object.create(errProto);
         _decorate(err, code, body, headers);
@@ -172,6 +174,8 @@ exports.NetworkAuthenticationRequired = createErrorResponse(511);
     R_.BandwidthLimitExceeded = createErrorResponse(509);
     R_.NotExtended = createErrorResponse(510);
     R_.NetworkAuthenticationRequired = createErrorResponse(511);
+    R_.setBodyCreator = _setBodyCreator;
+    R_.MARKER = _MARKER;
 })(R_ || (R_ = {}));
 function _decorate(resp, code, body, headers) {
     resp.status = resp.statusCode = code;
