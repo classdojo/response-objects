@@ -10,7 +10,7 @@ exports = R_;
 export default R_;
 
 export interface R<Body> extends ResponseObject {
-  body: Body
+  body?: Body
 }
 
 export interface BaseResponseObject {
