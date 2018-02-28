@@ -26,9 +26,14 @@ Object.keys(R)
         expect(Ctor.name).toBe(Name);
       });
 
+      it(`R(${statusCode}) works`, function () {
+        const r2 = R(statusCode, "body");
+        expect(resp).toEqual(r2);
+      });
+
       // NOTE: having R(status, body, headers) means R[status](body, headers) isn't needed any more
 
-      // it(`Responses[${statusCode}] === Responses.${Name}`, function () {
+      // it(`Responses[${status}] === Responses.${Name}`, function () {
       //   expect(R[statusCode]).toBe(R[Name]);
       // });
 
@@ -90,6 +95,10 @@ Object.keys(R)
   });
 
   describe("miscellaneous", function () {
+    it("R is a function", function () {
+      expect(R).toBeA("function");
+    });
+
     it("R.MARKER is a symbol", function () {
       expect(R.MARKER).toBeA("symbol");
     });
@@ -111,21 +120,6 @@ Object.keys(R)
 
       expect(R.Ok("success", _headers).body).toEqual({ status: "success" });
       resetBodyCreator();
-    });
-  });
-
-
-  // rough measurements:
-  // 1.5s with Object.create() constructors
-  // 2.2s with `new` constructors
-  // 4.8s with `new` constructors + failed `this instanceof` checks
-  xdescribe("create 1e7 instances", function () {
-    it("is fast enough", function () {
-      const body = {}, headers = {};
-      let i = 0;
-      while (++i < 1e7) {
-        R.Ok(body, headers);
-      }
     });
   });
 
