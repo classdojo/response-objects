@@ -27,15 +27,17 @@ export interface ErrorResponseObject extends ResponseObject, Error {}
 
 export type BodyCreator = (code: number, body?: any, headers?: object) => any
 let bodyCreator: BodyCreator = (code, body) => body != null ? body : (status[code] || `Unknown status for ${code}`)
-export const setBodyCreator = (fn: BodyCreator) => { bodyCreator = fn; }
+const _setBodyCreator = (fn: BodyCreator) => { bodyCreator = fn; }
 
-export const MARKER = Symbol.for("@@response-objects/MARKER");
+const _MARKER = Symbol.for("@@response-objects/MARKER");
 
-const proto: ResponseObject = { toJSON, toString, status: 0, statusCode: 0, headers: {}, [MARKER]: true };
+export { _MARKER as MARKER, _setBodyCreator as setBodyCreator }
+
+const proto: ResponseObject = { toJSON, toString, status: 0, statusCode: 0, headers: {}, [_MARKER]: true };
 function createResponse (code: number): RConstructor {
   const name = getName(code)
   return _setName(function Response (body?: any, headers?: object) {
-    if (body && body[MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
+    if (body && body[_MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
     return _decorate(Object.create(proto), code, body, headers);
   }, name);
 }
@@ -44,7 +46,7 @@ const errProto: ResponseObject = Object.assign(Object.create(Error.prototype), p
 function createErrorResponse (code: number): RErrorConstructor {
   const name = getName(code)
   return _setName(function ErrorResponse (body?: any, headers?: object) {
-    if (body && body[MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
+    if (body && body[_MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
     const err = Object.create(errProto);
     _decorate(err, code, body, headers);
     Error.captureStackTrace(err, ErrorResponse);
@@ -205,6 +207,9 @@ namespace R_ {
   export const BandwidthLimitExceeded = createErrorResponse(509)
   export const NotExtended = createErrorResponse(510)
   export const NetworkAuthenticationRequired = createErrorResponse(511)
+
+  export const setBodyCreator = _setBodyCreator
+  export const MARKER = _MARKER
 }
 
 function _decorate (resp: ResponseObject, code: number, body?: any, headers?: object) {
