@@ -1,7 +1,7 @@
 declare function R_(code: number, body?: any, headers?: any): ResponseObject;
 export default R_;
 export interface R<Body> extends ResponseObject {
-    body: Body;
+    body?: Body;
 }
 export interface BaseResponseObject {
     body?: any;
