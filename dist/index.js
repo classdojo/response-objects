@@ -13,7 +13,7 @@ const _setBodyCreator = (fn) => { bodyCreator = fn; };
 exports.setBodyCreator = _setBodyCreator;
 const _MARKER = Symbol.for("@@response-objects/MARKER");
 exports.MARKER = _MARKER;
-const proto = { toJSON, toString, status: 0, statusCode: 0, headers: {}, [_MARKER]: true };
+const proto = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {}, [_MARKER]: true };
 function createResponse(code) {
     const name = getName(code);
     return _setName(function Response(body, headers) {

@@ -10,7 +10,7 @@ exports = R_;
 export default R_;
 
 export interface R<Body> extends ResponseObject {
-  body?: Body
+  body: Body
 }
 
 export interface BaseResponseObject {
@@ -33,7 +33,7 @@ const _MARKER = Symbol.for("@@response-objects/MARKER");
 
 export { _MARKER as MARKER, _setBodyCreator as setBodyCreator }
 
-const proto: ResponseObject = { toJSON, toString, status: 0, statusCode: 0, headers: {}, [_MARKER]: true };
+const proto: ResponseObject = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {}, [_MARKER]: true };
 function createResponse (code: number): RConstructor {
   const name = getName(code)
   return _setName(function Response (body?: any, headers?: object) {
