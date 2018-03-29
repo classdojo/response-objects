@@ -14,7 +14,7 @@ export interface R<Body> extends ResponseObject {
 }
 
 export interface BaseResponseObject {
-  body?: any;
+  body: any;
   status: number;
   headers?: object;
 }
