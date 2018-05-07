@@ -1,3 +1,5 @@
+declare const _MARKER: unique symbol;
+export { _MARKER as MARKER, _setBodyCreator as setBodyCreator };
 declare function R_(code: number, body?: any, headers?: any): ResponseObject;
 export default R_;
 export interface R<Body> extends ResponseObject {
@@ -12,13 +14,12 @@ export interface ResponseObject extends BaseResponseObject {
     statusCode: number;
     toJSON(): BaseResponseObject;
     toString(): string;
+    [_MARKER]: boolean;
 }
 export interface ErrorResponseObject extends ResponseObject, Error {
 }
 export declare type BodyCreator = (code: number, body?: any, headers?: object) => any;
 declare const _setBodyCreator: (fn: BodyCreator) => void;
-declare const _MARKER: symbol;
-export { _MARKER as MARKER, _setBodyCreator as setBodyCreator };
 export declare type RConstructor = (body?: any, headers?: object) => ResponseObject;
 export declare type RErrorConstructor = (body?: any, headers?: object) => ErrorResponseObject;
 export declare const Continue: RConstructor;

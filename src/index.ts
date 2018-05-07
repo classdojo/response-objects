@@ -1,5 +1,8 @@
 import status = require("statuses");
 
+const _MARKER = Symbol.for("@@response-objects/MARKER");
+export { _MARKER as MARKER, _setBodyCreator as setBodyCreator }
+
 function R_ (code: number, body?: any, headers?: any): ResponseObject {
   return (code >= 400 ?
     createErrorResponse(code) :
@@ -18,20 +21,18 @@ export interface BaseResponseObject {
   status: number;
   headers?: object;
 }
+
 export interface ResponseObject extends BaseResponseObject {
   statusCode: number,
   toJSON(): BaseResponseObject;
   toString(): string;
+  [_MARKER]: boolean;
 }
 export interface ErrorResponseObject extends ResponseObject, Error {}
 
 export type BodyCreator = (code: number, body?: any, headers?: object) => any
 let bodyCreator: BodyCreator = (code, body) => body != null ? body : (status[code] || `Unknown status for ${code}`)
 const _setBodyCreator = (fn: BodyCreator) => { bodyCreator = fn; }
-
-const _MARKER = Symbol.for("@@response-objects/MARKER");
-
-export { _MARKER as MARKER, _setBodyCreator as setBodyCreator }
 
 const proto: ResponseObject = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {}, [_MARKER]: true };
 function createResponse (code: number): RConstructor {
@@ -225,11 +226,11 @@ function _setName (fn: Function, name: string) {
     value: name,
   });
 }
-function toJSON (this: ResponseObject) {
+function toJSON (this: ResponseObject): BaseResponseObject {
   return { body: this.body, status: this.status, headers: this.headers };
 }
 
-function toString (this: ResponseObject) {
+function toString (this: ResponseObject): string {
   return `Responses.${getName(this.status)} ${JSON.stringify(this)}`;
 }
 

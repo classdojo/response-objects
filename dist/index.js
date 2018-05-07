@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const status = require("statuses");
+const _MARKER = Symbol.for("@@response-objects/MARKER");
+exports.MARKER = _MARKER;
 function R_(code, body, headers) {
     return (code >= 400 ?
         createErrorResponse(code) :
@@ -11,8 +13,6 @@ exports.default = R_;
 let bodyCreator = (code, body) => body != null ? body : (status[code] || `Unknown status for ${code}`);
 const _setBodyCreator = (fn) => { bodyCreator = fn; };
 exports.setBodyCreator = _setBodyCreator;
-const _MARKER = Symbol.for("@@response-objects/MARKER");
-exports.MARKER = _MARKER;
 const proto = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {}, [_MARKER]: true };
 function createResponse(code) {
     const name = getName(code);
