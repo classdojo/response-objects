@@ -3,48 +3,49 @@ import status = require("statuses");
 const _MARKER = Symbol.for("@@response-objects/MARKER");
 export { _MARKER as MARKER, _setBodyCreator as setBodyCreator }
 
-function R_ (code: number, body?: any, headers?: any): ResponseObject {
+function R_<T> (code: number, body?: T, headers?: any): ResponseObject<T> {
   return (code >= 400 ?
-    createErrorResponse(code) :
-    createResponse(code)
+    createErrorResponse<T>(code) :
+    createResponse<T>(code)
   )(body, headers);
 }
 exports = R_;
 export default R_;
 
-export interface R<Body> extends ResponseObject {
+export interface R<Body> extends ResponseObject<Body> {
   body: Body
 }
 
-export interface BaseResponseObject {
-  body: any;
+export interface BaseResponseObject<T> {
+  body: T;
   status: number;
   headers?: object;
 }
 
-export interface ResponseObject extends BaseResponseObject {
+export interface ResponseObject<T> extends BaseResponseObject<T> {
   statusCode: number,
-  toJSON(): BaseResponseObject;
+  toJSON(): BaseResponseObject<T>;
   toString(): string;
   [_MARKER]: boolean;
 }
-export interface ErrorResponseObject extends ResponseObject, Error {}
+
+export interface ErrorResponseObject<T> extends ResponseObject<T>, Error {}
 
 export type BodyCreator = (code: number, body?: any, headers?: object) => any
 let bodyCreator: BodyCreator = (code, body) => body != null ? body : (status[code] || `Unknown status for ${code}`)
 const _setBodyCreator = (fn: BodyCreator) => { bodyCreator = fn; }
 
-const proto: ResponseObject = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {}, [_MARKER]: true };
-function createResponse (code: number): RConstructor {
+const proto: ResponseObject<any> = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {}, [_MARKER]: true };
+function createResponse<T>(code: number): RConstructor<T> {
   const name = getName(code)
-  return _setName(function Response (body?: any, headers?: object) {
-    if (body && body[_MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
+  return _setName(function Response (body?: T, headers?: object) {
+    if (body && (body as any)[_MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
     return _decorate(Object.create(proto), code, body, headers);
   }, name);
 }
 
-const errProto: ResponseObject = Object.assign(Object.create(Error.prototype), proto);
-function createErrorResponse (code: number): RErrorConstructor {
+const errProto: ResponseObject<any> = Object.assign(Object.create(Error.prototype), proto);
+function createErrorResponse<T> (code: number): RErrorConstructor<T> {
   const name = getName(code)
   return _setName(function ErrorResponse (body?: any, headers?: object) {
     if (body && body[_MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
@@ -55,8 +56,8 @@ function createErrorResponse (code: number): RErrorConstructor {
   }, name);
 }
 
-export type RConstructor = (body?: any, headers?: object) => ResponseObject
-export type RErrorConstructor = (body?: any, headers?: object) => ErrorResponseObject
+export type RConstructor<T> = (body?: T, headers?: object) => ResponseObject<T>
+export type RErrorConstructor<T> = (body?: T, headers?: object) => ErrorResponseObject<T>
 
 /*
   Named module exports
@@ -213,24 +214,24 @@ namespace R_ {
   export const MARKER = _MARKER
 }
 
-function _decorate (resp: ResponseObject, code: number, body?: any, headers?: object) {
+function _decorate<T> (resp: ResponseObject<T>, code: number, body?: T, headers?: object) {
   resp.status = resp.statusCode = code;
   resp.body = bodyCreator(code, body, headers);
   if (headers != null) resp.headers = headers;
   return resp;
 }
 
-function _setName (fn: Function, name: string) {
+function _setName<T extends Function> (fn: T, name: string): T {
   return Object.defineProperty(fn, "name", {
     configurable: true,
     value: name,
   });
 }
-function toJSON (this: ResponseObject): BaseResponseObject {
+function toJSON<T> (this: ResponseObject<T>): BaseResponseObject<T> {
   return { body: this.body, status: this.status, headers: this.headers };
 }
 
-function toString (this: ResponseObject): string {
+function toString (this: ResponseObject<any>): string {
   return `Responses.${getName(this.status)} ${JSON.stringify(this)}`;
 }
 
