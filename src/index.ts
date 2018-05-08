@@ -1,245 +1,766 @@
-import status = require("statuses");
 
-const _MARKER = Symbol.for("@@response-objects/MARKER");
-export { _MARKER as MARKER, _setBodyCreator as setBodyCreator }
+import { STATUS_CODES } from "http";
+const getName = (code: number) => STATUS_CODES[code]!.replace(/[\s+-]/g, "");
 
-function R_ (code: number, body?: any, headers?: any): ResponseObject {
-  return (code >= 400 ?
-    createErrorResponse(code) :
-    createResponse(code)
-  )(body, headers);
-}
-exports = R_;
-export default R_;
 
-export interface R<Body> extends ResponseObject {
-  body: Body
-}
 
-export interface BaseResponseObject {
-  body: any;
+const responses = new WeakSet();
+
+
+
+export interface BaseResponseObject<T> {
+  body: T;
   status: number;
   headers?: object;
 }
 
-export interface ResponseObject extends BaseResponseObject {
+export interface ResponseObject<T> extends BaseResponseObject<T> {
   statusCode: number,
-  toJSON(): BaseResponseObject;
+  toJSON(): BaseResponseObject<T>;
   toString(): string;
-  [_MARKER]: boolean;
 }
-export interface ErrorResponseObject extends ResponseObject, Error {}
+export interface ErrorResponseObject<T> extends ResponseObject<T>, Error {}
 
-export type BodyCreator = (code: number, body?: any, headers?: object) => any
-let bodyCreator: BodyCreator = (code, body) => body != null ? body : (status[code] || `Unknown status for ${code}`)
-const _setBodyCreator = (fn: BodyCreator) => { bodyCreator = fn; }
 
-const proto: ResponseObject = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {}, [_MARKER]: true };
-function createResponse (code: number): RConstructor {
-  const name = getName(code)
-  return _setName(function Response (body?: any, headers?: object) {
-    if (body && body[_MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
-    return _decorate(Object.create(proto), code, body, headers);
-  }, name);
-}
-
-const errProto: ResponseObject = Object.assign(Object.create(Error.prototype), proto);
-function createErrorResponse (code: number): RErrorConstructor {
-  const name = getName(code)
-  return _setName(function ErrorResponse (body?: any, headers?: object) {
-    if (body && body[_MARKER]) throw new Error(`Object is already a response: ${JSON.stringify(body)}`);
-    const err = Object.create(errProto);
-    _decorate(err, code, body, headers);
-    Error.captureStackTrace(err, ErrorResponse);
-    return err;
-  }, name);
-}
-
-export type RConstructor = (body?: any, headers?: object) => ResponseObject
-export type RErrorConstructor = (body?: any, headers?: object) => ErrorResponseObject
-
-/*
-  Named module exports
-*/
-
-// 1xx
-export const Continue = createResponse(100);
-export const SwitchingProtocols = createResponse(101);
-export const Processing = createResponse(102);
-
-// 2xx
-export const OK = createResponse(200)
-export const Ok = OK
-export const Created = createResponse(201)
-export const Accepted = createResponse(202)
-export const NonAuthoritativeInformation = createResponse(203)
-export const NoContent = createResponse(204)
-export const ResetContent = createResponse(205)
-export const PartialContent = createResponse(206)
-export const MultiStatus = createResponse(207)
-export const AlreadyReported = createResponse(208)
-export const IMUsed = createResponse(226)
-
-// 3xx
-export const MultipleChoices = createResponse(300)
-export const MovedPermanently = createResponse(301)
-export const Found = createResponse(302)
-export const SeeOther = createResponse(303)
-export const NotModified = createResponse(304)
-export const UseProxy = createResponse(305)
-export const TemporaryRedirect = createResponse(307)
-export const PermanentRedirect = createResponse(308)
-
-// 4xx
-export const BadRequest = createErrorResponse(400)
-export const Unauthorized = createErrorResponse(401)
-export const PaymentRequired = createErrorResponse(402)
-export const Forbidden = createErrorResponse(403)
-export const NotFound = createErrorResponse(404)
-export const MethodNotAllowed = createErrorResponse(405)
-export const NotAcceptable = createErrorResponse(406)
-export const ProxyAuthenticationRequired = createErrorResponse(407)
-export const RequestTimeout = createErrorResponse(408)
-export const Conflict = createErrorResponse(409)
-export const Gone = createErrorResponse(410)
-export const LengthRequired = createErrorResponse(411)
-export const PreconditionFailed = createErrorResponse(412)
-export const PayloadTooLarge = createErrorResponse(413)
-export const URITooLong = createErrorResponse(414)
-export const UnsupportedMediaType = createErrorResponse(415)
-export const RangeNotSatisfiable = createErrorResponse(416)
-export const ExpectationFailed = createErrorResponse(417)
-export const MisdirectedRequest = createErrorResponse(421)
-export const UnprocessableEntity = createErrorResponse(422)
-export const Locked = createErrorResponse(423)
-export const FailedDependency = createErrorResponse(424)
-export const UnorderedCollection = createErrorResponse(425)
-export const UpgradeRequired = createErrorResponse(426)
-export const PreconditionRequired = createErrorResponse(428)
-export const TooManyRequests = createErrorResponse(429)
-export const RequestHeaderFieldsTooLarge = createErrorResponse(431)
-export const UnavailableForLegalReasons = createErrorResponse(451)
-
-// 5xx
-export const InternalServerError = createErrorResponse(500)
-export const NotImplemented = createErrorResponse(501)
-export const BadGateway = createErrorResponse(502)
-export const ServiceUnavailable = createErrorResponse(503)
-export const GatewayTimeout = createErrorResponse(504)
-export const HTTPVersionNotSupported = createErrorResponse(505)
-export const VariantAlsoNegotiates = createErrorResponse(506)
-export const InsufficientStorage = createErrorResponse(507)
-export const LoopDetected = createErrorResponse(508)
-export const BandwidthLimitExceeded = createErrorResponse(509)
-export const NotExtended = createErrorResponse(510)
-export const NetworkAuthenticationRequired = createErrorResponse(511)
-
-/*
-  Attach all exports to R_ as well
-*/
-namespace R_ {
-  export const Continue = createResponse(100);
-  export const SwitchingProtocols = createResponse(101);
-  export const Processing = createResponse(102);
-
-  // 2xx
-  export const OK = createResponse(200);
-  export const Ok = OK;
-  export const Created = createResponse(201);
-  export const Accepted = createResponse(202);
-  export const NonAuthoritativeInformation = createResponse(203);
-  export const NoContent = createResponse(204);
-  export const ResetContent = createResponse(205);
-  export const PartialContent = createResponse(206);
-  export const MultiStatus = createResponse(207);
-  export const AlreadyReported = createResponse(208);
-  export const IMUsed = createResponse(226);
-
-  // 3xx
-  export const MultipleChoices = createResponse(300);
-  export const MovedPermanently = createResponse(301);
-  export const Found = createResponse(302);
-  export const SeeOther = createResponse(303);
-  export const NotModified = createResponse(304);
-  export const UseProxy = createResponse(305);
-  export const TemporaryRedirect = createResponse(307);
-  export const PermanentRedirect = createResponse(308);
-
-  // 4xx
-  export const BadRequest = createErrorResponse(400)
-  export const Unauthorized = createErrorResponse(401)
-  export const PaymentRequired = createErrorResponse(402)
-  export const Forbidden = createErrorResponse(403)
-  export const NotFound = createErrorResponse(404)
-  export const MethodNotAllowed = createErrorResponse(405)
-  export const NotAcceptable = createErrorResponse(406)
-  export const ProxyAuthenticationRequired = createErrorResponse(407)
-  export const RequestTimeout = createErrorResponse(408)
-  export const Conflict = createErrorResponse(409)
-  export const Gone = createErrorResponse(410)
-  export const LengthRequired = createErrorResponse(411)
-  export const PreconditionFailed = createErrorResponse(412)
-  export const PayloadTooLarge = createErrorResponse(413)
-  export const URITooLong = createErrorResponse(414)
-  export const UnsupportedMediaType = createErrorResponse(415)
-  export const RangeNotSatisfiable = createErrorResponse(416)
-  export const ExpectationFailed = createErrorResponse(417)
-  export const MisdirectedRequest = createErrorResponse(421)
-  export const UnprocessableEntity = createErrorResponse(422)
-  export const Locked = createErrorResponse(423)
-  export const FailedDependency = createErrorResponse(424)
-  export const UnorderedCollection = createErrorResponse(425)
-  export const UpgradeRequired = createErrorResponse(426)
-  export const PreconditionRequired = createErrorResponse(428)
-  export const TooManyRequests = createErrorResponse(429)
-  export const RequestHeaderFieldsTooLarge = createErrorResponse(431)
-  export const UnavailableForLegalReasons = createErrorResponse(451)
-
-  // 5xx
-  export const InternalServerError = createErrorResponse(500)
-  export const NotImplemented = createErrorResponse(501)
-  export const BadGateway = createErrorResponse(502)
-  export const ServiceUnavailable = createErrorResponse(503)
-  export const GatewayTimeout = createErrorResponse(504)
-  export const HTTPVersionNotSupported = createErrorResponse(505)
-  export const VariantAlsoNegotiates = createErrorResponse(506)
-  export const InsufficientStorage = createErrorResponse(507)
-  export const LoopDetected = createErrorResponse(508)
-  export const BandwidthLimitExceeded = createErrorResponse(509)
-  export const NotExtended = createErrorResponse(510)
-  export const NetworkAuthenticationRequired = createErrorResponse(511)
-
-  export const setBodyCreator = _setBodyCreator
-  export const MARKER = _MARKER
-}
-
-function _decorate (resp: ResponseObject, code: number, body?: any, headers?: object) {
-  resp.status = resp.statusCode = code;
-  resp.body = bodyCreator(code, body, headers);
-  if (headers != null) resp.headers = headers;
-  return resp;
-}
-
-function _setName (fn: Function, name: string) {
-  return Object.defineProperty(fn, "name", {
-    configurable: true,
-    value: name,
-  });
-}
-function toJSON (this: ResponseObject): BaseResponseObject {
+function toJSON(this: {body: any, status: number, headers: object}) {
   return { body: this.body, status: this.status, headers: this.headers };
 }
 
-function toString (this: ResponseObject): string {
+function toString(this: {status: number}) {
   return `Responses.${getName(this.status)} ${JSON.stringify(this)}`;
 }
 
-function getName (code: number) {
-  const name = status[code];
-  if (!name) {
-    throw new Error(`Unable to find status for ${code}`);
-  }
-  return name.replace(/[\s+-]/g, "");
-}
+const proto: ResponseObject<undefined> = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {} };
 
-module.exports = exports;
+const errProto: ResponseObject<undefined> = Object.assign(Object.create(Error.prototype), proto);
+
+export default function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
+  let resp;
+  if (code >= 400) {
+    resp = Object.create(errProto);
+    Error.captureStackTrace(resp, R);
+  } else {
+    resp = Object.create(proto)
+  }
+  resp.status = resp.statusCode = code;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  return resp;
+}
+module.exports = R;
+
+export function Continue<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 100;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.Continue = Continue
+
+export function SwitchingProtocols<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 101;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.SwitchingProtocols = SwitchingProtocols
+
+export function Processing<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 102;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.Processing = Processing
+
+export function OK<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 200;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.OK = OK
+
+export function Created<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 201;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.Created = Created
+
+export function Accepted<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 202;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.Accepted = Accepted
+
+export function NonAuthoritativeInformation<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 203;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.NonAuthoritativeInformation = NonAuthoritativeInformation
+
+export function NoContent<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 204;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.NoContent = NoContent
+
+export function ResetContent<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 205;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.ResetContent = ResetContent
+
+export function PartialContent<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 206;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.PartialContent = PartialContent
+
+export function MultiStatus<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 207;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.MultiStatus = MultiStatus
+
+export function AlreadyReported<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 208;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.AlreadyReported = AlreadyReported
+
+export function IMUsed<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 226;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.IMUsed = IMUsed
+
+export function MultipleChoices<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 300;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.MultipleChoices = MultipleChoices
+
+export function MovedPermanently<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 301;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.MovedPermanently = MovedPermanently
+
+export function Found<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 302;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.Found = Found
+
+export function SeeOther<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 303;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.SeeOther = SeeOther
+
+export function NotModified<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 304;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.NotModified = NotModified
+
+export function UseProxy<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 305;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.UseProxy = UseProxy
+
+export function TemporaryRedirect<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 307;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.TemporaryRedirect = TemporaryRedirect
+
+export function PermanentRedirect<T> (body: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 308;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.PermanentRedirect = PermanentRedirect
+
+export function BadRequest<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 400;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, BadRequest);
+  responses.add(resp);
+  return resp;
+}
+module.exports.BadRequest = BadRequest
+
+export function Unauthorized<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 401;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, Unauthorized);
+  responses.add(resp);
+  return resp;
+}
+module.exports.Unauthorized = Unauthorized
+
+export function PaymentRequired<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 402;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, PaymentRequired);
+  responses.add(resp);
+  return resp;
+}
+module.exports.PaymentRequired = PaymentRequired
+
+export function Forbidden<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 403;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, Forbidden);
+  responses.add(resp);
+  return resp;
+}
+module.exports.Forbidden = Forbidden
+
+export function NotFound<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 404;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, NotFound);
+  responses.add(resp);
+  return resp;
+}
+module.exports.NotFound = NotFound
+
+export function MethodNotAllowed<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 405;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, MethodNotAllowed);
+  responses.add(resp);
+  return resp;
+}
+module.exports.MethodNotAllowed = MethodNotAllowed
+
+export function NotAcceptable<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 406;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, NotAcceptable);
+  responses.add(resp);
+  return resp;
+}
+module.exports.NotAcceptable = NotAcceptable
+
+export function ProxyAuthenticationRequired<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 407;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, ProxyAuthenticationRequired);
+  responses.add(resp);
+  return resp;
+}
+module.exports.ProxyAuthenticationRequired = ProxyAuthenticationRequired
+
+export function RequestTimeout<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 408;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, RequestTimeout);
+  responses.add(resp);
+  return resp;
+}
+module.exports.RequestTimeout = RequestTimeout
+
+export function Conflict<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 409;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, Conflict);
+  responses.add(resp);
+  return resp;
+}
+module.exports.Conflict = Conflict
+
+export function Gone<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 410;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, Gone);
+  responses.add(resp);
+  return resp;
+}
+module.exports.Gone = Gone
+
+export function LengthRequired<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 411;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, LengthRequired);
+  responses.add(resp);
+  return resp;
+}
+module.exports.LengthRequired = LengthRequired
+
+export function PreconditionFailed<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 412;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, PreconditionFailed);
+  responses.add(resp);
+  return resp;
+}
+module.exports.PreconditionFailed = PreconditionFailed
+
+export function PayloadTooLarge<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 413;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, PayloadTooLarge);
+  responses.add(resp);
+  return resp;
+}
+module.exports.PayloadTooLarge = PayloadTooLarge
+
+export function URITooLong<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 414;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, URITooLong);
+  responses.add(resp);
+  return resp;
+}
+module.exports.URITooLong = URITooLong
+
+export function UnsupportedMediaType<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 415;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, UnsupportedMediaType);
+  responses.add(resp);
+  return resp;
+}
+module.exports.UnsupportedMediaType = UnsupportedMediaType
+
+export function RangeNotSatisfiable<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 416;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, RangeNotSatisfiable);
+  responses.add(resp);
+  return resp;
+}
+module.exports.RangeNotSatisfiable = RangeNotSatisfiable
+
+export function ExpectationFailed<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 417;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, ExpectationFailed);
+  responses.add(resp);
+  return resp;
+}
+module.exports.ExpectationFailed = ExpectationFailed
+
+export function MisdirectedRequest<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 421;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, MisdirectedRequest);
+  responses.add(resp);
+  return resp;
+}
+module.exports.MisdirectedRequest = MisdirectedRequest
+
+export function UnprocessableEntity<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 422;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, UnprocessableEntity);
+  responses.add(resp);
+  return resp;
+}
+module.exports.UnprocessableEntity = UnprocessableEntity
+
+export function Locked<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 423;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, Locked);
+  responses.add(resp);
+  return resp;
+}
+module.exports.Locked = Locked
+
+export function FailedDependency<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 424;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, FailedDependency);
+  responses.add(resp);
+  return resp;
+}
+module.exports.FailedDependency = FailedDependency
+
+export function UnorderedCollection<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 425;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, UnorderedCollection);
+  responses.add(resp);
+  return resp;
+}
+module.exports.UnorderedCollection = UnorderedCollection
+
+export function UpgradeRequired<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 426;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, UpgradeRequired);
+  responses.add(resp);
+  return resp;
+}
+module.exports.UpgradeRequired = UpgradeRequired
+
+export function PreconditionRequired<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 428;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, PreconditionRequired);
+  responses.add(resp);
+  return resp;
+}
+module.exports.PreconditionRequired = PreconditionRequired
+
+export function TooManyRequests<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 429;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, TooManyRequests);
+  responses.add(resp);
+  return resp;
+}
+module.exports.TooManyRequests = TooManyRequests
+
+export function RequestHeaderFieldsTooLarge<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 431;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, RequestHeaderFieldsTooLarge);
+  responses.add(resp);
+  return resp;
+}
+module.exports.RequestHeaderFieldsTooLarge = RequestHeaderFieldsTooLarge
+
+export function UnavailableForLegalReasons<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 451;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, UnavailableForLegalReasons);
+  responses.add(resp);
+  return resp;
+}
+module.exports.UnavailableForLegalReasons = UnavailableForLegalReasons
+
+export function InternalServerError<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 500;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, InternalServerError);
+  responses.add(resp);
+  return resp;
+}
+module.exports.InternalServerError = InternalServerError
+
+export function NotImplemented<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 501;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, NotImplemented);
+  responses.add(resp);
+  return resp;
+}
+module.exports.NotImplemented = NotImplemented
+
+export function BadGateway<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 502;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, BadGateway);
+  responses.add(resp);
+  return resp;
+}
+module.exports.BadGateway = BadGateway
+
+export function ServiceUnavailable<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 503;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, ServiceUnavailable);
+  responses.add(resp);
+  return resp;
+}
+module.exports.ServiceUnavailable = ServiceUnavailable
+
+export function GatewayTimeout<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 504;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, GatewayTimeout);
+  responses.add(resp);
+  return resp;
+}
+module.exports.GatewayTimeout = GatewayTimeout
+
+export function HTTPVersionNotSupported<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 505;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, HTTPVersionNotSupported);
+  responses.add(resp);
+  return resp;
+}
+module.exports.HTTPVersionNotSupported = HTTPVersionNotSupported
+
+export function VariantAlsoNegotiates<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 506;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, VariantAlsoNegotiates);
+  responses.add(resp);
+  return resp;
+}
+module.exports.VariantAlsoNegotiates = VariantAlsoNegotiates
+
+export function InsufficientStorage<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 507;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, InsufficientStorage);
+  responses.add(resp);
+  return resp;
+}
+module.exports.InsufficientStorage = InsufficientStorage
+
+export function LoopDetected<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 508;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, LoopDetected);
+  responses.add(resp);
+  return resp;
+}
+module.exports.LoopDetected = LoopDetected
+
+export function BandwidthLimitExceeded<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 509;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, BandwidthLimitExceeded);
+  responses.add(resp);
+  return resp;
+}
+module.exports.BandwidthLimitExceeded = BandwidthLimitExceeded
+
+export function NotExtended<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 510;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, NotExtended);
+  responses.add(resp);
+  return resp;
+}
+module.exports.NotExtended = NotExtended
+
+export function NetworkAuthenticationRequired<T> (body: T, headers?: object): ErrorResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(errProto);
+  resp.status = resp.statusCode = 511;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  Error.captureStackTrace(resp, NetworkAuthenticationRequired);
+  responses.add(resp);
+  return resp;
+}
+module.exports.NetworkAuthenticationRequired = NetworkAuthenticationRequired
+
+
+export const Ok = OK;
+module.exports.Ok = Ok;
+

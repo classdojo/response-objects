@@ -1,18 +1,20 @@
 const expect = require("expect");
+const { STATUS_CODES } = require("http");
 
 const status = require("statuses");
 const R = require("../dist");
 
 const aliases = [ "Ok" ];
 
-const noTest = [ "MARKER", "setBodyCreator", "default" ];
+const noTest = [ "default" ];
 
 const someResponse = R.Ok();
 
-Object.keys(R)
-  .filter(isNaN)
-  .filter(name => !aliases.includes(name))
-  .filter(name => !noTest.includes(name))
+const getName = code => STATUS_CODES[code].replace(/[\s+-]/g, "");
+const skipCodes = ["306", "418"];
+Object.keys(STATUS_CODES)
+  .filter(code => !skipCodes.includes(code))
+  .map(getName)
   .forEach(function (Name) {
     describe(`${Name}`, function () {
       const Ctor = R[Name];
@@ -46,7 +48,6 @@ Object.keys(R)
 
       it("has expected properties", function () {
         expect(resp.body).toBe("body");
-        expect(resp[R.MARKER]).toBe(true);
         expect(resp.headers).toEqual({});
       });
 
@@ -64,15 +65,6 @@ Object.keys(R)
 
       it("can receive body argument", function () {
         expect(Ctor("custom body").body).toBe("custom body");
-      });
-
-      it("defaults to status text on null/undefined body", function () {
-        expect(Ctor().body).toBe(status[statusCode]);
-        expect(Ctor(null).body).toBe(status[statusCode]);
-
-        // other falsy values are ok
-        expect(Ctor(0).body).toBe(0);
-        expect(Ctor("").body).toBe("");
       });
 
       it("throws if body argument is already a response", function () {
@@ -98,31 +90,4 @@ Object.keys(R)
     it("R is a function", function () {
       expect(R).toBeA("function");
     });
-
-    it("R.MARKER is a symbol", function () {
-      expect(R.MARKER).toBeA("symbol");
-    });
-
-    it("R.MARKER is in the symbol registry", function () {
-      const s = Symbol.for("@@response-objects/MARKER");
-      expect(s).toBe(R.MARKER);
-    });
-
-    it("createDefaultBody", function () {
-      const _headers = {};
-
-      R.setBodyCreator((code, body, headers) => {
-        expect(code).toBe(200);
-        expect(body).toBe("success");
-        expect(headers).toBe(_headers);
-        return { status: body };
-      });
-
-      expect(R.Ok("success", _headers).body).toEqual({ status: "success" });
-      resetBodyCreator();
-    });
   });
-
-function resetBodyCreator () {
-  R.setBodyCreator((code, body) => body != null ? body : status[code]);
-}

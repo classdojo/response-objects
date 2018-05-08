@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "mocha --timeout 3000",
-    "build": "tsc"
+    "build": "node script/generate.js > src/index.ts && tsc"
   },
   "author": "Nick Bottomley (github.com/bttmly)",
   "license": "MIT",
