@@ -75,7 +75,7 @@ const chunks = [
 function generateSuccessResponse (code) {
   const name = getName(code);
   return `
-export function ${name}<T> (body: T, headers?: object): ResponseObject<T> {
+export function ${name}<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = ${code};
@@ -90,7 +90,7 @@ module.exports.${name} = ${name}`.trim();
 function generateErrorResponse (code) {
   const name = getName(code);
   return `
-export function ${name}<T> (body: T, headers?: object): ErrorResponseObject<T> {
+export function ${name}<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = ${code};
