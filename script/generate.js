@@ -1,6 +1,5 @@
 const { STATUS_CODES } = require("http");
 
-// TODO: type definitions!
 const types = `
 export interface BaseResponseObject<T> {
   body: T;
@@ -14,7 +13,7 @@ export interface ResponseObject<T> extends BaseResponseObject<T> {
   toString(): string;
 }
 export interface ErrorResponseObject<T> extends ResponseObject<T>, Error {}
-`
+`.trim();
 
 const toJSON = `
 function toJSON(this: {body: any, status: number, headers: object}) {
@@ -30,8 +29,8 @@ const protoCode = "const proto: ResponseObject<undefined> = { toJSON, toString, 
 
 const errProtoCode = "const errProto: ResponseObject<undefined> = Object.assign(Object.create(Error.prototype), proto);";
 
-const defaultExport = `
-export default function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
+const functionR = `
+function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
   let resp;
   if (code >= 400) {
     resp = Object.create(errProto);
@@ -47,15 +46,12 @@ export default function R<T> (code: number, body: T, headers?: any): ResponseObj
 module.exports = R;
 `.trim();
 
+const defaultExport = "export default R;";
+
 const getNameRuntime = `
 import { STATUS_CODES } from "http";
 const getName = (code: number) => STATUS_CODES[code]!.replace(/[\\s+-]/g, "");
-`
-
-const alias = `
-export const Ok = OK;
-module.exports.Ok = Ok;
-`
+`;
 
 const createWeakSet = `
 const responses = new WeakSet();
@@ -69,6 +65,7 @@ const chunks = [
   toString,
   protoCode,
   errProtoCode,
+  functionR,
   defaultExport,
 ];
 
@@ -83,8 +80,7 @@ export function ${name}<T> (body?: T, headers?: object): ResponseObject<T> {
   if (headers != null) resp.headers = headers;
   responses.add(resp);
   return resp;
-}
-module.exports.${name} = ${name}`.trim();
+}`.trim();
 }
 
 function generateErrorResponse (code) {
@@ -100,16 +96,24 @@ export function ${name}<T> (body?: T, headers?: object): ErrorResponseObject<T> 
   responses.add(resp);
   return resp;
 }
-module.exports.${name} = ${name}
 `.trim();
 }
+
 const skipStatus = ["306", "418"];
 const getName = code => STATUS_CODES[code].replace(/[\s+-]/g, "");
 
-chunks.push(...Object.keys(STATUS_CODES).filter(code => !skipStatus.includes(code)).map((code) => 
-  code <= 399 ? generateSuccessResponse(code) : generateErrorResponse(code)
-));
+chunks.push("namespace R {");
 
-chunks.push(alias);
+chunks.push(
+  ...Object.keys(STATUS_CODES)
+  .filter(code => !skipStatus.includes(code))
+  .map((code) => {
+    return code <= 399 ? generateSuccessResponse(code) : generateErrorResponse(code);
+  })
+);
 
-console.log(chunks.join("\n\n"))
+chunks.push(`
+  export const Ok = OK;
+}`.trim());
+
+console.log(chunks.join("\n\n"));
