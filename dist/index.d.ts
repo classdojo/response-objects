@@ -1,3 +1,4 @@
+export declare function isResponseObject(obj: any): boolean;
 export interface BaseResponseObject<T> {
     body: T;
     status: number;

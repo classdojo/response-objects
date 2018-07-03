@@ -1,13 +1,7 @@
 const expect = require("expect");
 const { STATUS_CODES } = require("http");
 
-const status = require("statuses");
 const R = require("../dist");
-
-const aliases = [ "Ok" ];
-
-const noTest = [ "default" ];
-
 const someResponse = R.Ok();
 
 const getName = code => STATUS_CODES[code].replace(/[\s+-]/g, "");
@@ -18,8 +12,6 @@ Object.keys(STATUS_CODES)
   .forEach(function (Name) {
     describe(`${Name}`, function () {
       const Ctor = R[Name];
-
-      // console.log("xxxxxxxx", Name, Ctor)
 
       const resp = Ctor("body");
       const {statusCode} = resp;
@@ -32,12 +24,6 @@ Object.keys(STATUS_CODES)
         const r2 = R(statusCode, "body");
         expect(resp).toEqual(r2);
       });
-
-      // NOTE: having R(status, body, headers) means R[status](body, headers) isn't needed any more
-
-      // it(`Responses[${status}] === Responses.${Name}`, function () {
-      //   expect(R[statusCode]).toBe(R[Name]);
-      // });
 
       if (statusCode >= 400) {
         it("is an error", function () {

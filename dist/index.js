@@ -3,6 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const http_1 = require("http");
 const getName = (code) => http_1.STATUS_CODES[code].replace(/[\s+-]/g, "");
 const responses = new WeakSet();
+function isResponseObject(obj) {
+    return responses.has(obj);
+}
+exports.isResponseObject = isResponseObject;
 function toJSON() {
     return { body: this.body, status: this.status, headers: this.headers };
 }
@@ -26,7 +30,6 @@ function R(code, body, headers) {
         resp.headers = headers;
     return resp;
 }
-module.exports = R;
 exports.default = R;
 (function (R) {
     function Continue(body, headers) {

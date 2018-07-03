@@ -43,8 +43,7 @@ function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
   if (headers != null) resp.headers = headers;
   return resp;
 }
-module.exports = R;
-`.trim();
+`;
 
 const defaultExport = "export default R;";
 
@@ -57,17 +56,11 @@ const createWeakSet = `
 const responses = new WeakSet();
 `;
 
-const chunks = [
-  getNameRuntime,
-  createWeakSet,
-  types,
-  toJSON,
-  toString,
-  protoCode,
-  errProtoCode,
-  functionR,
-  defaultExport,
-];
+const isResponseObject = `
+  export function isResponseObject (obj: any): boolean {
+    return responses.has(obj);
+  }
+`;
 
 function generateSuccessResponse (code) {
   const name = getName(code);
@@ -102,18 +95,35 @@ export function ${name}<T> (body?: T, headers?: object): ErrorResponseObject<T> 
 const skipStatus = ["306", "418"];
 const getName = code => STATUS_CODES[code].replace(/[\s+-]/g, "");
 
-chunks.push("namespace R {");
+const namespaceOpen = "namespace R {";
 
-chunks.push(
-  ...Object.keys(STATUS_CODES)
+const constructors = Object.keys(STATUS_CODES)
   .filter(code => !skipStatus.includes(code))
   .map((code) => {
     return code <= 399 ? generateSuccessResponse(code) : generateErrorResponse(code);
-  })
-);
+  });
 
-chunks.push(`
+const aliases = `
   export const Ok = OK;
-}`.trim());
+`.trim();
+
+const namespaceClose = "\n}";
+
+const chunks = [
+  getNameRuntime,
+  createWeakSet,
+  isResponseObject,
+  types,
+  toJSON,
+  toString,
+  protoCode,
+  errProtoCode,
+  functionR,
+  defaultExport,
+  namespaceOpen,
+  ...constructors,
+  aliases,
+  namespaceClose,
+];
 
 console.log(chunks.join("\n\n"));
