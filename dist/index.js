@@ -11,23 +11,6 @@ function toString() {
 }
 const proto = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {} };
 const errProto = Object.assign(Object.create(Error.prototype), proto);
-function R(code, body, headers) {
-    let resp;
-    if (code >= 400) {
-        resp = Object.create(errProto);
-        Error.captureStackTrace(resp, R);
-    }
-    else {
-        resp = Object.create(proto);
-    }
-    resp.status = resp.statusCode = code;
-    resp.body = body;
-    if (headers != null)
-        resp.headers = headers;
-    return resp;
-}
-exports.default = R;
-module.exports = R;
 function Continue(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -863,3 +846,83 @@ exports.NetworkAuthenticationRequired = NetworkAuthenticationRequired;
 module.exports.NetworkAuthenticationRequired = NetworkAuthenticationRequired;
 exports.Ok = OK;
 module.exports.Ok = exports.Ok;
+function R(code, body, headers) {
+    let resp;
+    if (code >= 400) {
+        resp = Object.create(errProto);
+        Error.captureStackTrace(resp, R);
+    }
+    else {
+        resp = Object.create(proto);
+    }
+    resp.status = resp.statusCode = code;
+    resp.body = body;
+    if (headers != null)
+        resp.headers = headers;
+    return resp;
+}
+module.exports = R;
+exports.default = Object.assign(R, {
+    Continue,
+    SwitchingProtocols,
+    Processing,
+    OK,
+    Ok: exports.Ok,
+    Created,
+    Accepted,
+    NonAuthoritativeInformation,
+    NoContent,
+    ResetContent,
+    PartialContent,
+    MultiStatus,
+    AlreadyReported,
+    IMUsed,
+    MultipleChoices,
+    MovedPermanently,
+    Found,
+    SeeOther,
+    NotModified,
+    UseProxy,
+    TemporaryRedirect,
+    PermanentRedirect,
+    BadRequest,
+    Unauthorized,
+    PaymentRequired,
+    Forbidden,
+    NotFound,
+    MethodNotAllowed,
+    NotAcceptable,
+    ProxyAuthenticationRequired,
+    RequestTimeout,
+    Conflict,
+    Gone,
+    LengthRequired,
+    PreconditionFailed,
+    PayloadTooLarge,
+    URITooLong,
+    UnsupportedMediaType,
+    RangeNotSatisfiable,
+    ExpectationFailed,
+    MisdirectedRequest,
+    UnprocessableEntity,
+    Locked,
+    FailedDependency,
+    UnorderedCollection,
+    UpgradeRequired,
+    PreconditionRequired,
+    TooManyRequests,
+    RequestHeaderFieldsTooLarge,
+    UnavailableForLegalReasons,
+    InternalServerError,
+    NotImplemented,
+    BadGateway,
+    ServiceUnavailable,
+    GatewayTimeout,
+    HTTPVersionNotSupported,
+    VariantAlsoNegotiates,
+    InsufficientStorage,
+    LoopDetected,
+    BandwidthLimitExceeded,
+    NotExtended,
+    NetworkAuthenticationRequired,
+});

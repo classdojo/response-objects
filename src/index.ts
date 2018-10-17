@@ -1,11 +1,8 @@
-
 import { STATUS_CODES } from "http";
 const getName = (code: number) => STATUS_CODES[code]!.replace(/[\s+-]/g, "");
 
 
-
 const responses = new WeakSet();
-
 
 
 export interface BaseResponseObject<T> {
@@ -32,22 +29,7 @@ function toString(this: {status: number}) {
 
 const proto: ResponseObject<undefined> = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {} };
 
-const errProto: ResponseObject<undefined> = Object.assign(Object.create(Error.prototype), proto);
-
-export default function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
-  let resp;
-  if (code >= 400) {
-    resp = Object.create(errProto);
-    Error.captureStackTrace(resp, R);
-  } else {
-    resp = Object.create(proto)
-  }
-  resp.status = resp.statusCode = code;
-  resp.body = body;
-  if (headers != null) resp.headers = headers;
-  return resp;
-}
-module.exports = R;
+const errProto: ErrorResponseObject<undefined> = Object.assign(Object.create(Error.prototype), proto);
 
 export function Continue<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -760,7 +742,85 @@ export function NetworkAuthenticationRequired<T> (body?: T, headers?: object): E
 }
 module.exports.NetworkAuthenticationRequired = NetworkAuthenticationRequired
 
-
 export const Ok = OK;
 module.exports.Ok = Ok;
 
+function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
+  let resp;
+  if (code >= 400) {
+    resp = Object.create(errProto);
+    Error.captureStackTrace(resp, R);
+  } else {
+    resp = Object.create(proto)
+  }
+  resp.status = resp.statusCode = code;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  return resp;
+}
+module.exports = R;
+
+export default Object.assign(R, {
+ Continue,
+ SwitchingProtocols,
+ Processing,
+ OK,
+ Ok,
+ Created,
+ Accepted,
+ NonAuthoritativeInformation,
+ NoContent,
+ ResetContent,
+ PartialContent,
+ MultiStatus,
+ AlreadyReported,
+ IMUsed,
+ MultipleChoices,
+ MovedPermanently,
+ Found,
+ SeeOther,
+ NotModified,
+ UseProxy,
+ TemporaryRedirect,
+ PermanentRedirect,
+ BadRequest,
+ Unauthorized,
+ PaymentRequired,
+ Forbidden,
+ NotFound,
+ MethodNotAllowed,
+ NotAcceptable,
+ ProxyAuthenticationRequired,
+ RequestTimeout,
+ Conflict,
+ Gone,
+ LengthRequired,
+ PreconditionFailed,
+ PayloadTooLarge,
+ URITooLong,
+ UnsupportedMediaType,
+ RangeNotSatisfiable,
+ ExpectationFailed,
+ MisdirectedRequest,
+ UnprocessableEntity,
+ Locked,
+ FailedDependency,
+ UnorderedCollection,
+ UpgradeRequired,
+ PreconditionRequired,
+ TooManyRequests,
+ RequestHeaderFieldsTooLarge,
+ UnavailableForLegalReasons,
+ InternalServerError,
+ NotImplemented,
+ BadGateway,
+ ServiceUnavailable,
+ GatewayTimeout,
+ HTTPVersionNotSupported,
+ VariantAlsoNegotiates,
+ InsufficientStorage,
+ LoopDetected,
+ BandwidthLimitExceeded,
+ NotExtended,
+ NetworkAuthenticationRequired,
+});

@@ -1,5 +1,7 @@
 const { STATUS_CODES } = require("http");
 
+const getName = code => STATUS_CODES[code].replace(/[\s+-]/g, "");
+
 // TODO: type definitions!
 const types = `
 export interface BaseResponseObject<T> {
@@ -31,7 +33,7 @@ const protoCode = "const proto: ResponseObject<undefined> = { toJSON, toString, 
 const errProtoCode = "const errProto: ResponseObject<undefined> = Object.assign(Object.create(Error.prototype), proto);";
 
 const defaultExport = `
-export default function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
+function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
   let resp;
   if (code >= 400) {
     resp = Object.create(errProto);
@@ -45,17 +47,23 @@ export default function R<T> (code: number, body: T, headers?: any): ResponseObj
   return resp;
 }
 module.exports = R;
+export default Object.assign(R, {
+  ${Object.keys(STATUS_CODES).map((code) => {
+   return `${getName(code)},`;
+  }).concat("Ok,").join("\n")
+}
+})
 `.trim();
 
 const getNameRuntime = `
 import { STATUS_CODES } from "http";
 const getName = (code: number) => STATUS_CODES[code]!.replace(/[\\s+-]/g, "");
-`
+`;
 
 const alias = `
 export const Ok = OK;
 module.exports.Ok = Ok;
-`
+`;
 
 const createWeakSet = `
 const responses = new WeakSet();
@@ -69,7 +77,6 @@ const chunks = [
   toString,
   protoCode,
   errProtoCode,
-  defaultExport,
 ];
 
 function generateSuccessResponse (code) {
@@ -104,12 +111,13 @@ module.exports.${name} = ${name}
 `.trim();
 }
 const skipStatus = ["306", "418"];
-const getName = code => STATUS_CODES[code].replace(/[\s+-]/g, "");
 
 chunks.push(...Object.keys(STATUS_CODES).filter(code => !skipStatus.includes(code)).map((code) => 
   code <= 399 ? generateSuccessResponse(code) : generateErrorResponse(code)
 ));
 
 chunks.push(alias);
+
+chunks.push(defaultExport);
 
 console.log(chunks.join("\n\n"))
