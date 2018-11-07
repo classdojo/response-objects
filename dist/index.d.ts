@@ -77,7 +77,6 @@ declare const _default: (<T>(code: number, body: T, headers?: any) => ResponseOb
     SwitchingProtocols: typeof SwitchingProtocols;
     Processing: typeof Processing;
     OK: typeof OK;
-    Ok: typeof OK;
     Created: typeof Created;
     Accepted: typeof Accepted;
     NonAuthoritativeInformation: typeof NonAuthoritativeInformation;
@@ -135,5 +134,6 @@ declare const _default: (<T>(code: number, body: T, headers?: any) => ResponseOb
     BandwidthLimitExceeded: typeof BandwidthLimitExceeded;
     NotExtended: typeof NotExtended;
     NetworkAuthenticationRequired: typeof NetworkAuthenticationRequired;
+    Ok: typeof OK;
 };
 export default _default;

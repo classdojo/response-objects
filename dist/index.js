@@ -23,7 +23,6 @@ function Continue(body, headers) {
     return resp;
 }
 exports.Continue = Continue;
-module.exports.Continue = Continue;
 function SwitchingProtocols(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -36,7 +35,6 @@ function SwitchingProtocols(body, headers) {
     return resp;
 }
 exports.SwitchingProtocols = SwitchingProtocols;
-module.exports.SwitchingProtocols = SwitchingProtocols;
 function Processing(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -49,7 +47,6 @@ function Processing(body, headers) {
     return resp;
 }
 exports.Processing = Processing;
-module.exports.Processing = Processing;
 function OK(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -62,7 +59,6 @@ function OK(body, headers) {
     return resp;
 }
 exports.OK = OK;
-module.exports.OK = OK;
 function Created(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -75,7 +71,6 @@ function Created(body, headers) {
     return resp;
 }
 exports.Created = Created;
-module.exports.Created = Created;
 function Accepted(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -88,7 +83,6 @@ function Accepted(body, headers) {
     return resp;
 }
 exports.Accepted = Accepted;
-module.exports.Accepted = Accepted;
 function NonAuthoritativeInformation(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -101,7 +95,6 @@ function NonAuthoritativeInformation(body, headers) {
     return resp;
 }
 exports.NonAuthoritativeInformation = NonAuthoritativeInformation;
-module.exports.NonAuthoritativeInformation = NonAuthoritativeInformation;
 function NoContent(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -114,7 +107,6 @@ function NoContent(body, headers) {
     return resp;
 }
 exports.NoContent = NoContent;
-module.exports.NoContent = NoContent;
 function ResetContent(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -127,7 +119,6 @@ function ResetContent(body, headers) {
     return resp;
 }
 exports.ResetContent = ResetContent;
-module.exports.ResetContent = ResetContent;
 function PartialContent(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -140,7 +131,6 @@ function PartialContent(body, headers) {
     return resp;
 }
 exports.PartialContent = PartialContent;
-module.exports.PartialContent = PartialContent;
 function MultiStatus(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -153,7 +143,6 @@ function MultiStatus(body, headers) {
     return resp;
 }
 exports.MultiStatus = MultiStatus;
-module.exports.MultiStatus = MultiStatus;
 function AlreadyReported(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -166,7 +155,6 @@ function AlreadyReported(body, headers) {
     return resp;
 }
 exports.AlreadyReported = AlreadyReported;
-module.exports.AlreadyReported = AlreadyReported;
 function IMUsed(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -179,7 +167,6 @@ function IMUsed(body, headers) {
     return resp;
 }
 exports.IMUsed = IMUsed;
-module.exports.IMUsed = IMUsed;
 function MultipleChoices(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -192,7 +179,6 @@ function MultipleChoices(body, headers) {
     return resp;
 }
 exports.MultipleChoices = MultipleChoices;
-module.exports.MultipleChoices = MultipleChoices;
 function MovedPermanently(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -205,7 +191,6 @@ function MovedPermanently(body, headers) {
     return resp;
 }
 exports.MovedPermanently = MovedPermanently;
-module.exports.MovedPermanently = MovedPermanently;
 function Found(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -218,7 +203,6 @@ function Found(body, headers) {
     return resp;
 }
 exports.Found = Found;
-module.exports.Found = Found;
 function SeeOther(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -231,7 +215,6 @@ function SeeOther(body, headers) {
     return resp;
 }
 exports.SeeOther = SeeOther;
-module.exports.SeeOther = SeeOther;
 function NotModified(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -244,7 +227,6 @@ function NotModified(body, headers) {
     return resp;
 }
 exports.NotModified = NotModified;
-module.exports.NotModified = NotModified;
 function UseProxy(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -257,7 +239,6 @@ function UseProxy(body, headers) {
     return resp;
 }
 exports.UseProxy = UseProxy;
-module.exports.UseProxy = UseProxy;
 function TemporaryRedirect(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -270,7 +251,6 @@ function TemporaryRedirect(body, headers) {
     return resp;
 }
 exports.TemporaryRedirect = TemporaryRedirect;
-module.exports.TemporaryRedirect = TemporaryRedirect;
 function PermanentRedirect(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -283,7 +263,6 @@ function PermanentRedirect(body, headers) {
     return resp;
 }
 exports.PermanentRedirect = PermanentRedirect;
-module.exports.PermanentRedirect = PermanentRedirect;
 function BadRequest(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -297,7 +276,6 @@ function BadRequest(body, headers) {
     return resp;
 }
 exports.BadRequest = BadRequest;
-module.exports.BadRequest = BadRequest;
 function Unauthorized(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -311,7 +289,6 @@ function Unauthorized(body, headers) {
     return resp;
 }
 exports.Unauthorized = Unauthorized;
-module.exports.Unauthorized = Unauthorized;
 function PaymentRequired(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -325,7 +302,6 @@ function PaymentRequired(body, headers) {
     return resp;
 }
 exports.PaymentRequired = PaymentRequired;
-module.exports.PaymentRequired = PaymentRequired;
 function Forbidden(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -339,7 +315,6 @@ function Forbidden(body, headers) {
     return resp;
 }
 exports.Forbidden = Forbidden;
-module.exports.Forbidden = Forbidden;
 function NotFound(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -353,7 +328,6 @@ function NotFound(body, headers) {
     return resp;
 }
 exports.NotFound = NotFound;
-module.exports.NotFound = NotFound;
 function MethodNotAllowed(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -367,7 +341,6 @@ function MethodNotAllowed(body, headers) {
     return resp;
 }
 exports.MethodNotAllowed = MethodNotAllowed;
-module.exports.MethodNotAllowed = MethodNotAllowed;
 function NotAcceptable(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -381,7 +354,6 @@ function NotAcceptable(body, headers) {
     return resp;
 }
 exports.NotAcceptable = NotAcceptable;
-module.exports.NotAcceptable = NotAcceptable;
 function ProxyAuthenticationRequired(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -395,7 +367,6 @@ function ProxyAuthenticationRequired(body, headers) {
     return resp;
 }
 exports.ProxyAuthenticationRequired = ProxyAuthenticationRequired;
-module.exports.ProxyAuthenticationRequired = ProxyAuthenticationRequired;
 function RequestTimeout(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -409,7 +380,6 @@ function RequestTimeout(body, headers) {
     return resp;
 }
 exports.RequestTimeout = RequestTimeout;
-module.exports.RequestTimeout = RequestTimeout;
 function Conflict(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -423,7 +393,6 @@ function Conflict(body, headers) {
     return resp;
 }
 exports.Conflict = Conflict;
-module.exports.Conflict = Conflict;
 function Gone(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -437,7 +406,6 @@ function Gone(body, headers) {
     return resp;
 }
 exports.Gone = Gone;
-module.exports.Gone = Gone;
 function LengthRequired(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -451,7 +419,6 @@ function LengthRequired(body, headers) {
     return resp;
 }
 exports.LengthRequired = LengthRequired;
-module.exports.LengthRequired = LengthRequired;
 function PreconditionFailed(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -465,7 +432,6 @@ function PreconditionFailed(body, headers) {
     return resp;
 }
 exports.PreconditionFailed = PreconditionFailed;
-module.exports.PreconditionFailed = PreconditionFailed;
 function PayloadTooLarge(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -479,7 +445,6 @@ function PayloadTooLarge(body, headers) {
     return resp;
 }
 exports.PayloadTooLarge = PayloadTooLarge;
-module.exports.PayloadTooLarge = PayloadTooLarge;
 function URITooLong(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -493,7 +458,6 @@ function URITooLong(body, headers) {
     return resp;
 }
 exports.URITooLong = URITooLong;
-module.exports.URITooLong = URITooLong;
 function UnsupportedMediaType(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -507,7 +471,6 @@ function UnsupportedMediaType(body, headers) {
     return resp;
 }
 exports.UnsupportedMediaType = UnsupportedMediaType;
-module.exports.UnsupportedMediaType = UnsupportedMediaType;
 function RangeNotSatisfiable(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -521,7 +484,6 @@ function RangeNotSatisfiable(body, headers) {
     return resp;
 }
 exports.RangeNotSatisfiable = RangeNotSatisfiable;
-module.exports.RangeNotSatisfiable = RangeNotSatisfiable;
 function ExpectationFailed(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -535,7 +497,6 @@ function ExpectationFailed(body, headers) {
     return resp;
 }
 exports.ExpectationFailed = ExpectationFailed;
-module.exports.ExpectationFailed = ExpectationFailed;
 function MisdirectedRequest(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -549,7 +510,6 @@ function MisdirectedRequest(body, headers) {
     return resp;
 }
 exports.MisdirectedRequest = MisdirectedRequest;
-module.exports.MisdirectedRequest = MisdirectedRequest;
 function UnprocessableEntity(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -563,7 +523,6 @@ function UnprocessableEntity(body, headers) {
     return resp;
 }
 exports.UnprocessableEntity = UnprocessableEntity;
-module.exports.UnprocessableEntity = UnprocessableEntity;
 function Locked(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -577,7 +536,6 @@ function Locked(body, headers) {
     return resp;
 }
 exports.Locked = Locked;
-module.exports.Locked = Locked;
 function FailedDependency(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -591,7 +549,6 @@ function FailedDependency(body, headers) {
     return resp;
 }
 exports.FailedDependency = FailedDependency;
-module.exports.FailedDependency = FailedDependency;
 function UnorderedCollection(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -605,7 +562,6 @@ function UnorderedCollection(body, headers) {
     return resp;
 }
 exports.UnorderedCollection = UnorderedCollection;
-module.exports.UnorderedCollection = UnorderedCollection;
 function UpgradeRequired(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -619,7 +575,6 @@ function UpgradeRequired(body, headers) {
     return resp;
 }
 exports.UpgradeRequired = UpgradeRequired;
-module.exports.UpgradeRequired = UpgradeRequired;
 function PreconditionRequired(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -633,7 +588,6 @@ function PreconditionRequired(body, headers) {
     return resp;
 }
 exports.PreconditionRequired = PreconditionRequired;
-module.exports.PreconditionRequired = PreconditionRequired;
 function TooManyRequests(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -647,7 +601,6 @@ function TooManyRequests(body, headers) {
     return resp;
 }
 exports.TooManyRequests = TooManyRequests;
-module.exports.TooManyRequests = TooManyRequests;
 function RequestHeaderFieldsTooLarge(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -661,7 +614,6 @@ function RequestHeaderFieldsTooLarge(body, headers) {
     return resp;
 }
 exports.RequestHeaderFieldsTooLarge = RequestHeaderFieldsTooLarge;
-module.exports.RequestHeaderFieldsTooLarge = RequestHeaderFieldsTooLarge;
 function UnavailableForLegalReasons(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -675,7 +627,6 @@ function UnavailableForLegalReasons(body, headers) {
     return resp;
 }
 exports.UnavailableForLegalReasons = UnavailableForLegalReasons;
-module.exports.UnavailableForLegalReasons = UnavailableForLegalReasons;
 function InternalServerError(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -689,7 +640,6 @@ function InternalServerError(body, headers) {
     return resp;
 }
 exports.InternalServerError = InternalServerError;
-module.exports.InternalServerError = InternalServerError;
 function NotImplemented(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -703,7 +653,6 @@ function NotImplemented(body, headers) {
     return resp;
 }
 exports.NotImplemented = NotImplemented;
-module.exports.NotImplemented = NotImplemented;
 function BadGateway(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -717,7 +666,6 @@ function BadGateway(body, headers) {
     return resp;
 }
 exports.BadGateway = BadGateway;
-module.exports.BadGateway = BadGateway;
 function ServiceUnavailable(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -731,7 +679,6 @@ function ServiceUnavailable(body, headers) {
     return resp;
 }
 exports.ServiceUnavailable = ServiceUnavailable;
-module.exports.ServiceUnavailable = ServiceUnavailable;
 function GatewayTimeout(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -745,7 +692,6 @@ function GatewayTimeout(body, headers) {
     return resp;
 }
 exports.GatewayTimeout = GatewayTimeout;
-module.exports.GatewayTimeout = GatewayTimeout;
 function HTTPVersionNotSupported(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -759,7 +705,6 @@ function HTTPVersionNotSupported(body, headers) {
     return resp;
 }
 exports.HTTPVersionNotSupported = HTTPVersionNotSupported;
-module.exports.HTTPVersionNotSupported = HTTPVersionNotSupported;
 function VariantAlsoNegotiates(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -773,7 +718,6 @@ function VariantAlsoNegotiates(body, headers) {
     return resp;
 }
 exports.VariantAlsoNegotiates = VariantAlsoNegotiates;
-module.exports.VariantAlsoNegotiates = VariantAlsoNegotiates;
 function InsufficientStorage(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -787,7 +731,6 @@ function InsufficientStorage(body, headers) {
     return resp;
 }
 exports.InsufficientStorage = InsufficientStorage;
-module.exports.InsufficientStorage = InsufficientStorage;
 function LoopDetected(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -801,7 +744,6 @@ function LoopDetected(body, headers) {
     return resp;
 }
 exports.LoopDetected = LoopDetected;
-module.exports.LoopDetected = LoopDetected;
 function BandwidthLimitExceeded(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -815,7 +757,6 @@ function BandwidthLimitExceeded(body, headers) {
     return resp;
 }
 exports.BandwidthLimitExceeded = BandwidthLimitExceeded;
-module.exports.BandwidthLimitExceeded = BandwidthLimitExceeded;
 function NotExtended(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -829,7 +770,6 @@ function NotExtended(body, headers) {
     return resp;
 }
 exports.NotExtended = NotExtended;
-module.exports.NotExtended = NotExtended;
 function NetworkAuthenticationRequired(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");
@@ -843,9 +783,7 @@ function NetworkAuthenticationRequired(body, headers) {
     return resp;
 }
 exports.NetworkAuthenticationRequired = NetworkAuthenticationRequired;
-module.exports.NetworkAuthenticationRequired = NetworkAuthenticationRequired;
 exports.Ok = OK;
-module.exports.Ok = exports.Ok;
 function R(code, body, headers) {
     let resp;
     if (code >= 400) {
@@ -867,7 +805,6 @@ exports.default = Object.assign(R, {
     SwitchingProtocols,
     Processing,
     OK,
-    Ok: exports.Ok,
     Created,
     Accepted,
     NonAuthoritativeInformation,
@@ -925,4 +862,5 @@ exports.default = Object.assign(R, {
     BandwidthLimitExceeded,
     NotExtended,
     NetworkAuthenticationRequired,
+    Ok: exports.Ok,
 });

@@ -1,9 +1,7 @@
 import { STATUS_CODES } from "http";
 const getName = (code: number) => STATUS_CODES[code]!.replace(/[\s+-]/g, "");
 
-
 const responses = new WeakSet();
-
 
 export interface BaseResponseObject<T> {
   body: T;
@@ -16,8 +14,8 @@ export interface ResponseObject<T> extends BaseResponseObject<T> {
   toJSON(): BaseResponseObject<T>;
   toString(): string;
 }
-export interface ErrorResponseObject<T> extends ResponseObject<T>, Error {}
 
+export interface ErrorResponseObject<T> extends ResponseObject<T>, Error {}
 
 function toJSON(this: {body: any, status: number, headers: object}) {
   return { body: this.body, status: this.status, headers: this.headers };
@@ -40,7 +38,6 @@ export function Continue<T> (body?: T, headers?: object): ResponseObject<T> {
   responses.add(resp);
   return resp;
 }
-module.exports.Continue = Continue
 
 export function SwitchingProtocols<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -51,7 +48,6 @@ export function SwitchingProtocols<T> (body?: T, headers?: object): ResponseObje
   responses.add(resp);
   return resp;
 }
-module.exports.SwitchingProtocols = SwitchingProtocols
 
 export function Processing<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -62,7 +58,6 @@ export function Processing<T> (body?: T, headers?: object): ResponseObject<T> {
   responses.add(resp);
   return resp;
 }
-module.exports.Processing = Processing
 
 export function OK<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -73,7 +68,6 @@ export function OK<T> (body?: T, headers?: object): ResponseObject<T> {
   responses.add(resp);
   return resp;
 }
-module.exports.OK = OK
 
 export function Created<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -84,7 +78,6 @@ export function Created<T> (body?: T, headers?: object): ResponseObject<T> {
   responses.add(resp);
   return resp;
 }
-module.exports.Created = Created
 
 export function Accepted<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -95,7 +88,6 @@ export function Accepted<T> (body?: T, headers?: object): ResponseObject<T> {
   responses.add(resp);
   return resp;
 }
-module.exports.Accepted = Accepted
 
 export function NonAuthoritativeInformation<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -106,7 +98,6 @@ export function NonAuthoritativeInformation<T> (body?: T, headers?: object): Res
   responses.add(resp);
   return resp;
 }
-module.exports.NonAuthoritativeInformation = NonAuthoritativeInformation
 
 export function NoContent<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -117,7 +108,6 @@ export function NoContent<T> (body?: T, headers?: object): ResponseObject<T> {
   responses.add(resp);
   return resp;
 }
-module.exports.NoContent = NoContent
 
 export function ResetContent<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -128,7 +118,6 @@ export function ResetContent<T> (body?: T, headers?: object): ResponseObject<T> 
   responses.add(resp);
   return resp;
 }
-module.exports.ResetContent = ResetContent
 
 export function PartialContent<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -139,7 +128,6 @@ export function PartialContent<T> (body?: T, headers?: object): ResponseObject<T
   responses.add(resp);
   return resp;
 }
-module.exports.PartialContent = PartialContent
 
 export function MultiStatus<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -150,7 +138,6 @@ export function MultiStatus<T> (body?: T, headers?: object): ResponseObject<T> {
   responses.add(resp);
   return resp;
 }
-module.exports.MultiStatus = MultiStatus
 
 export function AlreadyReported<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -161,7 +148,6 @@ export function AlreadyReported<T> (body?: T, headers?: object): ResponseObject<
   responses.add(resp);
   return resp;
 }
-module.exports.AlreadyReported = AlreadyReported
 
 export function IMUsed<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -172,7 +158,6 @@ export function IMUsed<T> (body?: T, headers?: object): ResponseObject<T> {
   responses.add(resp);
   return resp;
 }
-module.exports.IMUsed = IMUsed
 
 export function MultipleChoices<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -183,7 +168,6 @@ export function MultipleChoices<T> (body?: T, headers?: object): ResponseObject<
   responses.add(resp);
   return resp;
 }
-module.exports.MultipleChoices = MultipleChoices
 
 export function MovedPermanently<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -194,7 +178,6 @@ export function MovedPermanently<T> (body?: T, headers?: object): ResponseObject
   responses.add(resp);
   return resp;
 }
-module.exports.MovedPermanently = MovedPermanently
 
 export function Found<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -205,7 +188,6 @@ export function Found<T> (body?: T, headers?: object): ResponseObject<T> {
   responses.add(resp);
   return resp;
 }
-module.exports.Found = Found
 
 export function SeeOther<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -216,7 +198,6 @@ export function SeeOther<T> (body?: T, headers?: object): ResponseObject<T> {
   responses.add(resp);
   return resp;
 }
-module.exports.SeeOther = SeeOther
 
 export function NotModified<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -227,7 +208,6 @@ export function NotModified<T> (body?: T, headers?: object): ResponseObject<T> {
   responses.add(resp);
   return resp;
 }
-module.exports.NotModified = NotModified
 
 export function UseProxy<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -238,7 +218,6 @@ export function UseProxy<T> (body?: T, headers?: object): ResponseObject<T> {
   responses.add(resp);
   return resp;
 }
-module.exports.UseProxy = UseProxy
 
 export function TemporaryRedirect<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -249,7 +228,6 @@ export function TemporaryRedirect<T> (body?: T, headers?: object): ResponseObjec
   responses.add(resp);
   return resp;
 }
-module.exports.TemporaryRedirect = TemporaryRedirect
 
 export function PermanentRedirect<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -260,7 +238,6 @@ export function PermanentRedirect<T> (body?: T, headers?: object): ResponseObjec
   responses.add(resp);
   return resp;
 }
-module.exports.PermanentRedirect = PermanentRedirect
 
 export function BadRequest<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -272,7 +249,6 @@ export function BadRequest<T> (body?: T, headers?: object): ErrorResponseObject<
   responses.add(resp);
   return resp;
 }
-module.exports.BadRequest = BadRequest
 
 export function Unauthorized<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -284,7 +260,6 @@ export function Unauthorized<T> (body?: T, headers?: object): ErrorResponseObjec
   responses.add(resp);
   return resp;
 }
-module.exports.Unauthorized = Unauthorized
 
 export function PaymentRequired<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -296,7 +271,6 @@ export function PaymentRequired<T> (body?: T, headers?: object): ErrorResponseOb
   responses.add(resp);
   return resp;
 }
-module.exports.PaymentRequired = PaymentRequired
 
 export function Forbidden<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -308,7 +282,6 @@ export function Forbidden<T> (body?: T, headers?: object): ErrorResponseObject<T
   responses.add(resp);
   return resp;
 }
-module.exports.Forbidden = Forbidden
 
 export function NotFound<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -320,7 +293,6 @@ export function NotFound<T> (body?: T, headers?: object): ErrorResponseObject<T>
   responses.add(resp);
   return resp;
 }
-module.exports.NotFound = NotFound
 
 export function MethodNotAllowed<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -332,7 +304,6 @@ export function MethodNotAllowed<T> (body?: T, headers?: object): ErrorResponseO
   responses.add(resp);
   return resp;
 }
-module.exports.MethodNotAllowed = MethodNotAllowed
 
 export function NotAcceptable<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -344,7 +315,6 @@ export function NotAcceptable<T> (body?: T, headers?: object): ErrorResponseObje
   responses.add(resp);
   return resp;
 }
-module.exports.NotAcceptable = NotAcceptable
 
 export function ProxyAuthenticationRequired<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -356,7 +326,6 @@ export function ProxyAuthenticationRequired<T> (body?: T, headers?: object): Err
   responses.add(resp);
   return resp;
 }
-module.exports.ProxyAuthenticationRequired = ProxyAuthenticationRequired
 
 export function RequestTimeout<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -368,7 +337,6 @@ export function RequestTimeout<T> (body?: T, headers?: object): ErrorResponseObj
   responses.add(resp);
   return resp;
 }
-module.exports.RequestTimeout = RequestTimeout
 
 export function Conflict<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -380,7 +348,6 @@ export function Conflict<T> (body?: T, headers?: object): ErrorResponseObject<T>
   responses.add(resp);
   return resp;
 }
-module.exports.Conflict = Conflict
 
 export function Gone<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -392,7 +359,6 @@ export function Gone<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   responses.add(resp);
   return resp;
 }
-module.exports.Gone = Gone
 
 export function LengthRequired<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -404,7 +370,6 @@ export function LengthRequired<T> (body?: T, headers?: object): ErrorResponseObj
   responses.add(resp);
   return resp;
 }
-module.exports.LengthRequired = LengthRequired
 
 export function PreconditionFailed<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -416,7 +381,6 @@ export function PreconditionFailed<T> (body?: T, headers?: object): ErrorRespons
   responses.add(resp);
   return resp;
 }
-module.exports.PreconditionFailed = PreconditionFailed
 
 export function PayloadTooLarge<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -428,7 +392,6 @@ export function PayloadTooLarge<T> (body?: T, headers?: object): ErrorResponseOb
   responses.add(resp);
   return resp;
 }
-module.exports.PayloadTooLarge = PayloadTooLarge
 
 export function URITooLong<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -440,7 +403,6 @@ export function URITooLong<T> (body?: T, headers?: object): ErrorResponseObject<
   responses.add(resp);
   return resp;
 }
-module.exports.URITooLong = URITooLong
 
 export function UnsupportedMediaType<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -452,7 +414,6 @@ export function UnsupportedMediaType<T> (body?: T, headers?: object): ErrorRespo
   responses.add(resp);
   return resp;
 }
-module.exports.UnsupportedMediaType = UnsupportedMediaType
 
 export function RangeNotSatisfiable<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -464,7 +425,6 @@ export function RangeNotSatisfiable<T> (body?: T, headers?: object): ErrorRespon
   responses.add(resp);
   return resp;
 }
-module.exports.RangeNotSatisfiable = RangeNotSatisfiable
 
 export function ExpectationFailed<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -476,7 +436,6 @@ export function ExpectationFailed<T> (body?: T, headers?: object): ErrorResponse
   responses.add(resp);
   return resp;
 }
-module.exports.ExpectationFailed = ExpectationFailed
 
 export function MisdirectedRequest<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -488,7 +447,6 @@ export function MisdirectedRequest<T> (body?: T, headers?: object): ErrorRespons
   responses.add(resp);
   return resp;
 }
-module.exports.MisdirectedRequest = MisdirectedRequest
 
 export function UnprocessableEntity<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -500,7 +458,6 @@ export function UnprocessableEntity<T> (body?: T, headers?: object): ErrorRespon
   responses.add(resp);
   return resp;
 }
-module.exports.UnprocessableEntity = UnprocessableEntity
 
 export function Locked<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -512,7 +469,6 @@ export function Locked<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   responses.add(resp);
   return resp;
 }
-module.exports.Locked = Locked
 
 export function FailedDependency<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -524,7 +480,6 @@ export function FailedDependency<T> (body?: T, headers?: object): ErrorResponseO
   responses.add(resp);
   return resp;
 }
-module.exports.FailedDependency = FailedDependency
 
 export function UnorderedCollection<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -536,7 +491,6 @@ export function UnorderedCollection<T> (body?: T, headers?: object): ErrorRespon
   responses.add(resp);
   return resp;
 }
-module.exports.UnorderedCollection = UnorderedCollection
 
 export function UpgradeRequired<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -548,7 +502,6 @@ export function UpgradeRequired<T> (body?: T, headers?: object): ErrorResponseOb
   responses.add(resp);
   return resp;
 }
-module.exports.UpgradeRequired = UpgradeRequired
 
 export function PreconditionRequired<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -560,7 +513,6 @@ export function PreconditionRequired<T> (body?: T, headers?: object): ErrorRespo
   responses.add(resp);
   return resp;
 }
-module.exports.PreconditionRequired = PreconditionRequired
 
 export function TooManyRequests<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -572,7 +524,6 @@ export function TooManyRequests<T> (body?: T, headers?: object): ErrorResponseOb
   responses.add(resp);
   return resp;
 }
-module.exports.TooManyRequests = TooManyRequests
 
 export function RequestHeaderFieldsTooLarge<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -584,7 +535,6 @@ export function RequestHeaderFieldsTooLarge<T> (body?: T, headers?: object): Err
   responses.add(resp);
   return resp;
 }
-module.exports.RequestHeaderFieldsTooLarge = RequestHeaderFieldsTooLarge
 
 export function UnavailableForLegalReasons<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -596,7 +546,6 @@ export function UnavailableForLegalReasons<T> (body?: T, headers?: object): Erro
   responses.add(resp);
   return resp;
 }
-module.exports.UnavailableForLegalReasons = UnavailableForLegalReasons
 
 export function InternalServerError<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -608,7 +557,6 @@ export function InternalServerError<T> (body?: T, headers?: object): ErrorRespon
   responses.add(resp);
   return resp;
 }
-module.exports.InternalServerError = InternalServerError
 
 export function NotImplemented<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -620,7 +568,6 @@ export function NotImplemented<T> (body?: T, headers?: object): ErrorResponseObj
   responses.add(resp);
   return resp;
 }
-module.exports.NotImplemented = NotImplemented
 
 export function BadGateway<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -632,7 +579,6 @@ export function BadGateway<T> (body?: T, headers?: object): ErrorResponseObject<
   responses.add(resp);
   return resp;
 }
-module.exports.BadGateway = BadGateway
 
 export function ServiceUnavailable<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -644,7 +590,6 @@ export function ServiceUnavailable<T> (body?: T, headers?: object): ErrorRespons
   responses.add(resp);
   return resp;
 }
-module.exports.ServiceUnavailable = ServiceUnavailable
 
 export function GatewayTimeout<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -656,7 +601,6 @@ export function GatewayTimeout<T> (body?: T, headers?: object): ErrorResponseObj
   responses.add(resp);
   return resp;
 }
-module.exports.GatewayTimeout = GatewayTimeout
 
 export function HTTPVersionNotSupported<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -668,7 +612,6 @@ export function HTTPVersionNotSupported<T> (body?: T, headers?: object): ErrorRe
   responses.add(resp);
   return resp;
 }
-module.exports.HTTPVersionNotSupported = HTTPVersionNotSupported
 
 export function VariantAlsoNegotiates<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -680,7 +623,6 @@ export function VariantAlsoNegotiates<T> (body?: T, headers?: object): ErrorResp
   responses.add(resp);
   return resp;
 }
-module.exports.VariantAlsoNegotiates = VariantAlsoNegotiates
 
 export function InsufficientStorage<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -692,7 +634,6 @@ export function InsufficientStorage<T> (body?: T, headers?: object): ErrorRespon
   responses.add(resp);
   return resp;
 }
-module.exports.InsufficientStorage = InsufficientStorage
 
 export function LoopDetected<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -704,7 +645,6 @@ export function LoopDetected<T> (body?: T, headers?: object): ErrorResponseObjec
   responses.add(resp);
   return resp;
 }
-module.exports.LoopDetected = LoopDetected
 
 export function BandwidthLimitExceeded<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -716,7 +656,6 @@ export function BandwidthLimitExceeded<T> (body?: T, headers?: object): ErrorRes
   responses.add(resp);
   return resp;
 }
-module.exports.BandwidthLimitExceeded = BandwidthLimitExceeded
 
 export function NotExtended<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -728,7 +667,6 @@ export function NotExtended<T> (body?: T, headers?: object): ErrorResponseObject
   responses.add(resp);
   return resp;
 }
-module.exports.NotExtended = NotExtended
 
 export function NetworkAuthenticationRequired<T> (body?: T, headers?: object): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -740,10 +678,8 @@ export function NetworkAuthenticationRequired<T> (body?: T, headers?: object): E
   responses.add(resp);
   return resp;
 }
-module.exports.NetworkAuthenticationRequired = NetworkAuthenticationRequired
 
 export const Ok = OK;
-module.exports.Ok = Ok;
 
 function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
   let resp;
@@ -761,66 +697,66 @@ function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
 module.exports = R;
 
 export default Object.assign(R, {
- Continue,
- SwitchingProtocols,
- Processing,
- OK,
- Ok,
- Created,
- Accepted,
- NonAuthoritativeInformation,
- NoContent,
- ResetContent,
- PartialContent,
- MultiStatus,
- AlreadyReported,
- IMUsed,
- MultipleChoices,
- MovedPermanently,
- Found,
- SeeOther,
- NotModified,
- UseProxy,
- TemporaryRedirect,
- PermanentRedirect,
- BadRequest,
- Unauthorized,
- PaymentRequired,
- Forbidden,
- NotFound,
- MethodNotAllowed,
- NotAcceptable,
- ProxyAuthenticationRequired,
- RequestTimeout,
- Conflict,
- Gone,
- LengthRequired,
- PreconditionFailed,
- PayloadTooLarge,
- URITooLong,
- UnsupportedMediaType,
- RangeNotSatisfiable,
- ExpectationFailed,
- MisdirectedRequest,
- UnprocessableEntity,
- Locked,
- FailedDependency,
- UnorderedCollection,
- UpgradeRequired,
- PreconditionRequired,
- TooManyRequests,
- RequestHeaderFieldsTooLarge,
- UnavailableForLegalReasons,
- InternalServerError,
- NotImplemented,
- BadGateway,
- ServiceUnavailable,
- GatewayTimeout,
- HTTPVersionNotSupported,
- VariantAlsoNegotiates,
- InsufficientStorage,
- LoopDetected,
- BandwidthLimitExceeded,
- NotExtended,
- NetworkAuthenticationRequired,
+  Continue,
+  SwitchingProtocols,
+  Processing,
+  OK,
+  Created,
+  Accepted,
+  NonAuthoritativeInformation,
+  NoContent,
+  ResetContent,
+  PartialContent,
+  MultiStatus,
+  AlreadyReported,
+  IMUsed,
+  MultipleChoices,
+  MovedPermanently,
+  Found,
+  SeeOther,
+  NotModified,
+  UseProxy,
+  TemporaryRedirect,
+  PermanentRedirect,
+  BadRequest,
+  Unauthorized,
+  PaymentRequired,
+  Forbidden,
+  NotFound,
+  MethodNotAllowed,
+  NotAcceptable,
+  ProxyAuthenticationRequired,
+  RequestTimeout,
+  Conflict,
+  Gone,
+  LengthRequired,
+  PreconditionFailed,
+  PayloadTooLarge,
+  URITooLong,
+  UnsupportedMediaType,
+  RangeNotSatisfiable,
+  ExpectationFailed,
+  MisdirectedRequest,
+  UnprocessableEntity,
+  Locked,
+  FailedDependency,
+  UnorderedCollection,
+  UpgradeRequired,
+  PreconditionRequired,
+  TooManyRequests,
+  RequestHeaderFieldsTooLarge,
+  UnavailableForLegalReasons,
+  InternalServerError,
+  NotImplemented,
+  BadGateway,
+  ServiceUnavailable,
+  GatewayTimeout,
+  HTTPVersionNotSupported,
+  VariantAlsoNegotiates,
+  InsufficientStorage,
+  LoopDetected,
+  BandwidthLimitExceeded,
+  NotExtended,
+  NetworkAuthenticationRequired,
+  Ok,
 });

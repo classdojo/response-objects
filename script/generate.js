@@ -1,5 +1,9 @@
 const { STATUS_CODES } = require("http");
 
+const skipStatus = ["306", "418"];
+
+const STATUS_CODES_KEYS = Object.keys(STATUS_CODES).filter(code => !skipStatus.includes(code));
+
 const getName = code => STATUS_CODES[code].replace(/[\s+-]/g, "");
 
 // TODO: type definitions!
@@ -15,8 +19,9 @@ export interface ResponseObject<T> extends BaseResponseObject<T> {
   toJSON(): BaseResponseObject<T>;
   toString(): string;
 }
+
 export interface ErrorResponseObject<T> extends ResponseObject<T>, Error {}
-`
+`.trim();
 
 const toJSON = `
 function toJSON(this: {body: any, status: number, headers: object}) {
@@ -30,7 +35,7 @@ function toString(this: {status: number}) {
 
 const protoCode = "const proto: ResponseObject<undefined> = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {} };";
 
-const errProtoCode = "const errProto: ResponseObject<undefined> = Object.assign(Object.create(Error.prototype), proto);";
+const errProtoCode = "const errProto: ErrorResponseObject<undefined> = Object.assign(Object.create(Error.prototype), proto);";
 
 const defaultExport = `
 function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
@@ -47,27 +52,28 @@ function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
   return resp;
 }
 module.exports = R;
+
 export default Object.assign(R, {
-  ${Object.keys(STATUS_CODES).map((code) => {
-   return `${getName(code)},`;
-  }).concat("Ok,").join("\n")
+${
+  STATUS_CODES_KEYS.map((code) => {
+    return `  ${getName(code)},`;
+  }).concat("  Ok,").join("\n")
 }
-})
+});
 `.trim();
 
 const getNameRuntime = `
 import { STATUS_CODES } from "http";
 const getName = (code: number) => STATUS_CODES[code]!.replace(/[\\s+-]/g, "");
-`;
+`.trim();
 
 const alias = `
 export const Ok = OK;
-module.exports.Ok = Ok;
-`;
+`.trim();
 
 const createWeakSet = `
 const responses = new WeakSet();
-`;
+`.trim();
 
 const chunks = [
   getNameRuntime,
@@ -90,8 +96,7 @@ export function ${name}<T> (body?: T, headers?: object): ResponseObject<T> {
   if (headers != null) resp.headers = headers;
   responses.add(resp);
   return resp;
-}
-module.exports.${name} = ${name}`.trim();
+}`.trim();
 }
 
 function generateErrorResponse (code) {
@@ -107,12 +112,10 @@ export function ${name}<T> (body?: T, headers?: object): ErrorResponseObject<T> 
   responses.add(resp);
   return resp;
 }
-module.exports.${name} = ${name}
 `.trim();
 }
-const skipStatus = ["306", "418"];
 
-chunks.push(...Object.keys(STATUS_CODES).filter(code => !skipStatus.includes(code)).map((code) => 
+chunks.push(...STATUS_CODES_KEYS.map((code) =>
   code <= 399 ? generateSuccessResponse(code) : generateErrorResponse(code)
 ));
 
