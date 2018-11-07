@@ -2,7 +2,9 @@ const { STATUS_CODES } = require("http");
 
 const skipStatus = ["306", "418"];
 
-const STATUS_CODES_KEYS = Object.keys(STATUS_CODES).filter(code => !skipStatus.includes(code));
+const STATUS_CODES_KEYS = Object.keys(STATUS_CODES).filter(
+  code => !skipStatus.includes(code)
+);
 
 const getName = code => STATUS_CODES[code].replace(/[\s+-]/g, "");
 
@@ -33,12 +35,14 @@ function toString(this: {status: number}) {
   return \`Responses.\${getName(this.status)} \${JSON.stringify(this)}\`;
 }`.trim();
 
-const protoCode = "const proto: ResponseObject<undefined> = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {} };";
+const protoCode =
+  "const proto: R.ResponseObject<undefined> = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {} };";
 
-const errProtoCode = "const errProto: ErrorResponseObject<undefined> = Object.assign(Object.create(Error.prototype), proto);";
+const errProtoCode =
+  "const errProto: R.ErrorResponseObject<undefined> = Object.assign(Object.create(Error.prototype), proto);";
 
-const defaultExport = `
-function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
+const rFunction = `
+function R<T> (code: number, body: T, headers?: any): R.ResponseObject<T> {
   let resp;
   if (code >= 400) {
     resp = Object.create(errProto);
@@ -51,15 +55,6 @@ function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
   if (headers != null) resp.headers = headers;
   return resp;
 }
-module.exports = R;
-
-export default Object.assign(R, {
-${
-  STATUS_CODES_KEYS.map((code) => {
-    return `  ${getName(code)},`;
-  }).concat("  Ok,").join("\n")
-}
-});
 `.trim();
 
 const getNameRuntime = `
@@ -75,52 +70,61 @@ const createWeakSet = `
 const responses = new WeakSet();
 `.trim();
 
+function generateSuccessResponse(code) {
+  const name = getName(code);
+  return `
+  export function ${name}<T> (body?: T, headers?: object): ResponseObject<T> {
+    if (responses.has(body as any)) throw new Error("Object is already a response");
+    const resp = Object.create(proto);
+    resp.status = resp.statusCode = ${code};
+    resp.body = body;
+    if (headers != null) resp.headers = headers;
+    responses.add(resp);
+    return resp;
+  }`.trim();
+}
+
+function generateErrorResponse(code) {
+  const name = getName(code);
+  return `
+  export function ${name}<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+    if (responses.has(body as any)) throw new Error("Object is already a response");
+    const resp = Object.create(errProto);
+    resp.status = resp.statusCode = ${code};
+    resp.body = body;
+    if (headers != null) resp.headers = headers;
+    Error.captureStackTrace(resp, ${name});
+    responses.add(resp);
+    return resp;
+  }`.trim();
+}
+
+const rNamespace = `
+namespace R {
+  ${types}
+
+  ${STATUS_CODES_KEYS.map(code =>
+    code <= 399 ? generateSuccessResponse(code) : generateErrorResponse(code)
+  ).join("\n\n  ")}
+
+  ${alias}
+}
+`.trim();
+
+const rExport = `
+  export = R;
+`.trim();
+
 const chunks = [
   getNameRuntime,
   createWeakSet,
-  types,
   toJSON,
   toString,
   protoCode,
   errProtoCode,
+  rFunction,
+  rNamespace,
+  rExport
 ];
 
-function generateSuccessResponse (code) {
-  const name = getName(code);
-  return `
-export function ${name}<T> (body?: T, headers?: object): ResponseObject<T> {
-  if (responses.has(body as any)) throw new Error("Object is already a response");
-  const resp = Object.create(proto);
-  resp.status = resp.statusCode = ${code};
-  resp.body = body;
-  if (headers != null) resp.headers = headers;
-  responses.add(resp);
-  return resp;
-}`.trim();
-}
-
-function generateErrorResponse (code) {
-  const name = getName(code);
-  return `
-export function ${name}<T> (body?: T, headers?: object): ErrorResponseObject<T> {
-  if (responses.has(body as any)) throw new Error("Object is already a response");
-  const resp = Object.create(errProto);
-  resp.status = resp.statusCode = ${code};
-  resp.body = body;
-  if (headers != null) resp.headers = headers;
-  Error.captureStackTrace(resp, ${name});
-  responses.add(resp);
-  return resp;
-}
-`.trim();
-}
-
-chunks.push(...STATUS_CODES_KEYS.map((code) =>
-  code <= 399 ? generateSuccessResponse(code) : generateErrorResponse(code)
-));
-
-chunks.push(alias);
-
-chunks.push(defaultExport);
-
-console.log(chunks.join("\n\n"))
+console.log(chunks.join("\n\n"));
