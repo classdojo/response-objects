@@ -9,7 +9,7 @@
     "url": "git://github.com/bttmly/response-objects.git"
   },
   "scripts": {
-    "test": "mocha --timeout 3000",
+    "test": "mocha --timeout 3000 -r ts-node/register test/**/*.{js,ts}",
     "build": "node script/generate.js > src/index.ts && tsc"
   },
   "author": "Nick Bottomley (github.com/bttmly)",
@@ -20,9 +20,12 @@
     "statuses": "1.3.0"
   },
   "devDependencies": {
+    "@types/expect": "1.20.3",
+    "@types/mocha": "5.2.5",
     "eslint": "^3.19.0",
     "expect": "^1.20.2",
     "mocha": "^3.1.0",
+    "ts-node": "7.0.1",
     "typescript": "^2.8.3"
   }
 }
