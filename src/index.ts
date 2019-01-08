@@ -1,17 +1,14 @@
-
 import { STATUS_CODES } from "http";
 const getName = (code: number) => STATUS_CODES[code]!.replace(/[\s+-]/g, "");
 
-
-
 const responses = new WeakSet();
-
-
 
 export interface BaseResponseObject<T> {
   body: T;
   status: number;
-  headers?: object;
+  headers: {
+    [index: string]: any;
+  };
 }
 
 export interface ResponseObject<T> extends BaseResponseObject<T> {
@@ -19,8 +16,8 @@ export interface ResponseObject<T> extends BaseResponseObject<T> {
   toJSON(): BaseResponseObject<T>;
   toString(): string;
 }
-export interface ErrorResponseObject<T> extends ResponseObject<T>, Error {}
 
+export interface ErrorResponseObject<T> extends ResponseObject<T>, Error {}
 
 function toJSON(this: {body: any, status: number, headers: object}) {
   return { body: this.body, status: this.status, headers: this.headers };
@@ -81,6 +78,17 @@ export function Processing<T> (body?: T, headers?: object): ResponseObject<T> {
   return resp;
 }
 module.exports.Processing = Processing
+
+export function EarlyHints<T> (body?: T, headers?: object): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
+  const resp = Object.create(proto);
+  resp.status = resp.statusCode = 103;
+  resp.body = body;
+  if (headers != null) resp.headers = headers;
+  responses.add(resp);
+  return resp;
+}
+module.exports.EarlyHints = EarlyHints
 
 export function OK<T> (body?: T, headers?: object): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
@@ -760,7 +768,5 @@ export function NetworkAuthenticationRequired<T> (body?: T, headers?: object): E
 }
 module.exports.NetworkAuthenticationRequired = NetworkAuthenticationRequired
 
-
 export const Ok = OK;
 module.exports.Ok = Ok;
-

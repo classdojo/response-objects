@@ -67,6 +67,19 @@ function Processing(body, headers) {
 }
 exports.Processing = Processing;
 module.exports.Processing = Processing;
+function EarlyHints(body, headers) {
+    if (responses.has(body))
+        throw new Error("Object is already a response");
+    const resp = Object.create(proto);
+    resp.status = resp.statusCode = 103;
+    resp.body = body;
+    if (headers != null)
+        resp.headers = headers;
+    responses.add(resp);
+    return resp;
+}
+exports.EarlyHints = EarlyHints;
+module.exports.EarlyHints = EarlyHints;
 function OK(body, headers) {
     if (responses.has(body))
         throw new Error("Object is already a response");

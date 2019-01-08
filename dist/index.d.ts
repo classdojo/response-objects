@@ -1,7 +1,9 @@
 export interface BaseResponseObject<T> {
     body: T;
     status: number;
-    headers?: object;
+    headers: {
+        [index: string]: any;
+    };
 }
 export interface ResponseObject<T> extends BaseResponseObject<T> {
     statusCode: number;
@@ -14,6 +16,7 @@ export default function R<T>(code: number, body: T, headers?: any): ResponseObje
 export declare function Continue<T>(body?: T, headers?: object): ResponseObject<T>;
 export declare function SwitchingProtocols<T>(body?: T, headers?: object): ResponseObject<T>;
 export declare function Processing<T>(body?: T, headers?: object): ResponseObject<T>;
+export declare function EarlyHints<T>(body?: T, headers?: object): ResponseObject<T>;
 export declare function OK<T>(body?: T, headers?: object): ResponseObject<T>;
 export declare function Created<T>(body?: T, headers?: object): ResponseObject<T>;
 export declare function Accepted<T>(body?: T, headers?: object): ResponseObject<T>;
