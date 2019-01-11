@@ -96,4 +96,15 @@ Object.keys(STATUS_CODES)
       const r2 = R.Ok();
       expect(r2.headers["X-My-Header"]).toBe(undefined);
     });
+
+    it("the constructor is the top stack frame", () => {
+      const e = R.InternalServerError();
+      expect(e.stack).toBeA("string");
+      const frames = e.stack.split("\n");
+      frames.shift(); // top frame is error name, dump it
+
+      // we want the top frame to point to the exact line the error
+      // occurred on, rather than to the inside of this library.
+      expect(frames[0]).toContain("test.js");
+    });
   });

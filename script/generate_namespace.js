@@ -74,11 +74,32 @@ const createWeakSet = "const responses = new WeakSet()";
 
 function generateResponseConstructor(code) {
   const name = getName(code);
+
+  if (code >= 400) {
+    return `
+    export function ${name}<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+      if (responses.has(body as any)) throw new Error("Object is already a response");
+      const resp = Object.create(errProto);
+      Error.captureStackTrace(resp, ${name});
+      resp.status = resp.statusCode = ${code};
+      resp.body = body;
+      resp.headers = headers;
+      responses.add(resp);
+      return resp;
+    }`;
+  }
   return `
   export function ${name}<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
-    return R(${code}, body, headers)
+    if (responses.has(body as any)) throw new Error("Object is already a response");
+    const resp = Object.create(proto);
+    resp.status = resp.statusCode = ${code};
+    resp.body = body;
+    resp.headers = headers;
+    responses.add(resp);
+    return resp;
   }`;
 }
+
 
 function generateNamespaceAlias (code) {
   const name = getName(code);

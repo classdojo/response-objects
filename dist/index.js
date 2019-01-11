@@ -30,251 +30,725 @@ function R(code, body, headers = {}) {
 }
 (function (R) {
     function Continue(body, headers = {}) {
-        return R(100, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 100;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.Continue = Continue;
     function SwitchingProtocols(body, headers = {}) {
-        return R(101, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 101;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.SwitchingProtocols = SwitchingProtocols;
     function Processing(body, headers = {}) {
-        return R(102, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 102;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.Processing = Processing;
     function EarlyHints(body, headers = {}) {
-        return R(103, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 103;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.EarlyHints = EarlyHints;
     function OK(body, headers = {}) {
-        return R(200, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 200;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.OK = OK;
     function Created(body, headers = {}) {
-        return R(201, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 201;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.Created = Created;
     function Accepted(body, headers = {}) {
-        return R(202, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 202;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.Accepted = Accepted;
     function NonAuthoritativeInformation(body, headers = {}) {
-        return R(203, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 203;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.NonAuthoritativeInformation = NonAuthoritativeInformation;
     function NoContent(body, headers = {}) {
-        return R(204, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 204;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.NoContent = NoContent;
     function ResetContent(body, headers = {}) {
-        return R(205, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 205;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.ResetContent = ResetContent;
     function PartialContent(body, headers = {}) {
-        return R(206, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 206;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.PartialContent = PartialContent;
     function MultiStatus(body, headers = {}) {
-        return R(207, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 207;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.MultiStatus = MultiStatus;
     function AlreadyReported(body, headers = {}) {
-        return R(208, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 208;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.AlreadyReported = AlreadyReported;
     function IMUsed(body, headers = {}) {
-        return R(226, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 226;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.IMUsed = IMUsed;
     function MultipleChoices(body, headers = {}) {
-        return R(300, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 300;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.MultipleChoices = MultipleChoices;
     function MovedPermanently(body, headers = {}) {
-        return R(301, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 301;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.MovedPermanently = MovedPermanently;
     function Found(body, headers = {}) {
-        return R(302, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 302;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.Found = Found;
     function SeeOther(body, headers = {}) {
-        return R(303, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 303;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.SeeOther = SeeOther;
     function NotModified(body, headers = {}) {
-        return R(304, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 304;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.NotModified = NotModified;
     function UseProxy(body, headers = {}) {
-        return R(305, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 305;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.UseProxy = UseProxy;
     function TemporaryRedirect(body, headers = {}) {
-        return R(307, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 307;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.TemporaryRedirect = TemporaryRedirect;
     function PermanentRedirect(body, headers = {}) {
-        return R(308, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(proto);
+        resp.status = resp.statusCode = 308;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.PermanentRedirect = PermanentRedirect;
     function BadRequest(body, headers = {}) {
-        return R(400, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, BadRequest);
+        resp.status = resp.statusCode = 400;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.BadRequest = BadRequest;
     function Unauthorized(body, headers = {}) {
-        return R(401, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, Unauthorized);
+        resp.status = resp.statusCode = 401;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.Unauthorized = Unauthorized;
     function PaymentRequired(body, headers = {}) {
-        return R(402, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, PaymentRequired);
+        resp.status = resp.statusCode = 402;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.PaymentRequired = PaymentRequired;
     function Forbidden(body, headers = {}) {
-        return R(403, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, Forbidden);
+        resp.status = resp.statusCode = 403;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.Forbidden = Forbidden;
     function NotFound(body, headers = {}) {
-        return R(404, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, NotFound);
+        resp.status = resp.statusCode = 404;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.NotFound = NotFound;
     function MethodNotAllowed(body, headers = {}) {
-        return R(405, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, MethodNotAllowed);
+        resp.status = resp.statusCode = 405;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.MethodNotAllowed = MethodNotAllowed;
     function NotAcceptable(body, headers = {}) {
-        return R(406, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, NotAcceptable);
+        resp.status = resp.statusCode = 406;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.NotAcceptable = NotAcceptable;
     function ProxyAuthenticationRequired(body, headers = {}) {
-        return R(407, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, ProxyAuthenticationRequired);
+        resp.status = resp.statusCode = 407;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.ProxyAuthenticationRequired = ProxyAuthenticationRequired;
     function RequestTimeout(body, headers = {}) {
-        return R(408, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, RequestTimeout);
+        resp.status = resp.statusCode = 408;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.RequestTimeout = RequestTimeout;
     function Conflict(body, headers = {}) {
-        return R(409, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, Conflict);
+        resp.status = resp.statusCode = 409;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.Conflict = Conflict;
     function Gone(body, headers = {}) {
-        return R(410, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, Gone);
+        resp.status = resp.statusCode = 410;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.Gone = Gone;
     function LengthRequired(body, headers = {}) {
-        return R(411, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, LengthRequired);
+        resp.status = resp.statusCode = 411;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.LengthRequired = LengthRequired;
     function PreconditionFailed(body, headers = {}) {
-        return R(412, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, PreconditionFailed);
+        resp.status = resp.statusCode = 412;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.PreconditionFailed = PreconditionFailed;
     function PayloadTooLarge(body, headers = {}) {
-        return R(413, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, PayloadTooLarge);
+        resp.status = resp.statusCode = 413;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.PayloadTooLarge = PayloadTooLarge;
     function URITooLong(body, headers = {}) {
-        return R(414, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, URITooLong);
+        resp.status = resp.statusCode = 414;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.URITooLong = URITooLong;
     function UnsupportedMediaType(body, headers = {}) {
-        return R(415, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, UnsupportedMediaType);
+        resp.status = resp.statusCode = 415;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.UnsupportedMediaType = UnsupportedMediaType;
     function RangeNotSatisfiable(body, headers = {}) {
-        return R(416, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, RangeNotSatisfiable);
+        resp.status = resp.statusCode = 416;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.RangeNotSatisfiable = RangeNotSatisfiable;
     function ExpectationFailed(body, headers = {}) {
-        return R(417, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, ExpectationFailed);
+        resp.status = resp.statusCode = 417;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.ExpectationFailed = ExpectationFailed;
     function MisdirectedRequest(body, headers = {}) {
-        return R(421, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, MisdirectedRequest);
+        resp.status = resp.statusCode = 421;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.MisdirectedRequest = MisdirectedRequest;
     function UnprocessableEntity(body, headers = {}) {
-        return R(422, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, UnprocessableEntity);
+        resp.status = resp.statusCode = 422;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.UnprocessableEntity = UnprocessableEntity;
     function Locked(body, headers = {}) {
-        return R(423, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, Locked);
+        resp.status = resp.statusCode = 423;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.Locked = Locked;
     function FailedDependency(body, headers = {}) {
-        return R(424, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, FailedDependency);
+        resp.status = resp.statusCode = 424;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.FailedDependency = FailedDependency;
     function UnorderedCollection(body, headers = {}) {
-        return R(425, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, UnorderedCollection);
+        resp.status = resp.statusCode = 425;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.UnorderedCollection = UnorderedCollection;
     function UpgradeRequired(body, headers = {}) {
-        return R(426, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, UpgradeRequired);
+        resp.status = resp.statusCode = 426;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.UpgradeRequired = UpgradeRequired;
     function PreconditionRequired(body, headers = {}) {
-        return R(428, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, PreconditionRequired);
+        resp.status = resp.statusCode = 428;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.PreconditionRequired = PreconditionRequired;
     function TooManyRequests(body, headers = {}) {
-        return R(429, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, TooManyRequests);
+        resp.status = resp.statusCode = 429;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.TooManyRequests = TooManyRequests;
     function RequestHeaderFieldsTooLarge(body, headers = {}) {
-        return R(431, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, RequestHeaderFieldsTooLarge);
+        resp.status = resp.statusCode = 431;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.RequestHeaderFieldsTooLarge = RequestHeaderFieldsTooLarge;
     function UnavailableForLegalReasons(body, headers = {}) {
-        return R(451, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, UnavailableForLegalReasons);
+        resp.status = resp.statusCode = 451;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.UnavailableForLegalReasons = UnavailableForLegalReasons;
     function InternalServerError(body, headers = {}) {
-        return R(500, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, InternalServerError);
+        resp.status = resp.statusCode = 500;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.InternalServerError = InternalServerError;
     function NotImplemented(body, headers = {}) {
-        return R(501, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, NotImplemented);
+        resp.status = resp.statusCode = 501;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.NotImplemented = NotImplemented;
     function BadGateway(body, headers = {}) {
-        return R(502, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, BadGateway);
+        resp.status = resp.statusCode = 502;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.BadGateway = BadGateway;
     function ServiceUnavailable(body, headers = {}) {
-        return R(503, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, ServiceUnavailable);
+        resp.status = resp.statusCode = 503;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.ServiceUnavailable = ServiceUnavailable;
     function GatewayTimeout(body, headers = {}) {
-        return R(504, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, GatewayTimeout);
+        resp.status = resp.statusCode = 504;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.GatewayTimeout = GatewayTimeout;
     function HTTPVersionNotSupported(body, headers = {}) {
-        return R(505, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, HTTPVersionNotSupported);
+        resp.status = resp.statusCode = 505;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.HTTPVersionNotSupported = HTTPVersionNotSupported;
     function VariantAlsoNegotiates(body, headers = {}) {
-        return R(506, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, VariantAlsoNegotiates);
+        resp.status = resp.statusCode = 506;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.VariantAlsoNegotiates = VariantAlsoNegotiates;
     function InsufficientStorage(body, headers = {}) {
-        return R(507, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, InsufficientStorage);
+        resp.status = resp.statusCode = 507;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.InsufficientStorage = InsufficientStorage;
     function LoopDetected(body, headers = {}) {
-        return R(508, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, LoopDetected);
+        resp.status = resp.statusCode = 508;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.LoopDetected = LoopDetected;
     function BandwidthLimitExceeded(body, headers = {}) {
-        return R(509, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, BandwidthLimitExceeded);
+        resp.status = resp.statusCode = 509;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.BandwidthLimitExceeded = BandwidthLimitExceeded;
     function NotExtended(body, headers = {}) {
-        return R(510, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, NotExtended);
+        resp.status = resp.statusCode = 510;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.NotExtended = NotExtended;
     function NetworkAuthenticationRequired(body, headers = {}) {
-        return R(511, body, headers);
+        if (responses.has(body))
+            throw new Error("Object is already a response");
+        const resp = Object.create(errProto);
+        Error.captureStackTrace(resp, NetworkAuthenticationRequired);
+        resp.status = resp.statusCode = 511;
+        resp.body = body;
+        resp.headers = headers;
+        responses.add(resp);
+        return resp;
     }
     R.NetworkAuthenticationRequired = NetworkAuthenticationRequired;
     R.Ok = OK;
