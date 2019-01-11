@@ -3,12 +3,14 @@ const getName = (code: number) => STATUS_CODES[code]!.replace(/[\s+-]/g, "");
 
 const responses = new WeakSet();
 
+export interface Headers {
+  [header: string]: number | string | string[] | undefined;
+}
+
 export interface BaseResponseObject<T> {
   body: T;
   status: number;
-  headers: {
-    [index: string]: any;
-  };
+  headers: Headers
 }
 
 export interface ResponseObject<T> extends BaseResponseObject<T> {
@@ -19,7 +21,7 @@ export interface ResponseObject<T> extends BaseResponseObject<T> {
 
 export interface ErrorResponseObject<T> extends ResponseObject<T>, Error {}
 
-function toJSON(this: {body: any, status: number, headers: object}) {
+function toJSON(this: {body: any, status: number, headers: Headers}) {
   return { body: this.body, status: this.status, headers: this.headers };
 }
 
@@ -31,7 +33,7 @@ const proto: ResponseObject<undefined> = { toJSON, toString, body: undefined, st
 
 const errProto: ResponseObject<undefined> = Object.assign(Object.create(Error.prototype), proto);
 
-export default function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
+export default function R<T> (code: number, body: T, headers: Headers = {}): ResponseObject<T> {
   let resp;
   if (code >= 400) {
     resp = Object.create(errProto);
@@ -41,254 +43,255 @@ export default function R<T> (code: number, body: T, headers?: any): ResponseObj
   }
   resp.status = resp.statusCode = code;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
+  responses.add(resp)
   return resp;
 }
 module.exports = R;
 
-export function Continue<T> (body?: T, headers?: object): ResponseObject<T> {
+export function Continue<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 100;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.Continue = Continue
 
-export function SwitchingProtocols<T> (body?: T, headers?: object): ResponseObject<T> {
+export function SwitchingProtocols<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 101;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.SwitchingProtocols = SwitchingProtocols
 
-export function Processing<T> (body?: T, headers?: object): ResponseObject<T> {
+export function Processing<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 102;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.Processing = Processing
 
-export function EarlyHints<T> (body?: T, headers?: object): ResponseObject<T> {
+export function EarlyHints<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 103;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.EarlyHints = EarlyHints
 
-export function OK<T> (body?: T, headers?: object): ResponseObject<T> {
+export function OK<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 200;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.OK = OK
 
-export function Created<T> (body?: T, headers?: object): ResponseObject<T> {
+export function Created<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 201;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.Created = Created
 
-export function Accepted<T> (body?: T, headers?: object): ResponseObject<T> {
+export function Accepted<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 202;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.Accepted = Accepted
 
-export function NonAuthoritativeInformation<T> (body?: T, headers?: object): ResponseObject<T> {
+export function NonAuthoritativeInformation<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 203;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.NonAuthoritativeInformation = NonAuthoritativeInformation
 
-export function NoContent<T> (body?: T, headers?: object): ResponseObject<T> {
+export function NoContent<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 204;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.NoContent = NoContent
 
-export function ResetContent<T> (body?: T, headers?: object): ResponseObject<T> {
+export function ResetContent<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 205;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.ResetContent = ResetContent
 
-export function PartialContent<T> (body?: T, headers?: object): ResponseObject<T> {
+export function PartialContent<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 206;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.PartialContent = PartialContent
 
-export function MultiStatus<T> (body?: T, headers?: object): ResponseObject<T> {
+export function MultiStatus<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 207;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.MultiStatus = MultiStatus
 
-export function AlreadyReported<T> (body?: T, headers?: object): ResponseObject<T> {
+export function AlreadyReported<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 208;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.AlreadyReported = AlreadyReported
 
-export function IMUsed<T> (body?: T, headers?: object): ResponseObject<T> {
+export function IMUsed<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 226;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.IMUsed = IMUsed
 
-export function MultipleChoices<T> (body?: T, headers?: object): ResponseObject<T> {
+export function MultipleChoices<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 300;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.MultipleChoices = MultipleChoices
 
-export function MovedPermanently<T> (body?: T, headers?: object): ResponseObject<T> {
+export function MovedPermanently<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 301;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.MovedPermanently = MovedPermanently
 
-export function Found<T> (body?: T, headers?: object): ResponseObject<T> {
+export function Found<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 302;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.Found = Found
 
-export function SeeOther<T> (body?: T, headers?: object): ResponseObject<T> {
+export function SeeOther<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 303;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.SeeOther = SeeOther
 
-export function NotModified<T> (body?: T, headers?: object): ResponseObject<T> {
+export function NotModified<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 304;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.NotModified = NotModified
 
-export function UseProxy<T> (body?: T, headers?: object): ResponseObject<T> {
+export function UseProxy<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 305;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.UseProxy = UseProxy
 
-export function TemporaryRedirect<T> (body?: T, headers?: object): ResponseObject<T> {
+export function TemporaryRedirect<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 307;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.TemporaryRedirect = TemporaryRedirect
 
-export function PermanentRedirect<T> (body?: T, headers?: object): ResponseObject<T> {
+export function PermanentRedirect<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = 308;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
 module.exports.PermanentRedirect = PermanentRedirect
 
-export function BadRequest<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function BadRequest<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 400;
@@ -300,7 +303,7 @@ export function BadRequest<T> (body?: T, headers?: object): ErrorResponseObject<
 }
 module.exports.BadRequest = BadRequest
 
-export function Unauthorized<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function Unauthorized<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 401;
@@ -312,7 +315,7 @@ export function Unauthorized<T> (body?: T, headers?: object): ErrorResponseObjec
 }
 module.exports.Unauthorized = Unauthorized
 
-export function PaymentRequired<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function PaymentRequired<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 402;
@@ -324,7 +327,7 @@ export function PaymentRequired<T> (body?: T, headers?: object): ErrorResponseOb
 }
 module.exports.PaymentRequired = PaymentRequired
 
-export function Forbidden<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function Forbidden<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 403;
@@ -336,7 +339,7 @@ export function Forbidden<T> (body?: T, headers?: object): ErrorResponseObject<T
 }
 module.exports.Forbidden = Forbidden
 
-export function NotFound<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function NotFound<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 404;
@@ -348,7 +351,7 @@ export function NotFound<T> (body?: T, headers?: object): ErrorResponseObject<T>
 }
 module.exports.NotFound = NotFound
 
-export function MethodNotAllowed<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function MethodNotAllowed<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 405;
@@ -360,7 +363,7 @@ export function MethodNotAllowed<T> (body?: T, headers?: object): ErrorResponseO
 }
 module.exports.MethodNotAllowed = MethodNotAllowed
 
-export function NotAcceptable<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function NotAcceptable<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 406;
@@ -372,7 +375,7 @@ export function NotAcceptable<T> (body?: T, headers?: object): ErrorResponseObje
 }
 module.exports.NotAcceptable = NotAcceptable
 
-export function ProxyAuthenticationRequired<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function ProxyAuthenticationRequired<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 407;
@@ -384,7 +387,7 @@ export function ProxyAuthenticationRequired<T> (body?: T, headers?: object): Err
 }
 module.exports.ProxyAuthenticationRequired = ProxyAuthenticationRequired
 
-export function RequestTimeout<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function RequestTimeout<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 408;
@@ -396,7 +399,7 @@ export function RequestTimeout<T> (body?: T, headers?: object): ErrorResponseObj
 }
 module.exports.RequestTimeout = RequestTimeout
 
-export function Conflict<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function Conflict<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 409;
@@ -408,7 +411,7 @@ export function Conflict<T> (body?: T, headers?: object): ErrorResponseObject<T>
 }
 module.exports.Conflict = Conflict
 
-export function Gone<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function Gone<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 410;
@@ -420,7 +423,7 @@ export function Gone<T> (body?: T, headers?: object): ErrorResponseObject<T> {
 }
 module.exports.Gone = Gone
 
-export function LengthRequired<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function LengthRequired<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 411;
@@ -432,7 +435,7 @@ export function LengthRequired<T> (body?: T, headers?: object): ErrorResponseObj
 }
 module.exports.LengthRequired = LengthRequired
 
-export function PreconditionFailed<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function PreconditionFailed<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 412;
@@ -444,7 +447,7 @@ export function PreconditionFailed<T> (body?: T, headers?: object): ErrorRespons
 }
 module.exports.PreconditionFailed = PreconditionFailed
 
-export function PayloadTooLarge<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function PayloadTooLarge<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 413;
@@ -456,7 +459,7 @@ export function PayloadTooLarge<T> (body?: T, headers?: object): ErrorResponseOb
 }
 module.exports.PayloadTooLarge = PayloadTooLarge
 
-export function URITooLong<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function URITooLong<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 414;
@@ -468,7 +471,7 @@ export function URITooLong<T> (body?: T, headers?: object): ErrorResponseObject<
 }
 module.exports.URITooLong = URITooLong
 
-export function UnsupportedMediaType<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function UnsupportedMediaType<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 415;
@@ -480,7 +483,7 @@ export function UnsupportedMediaType<T> (body?: T, headers?: object): ErrorRespo
 }
 module.exports.UnsupportedMediaType = UnsupportedMediaType
 
-export function RangeNotSatisfiable<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function RangeNotSatisfiable<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 416;
@@ -492,7 +495,7 @@ export function RangeNotSatisfiable<T> (body?: T, headers?: object): ErrorRespon
 }
 module.exports.RangeNotSatisfiable = RangeNotSatisfiable
 
-export function ExpectationFailed<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function ExpectationFailed<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 417;
@@ -504,7 +507,7 @@ export function ExpectationFailed<T> (body?: T, headers?: object): ErrorResponse
 }
 module.exports.ExpectationFailed = ExpectationFailed
 
-export function MisdirectedRequest<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function MisdirectedRequest<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 421;
@@ -516,7 +519,7 @@ export function MisdirectedRequest<T> (body?: T, headers?: object): ErrorRespons
 }
 module.exports.MisdirectedRequest = MisdirectedRequest
 
-export function UnprocessableEntity<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function UnprocessableEntity<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 422;
@@ -528,7 +531,7 @@ export function UnprocessableEntity<T> (body?: T, headers?: object): ErrorRespon
 }
 module.exports.UnprocessableEntity = UnprocessableEntity
 
-export function Locked<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function Locked<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 423;
@@ -540,7 +543,7 @@ export function Locked<T> (body?: T, headers?: object): ErrorResponseObject<T> {
 }
 module.exports.Locked = Locked
 
-export function FailedDependency<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function FailedDependency<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 424;
@@ -552,7 +555,7 @@ export function FailedDependency<T> (body?: T, headers?: object): ErrorResponseO
 }
 module.exports.FailedDependency = FailedDependency
 
-export function UnorderedCollection<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function UnorderedCollection<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 425;
@@ -564,7 +567,7 @@ export function UnorderedCollection<T> (body?: T, headers?: object): ErrorRespon
 }
 module.exports.UnorderedCollection = UnorderedCollection
 
-export function UpgradeRequired<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function UpgradeRequired<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 426;
@@ -576,7 +579,7 @@ export function UpgradeRequired<T> (body?: T, headers?: object): ErrorResponseOb
 }
 module.exports.UpgradeRequired = UpgradeRequired
 
-export function PreconditionRequired<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function PreconditionRequired<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 428;
@@ -588,7 +591,7 @@ export function PreconditionRequired<T> (body?: T, headers?: object): ErrorRespo
 }
 module.exports.PreconditionRequired = PreconditionRequired
 
-export function TooManyRequests<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function TooManyRequests<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 429;
@@ -600,7 +603,7 @@ export function TooManyRequests<T> (body?: T, headers?: object): ErrorResponseOb
 }
 module.exports.TooManyRequests = TooManyRequests
 
-export function RequestHeaderFieldsTooLarge<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function RequestHeaderFieldsTooLarge<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 431;
@@ -612,7 +615,7 @@ export function RequestHeaderFieldsTooLarge<T> (body?: T, headers?: object): Err
 }
 module.exports.RequestHeaderFieldsTooLarge = RequestHeaderFieldsTooLarge
 
-export function UnavailableForLegalReasons<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function UnavailableForLegalReasons<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 451;
@@ -624,7 +627,7 @@ export function UnavailableForLegalReasons<T> (body?: T, headers?: object): Erro
 }
 module.exports.UnavailableForLegalReasons = UnavailableForLegalReasons
 
-export function InternalServerError<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function InternalServerError<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 500;
@@ -636,7 +639,7 @@ export function InternalServerError<T> (body?: T, headers?: object): ErrorRespon
 }
 module.exports.InternalServerError = InternalServerError
 
-export function NotImplemented<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function NotImplemented<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 501;
@@ -648,7 +651,7 @@ export function NotImplemented<T> (body?: T, headers?: object): ErrorResponseObj
 }
 module.exports.NotImplemented = NotImplemented
 
-export function BadGateway<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function BadGateway<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 502;
@@ -660,7 +663,7 @@ export function BadGateway<T> (body?: T, headers?: object): ErrorResponseObject<
 }
 module.exports.BadGateway = BadGateway
 
-export function ServiceUnavailable<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function ServiceUnavailable<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 503;
@@ -672,7 +675,7 @@ export function ServiceUnavailable<T> (body?: T, headers?: object): ErrorRespons
 }
 module.exports.ServiceUnavailable = ServiceUnavailable
 
-export function GatewayTimeout<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function GatewayTimeout<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 504;
@@ -684,7 +687,7 @@ export function GatewayTimeout<T> (body?: T, headers?: object): ErrorResponseObj
 }
 module.exports.GatewayTimeout = GatewayTimeout
 
-export function HTTPVersionNotSupported<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function HTTPVersionNotSupported<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 505;
@@ -696,7 +699,7 @@ export function HTTPVersionNotSupported<T> (body?: T, headers?: object): ErrorRe
 }
 module.exports.HTTPVersionNotSupported = HTTPVersionNotSupported
 
-export function VariantAlsoNegotiates<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function VariantAlsoNegotiates<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 506;
@@ -708,7 +711,7 @@ export function VariantAlsoNegotiates<T> (body?: T, headers?: object): ErrorResp
 }
 module.exports.VariantAlsoNegotiates = VariantAlsoNegotiates
 
-export function InsufficientStorage<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function InsufficientStorage<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 507;
@@ -720,7 +723,7 @@ export function InsufficientStorage<T> (body?: T, headers?: object): ErrorRespon
 }
 module.exports.InsufficientStorage = InsufficientStorage
 
-export function LoopDetected<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function LoopDetected<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 508;
@@ -732,7 +735,7 @@ export function LoopDetected<T> (body?: T, headers?: object): ErrorResponseObjec
 }
 module.exports.LoopDetected = LoopDetected
 
-export function BandwidthLimitExceeded<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function BandwidthLimitExceeded<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 509;
@@ -744,7 +747,7 @@ export function BandwidthLimitExceeded<T> (body?: T, headers?: object): ErrorRes
 }
 module.exports.BandwidthLimitExceeded = BandwidthLimitExceeded
 
-export function NotExtended<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function NotExtended<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 510;
@@ -756,7 +759,7 @@ export function NotExtended<T> (body?: T, headers?: object): ErrorResponseObject
 }
 module.exports.NotExtended = NotExtended
 
-export function NetworkAuthenticationRequired<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function NetworkAuthenticationRequired<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = 511;

@@ -1,12 +1,14 @@
 const { STATUS_CODES } = require("http");
 
 const types = `
+export interface Headers {
+  [header: string]: number | string | string[] | undefined;
+}
+
 export interface BaseResponseObject<T> {
   body: T;
   status: number;
-  headers: {
-    [index: string]: any;
-  };
+  headers: Headers
 }
 
 export interface ResponseObject<T> extends BaseResponseObject<T> {
@@ -19,7 +21,7 @@ export interface ErrorResponseObject<T> extends ResponseObject<T>, Error {}
 `;
 
 const toJSON = `
-function toJSON(this: {body: any, status: number, headers: object}) {
+function toJSON(this: {body: any, status: number, headers: Headers}) {
   return { body: this.body, status: this.status, headers: this.headers };
 }`;
 
@@ -33,7 +35,7 @@ const protoCode = "const proto: ResponseObject<undefined> = { toJSON, toString, 
 const errProtoCode = "const errProto: ResponseObject<undefined> = Object.assign(Object.create(Error.prototype), proto);";
 
 const defaultExport = `
-export default function R<T> (code: number, body: T, headers?: any): ResponseObject<T> {
+export default function R<T> (code: number, body: T, headers: Headers = {}): ResponseObject<T> {
   let resp;
   if (code >= 400) {
     resp = Object.create(errProto);
@@ -43,7 +45,8 @@ export default function R<T> (code: number, body: T, headers?: any): ResponseObj
   }
   resp.status = resp.statusCode = code;
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
+  responses.add(resp)
   return resp;
 }
 module.exports = R;
@@ -77,12 +80,12 @@ const chunks = [
 function generateSuccessResponse (code) {
   const name = getName(code);
   return `
-export function ${name}<T> (body?: T, headers?: object): ResponseObject<T> {
+export function ${name}<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(proto);
   resp.status = resp.statusCode = ${code};
   resp.body = body;
-  if (headers != null) resp.headers = headers;
+  resp.headers = headers;
   responses.add(resp);
   return resp;
 }
@@ -92,7 +95,7 @@ module.exports.${name} = ${name}`;
 function generateErrorResponse (code) {
   const name = getName(code);
   return `
-export function ${name}<T> (body?: T, headers?: object): ErrorResponseObject<T> {
+export function ${name}<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   const resp = Object.create(errProto);
   resp.status = resp.statusCode = ${code};
