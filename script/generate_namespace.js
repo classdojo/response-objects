@@ -46,6 +46,7 @@ const errProtoCode =
 
 const rFunction = `
 function R<T> (code: number, body?: T, headers: Headers = {}): ResponseObject<T> {
+  if (responses.has(body as any)) throw new Error("Object is already a response");
   let resp;
   if (code >= 400) {
     resp = Object.create(errProto);
@@ -66,7 +67,8 @@ import { STATUS_CODES } from "http";
 const getName = (code: number) => STATUS_CODES[code]!.replace(/[\\s+-]/g, "");
 `;
 
-const alias = "export const Ok = OK;";
+const okAlias = "export const Ok = OK;";
+const okAliasTop = "export const Ok = R.Ok;";
 
 const createWeakSet = "const responses = new WeakSet()";
 
@@ -74,17 +76,21 @@ function generateResponseConstructor(code) {
   const name = getName(code);
   return `
   export function ${name}<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
-    if (responses.has(body as any)) throw new Error("Object is already a response");
     return R(${code}, body, headers)
   }`;
 }
 
-const constructors = STATUS_CODES_KEYS.map(generateResponseConstructor).join("\n\n");
+function generateNamespaceAlias (code) {
+  const name = getName(code);
+  return `export const ${name} = R.${name}`;
+}
+
+const constructors = STATUS_CODES_KEYS.map(generateResponseConstructor).join("\n");
 
 const rNamespace = `
 namespace R {
   ${constructors}
-  ${alias}
+  ${okAlias}
 }
 `;
 
@@ -104,7 +110,8 @@ const chunks = [
   rFunction,
   rNamespace,
   rExport,
-  constructors,
+  STATUS_CODES_KEYS.map(generateNamespaceAlias).join("\n"),
+  okAliasTop,
 ];
 
 console.log(chunks.map(c => c.trim()).join("\n\n"));
