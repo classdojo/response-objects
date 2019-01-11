@@ -80,13 +80,20 @@ Object.keys(STATUS_CODES)
   });
 
   describe("aliases", function () {
-    it("'OK' is aliased to 'Ok'", function () {
-      expect(R.OK).toBe(R.Ok);
+    it("You can call 'Ok' or 'OK'", () => {
+      expect(R.Ok()).toEqual(R.OK());
     });
   });
 
   describe("miscellaneous", function () {
     it("R is a function", function () {
       expect(R).toBeA("function");
+    });
+
+    it("no accidental header polution via prototype", () => {
+      const r1 = R.Ok();
+      r1.headers["X-My-Header"] = "hello there";
+      const r2 = R.Ok();
+      expect(r2.headers["X-My-Header"]).toBe(undefined);
     });
   });
