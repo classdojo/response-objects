@@ -3,7 +3,7 @@ const getName = (code: number) => STATUS_CODES[code]!.replace(/[\s+-]/g, "");
 
 const responses = new WeakSet()
 
-function toJSON(this: {body: any, status: number, headers: object}) {
+function toJSON(this: {body: any, status: number, headers: Headers}) {
   return { body: this.body, status: this.status, headers: this.headers };
 }
 
@@ -18,7 +18,7 @@ const errProto: ErrorResponseObject<undefined> = Object.assign(Object.create(Err
 export interface BaseResponseObject<T> {
   body: T;
   status: number;
-  headers?: object;
+  headers?: Headers;
 }
 
 export interface ResponseObject<T> extends BaseResponseObject<T> {
