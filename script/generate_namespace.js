@@ -12,7 +12,7 @@ const types = `
 export interface BaseResponseObject<T> {
   body: T;
   status: number;
-  headers?: object;
+  headers?: Headers;
 }
 
 export interface ResponseObject<T> extends BaseResponseObject<T> {
@@ -29,7 +29,7 @@ export interface Headers {
 `;
 
 const toJSON = `
-function toJSON(this: {body: any, status: number, headers: object}) {
+function toJSON(this: {body: any, status: number, headers: Headers}) {
   return { body: this.body, status: this.status, headers: this.headers };
 }`;
 
