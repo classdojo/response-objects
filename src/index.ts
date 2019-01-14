@@ -18,7 +18,7 @@ const errProto: ErrorResponseObject<undefined> = Object.assign(Object.create(Err
 export interface BaseResponseObject<T> {
   body: T;
   status: number;
-  headers?: Headers;
+  headers: Headers;
 }
 
 export interface ResponseObject<T> extends BaseResponseObject<T> {

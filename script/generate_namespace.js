@@ -12,7 +12,7 @@ const types = `
 export interface BaseResponseObject<T> {
   body: T;
   status: number;
-  headers?: Headers;
+  headers: Headers;
 }
 
 export interface ResponseObject<T> extends BaseResponseObject<T> {
