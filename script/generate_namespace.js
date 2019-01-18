@@ -46,7 +46,7 @@ const errProtoCode =
 
 const rFunction = `
 function R(code: number): ResponseObject<void>
-function R<T> (code: number, body?: T, headers?: Headers): ResponseObject<T>
+function R<T> (code: number, body: T, headers?: Headers): ResponseObject<T>
 function R<T> (code: number, body?: T, headers: Headers = {}): ResponseObject<T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   let resp;
@@ -80,7 +80,7 @@ function generateResponseConstructor(code) {
   if (code >= 400) {
     return `
     export function ${name}(): ResponseObject<void>;
-    export function ${name}<T> (body?: T, headers?: Headers): ResponseObject<T>
+    export function ${name}<T> (body: T, headers?: Headers): ResponseObject<T>
     export function ${name}<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
@@ -94,7 +94,7 @@ function generateResponseConstructor(code) {
   }
   return `
   export function ${name}(): ResponseObject<void>;
-  export function ${name}<T> (body?: T, headers?: Headers): ResponseObject<T>
+  export function ${name}<T> (body: T, headers?: Headers): ResponseObject<T>
   export function ${name}<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
     if (responses.has(body as any)) throw new Error("Object is already a response");
     const resp = Object.create(proto);
