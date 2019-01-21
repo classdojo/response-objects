@@ -12,13 +12,13 @@ This package is general-purpose, but is particularly useful with [koa-detour](ht
 
 ```js
 // this isn't a complete working example, it just shows the concepts
-const Koa = require("koa");
-const Router = require("koa-detour");
-const R = require("response-objects");
+import Koa from "koa";
+import Router from "koa-detour";
+import R from "response-objects";
 
 const app = new Koa()
 const router = new Router();
-router.route("/user", {
+router.route("/user/:id", {
   async GET (ctx) {
     if (!areUsersConnected(ctx.userId, ctx.params.id)) {
       // router handles sending this as a 403
@@ -27,90 +27,74 @@ router.route("/user", {
 
     // router handles sending this as a 200
     return R.Ok(await getUser())
-  },
-  async POST (ctx) {
-    if (ctx.body.username == null) {
-      // router handles sending this as 400
-      throw R.BadRequest("Username is required");
-    }
-
-    // router handles sending this as a 201
-    return R.Created(await createUser(ctx.body));
-  },
-})
-
-app.use(router);
-```
-
-As an integration point, there is an exported `MARKER` symbol value, which can be used to identify response objects produced by this library.
-
-```
-const R = require("response-objects");
-const resp = R.Ok("it worked!");
-console.log(resp[R.MARKER]); // true
+  }
+});
+app.use(router.middleware());
 ```
 
 Available methods:
 ```
-R.Continue === R[100]
-R.SwitchingProtocols === R[101]
-R.Processing === R[102]
-R.OK === R[200] (alias: R.Ok)
-R.Created === R[201]
-R.Accepted === R[202]
-R.NonAuthoritativeInformation === R[203]
-R.NoContent === R[204]
-R.ResetContent === R[205]
-R.PartialContent === R[206]
-R.MultiStatus === R[207]
-R.AlreadyReported === R[208]
-R.IMUsed === R[226]
-R.MultipleChoices === R[300]
-R.MovedPermanently === R[301]
-R.Found === R[302]
-R.SeeOther === R[303]
-R.NotModified === R[304]
-R.UseProxy === R[305]
-R.TemporaryRedirect === R[307]
-R.PermanentRedirect === R[308]
-R.BadRequest === R[400]
-R.Unauthorized === R[401]
-R.PaymentRequired === R[402]
-R.Forbidden === R[403]
-R.NotFound === R[404]
-R.MethodNotAllowed === R[405]
-R.NotAcceptable === R[406]
-R.ProxyAuthenticationRequired === R[407]
-R.RequestTimeout === R[408]
-R.Conflict === R[409]
-R.Gone === R[410]
-R.LengthRequired === R[411]
-R.PreconditionFailed === R[412]
-R.PayloadTooLarge === R[413]
-R.URITooLong === R[414]
-R.UnsupportedMediaType === R[415]
-R.RangeNotSatisfiable === R[416]
-R.ExpectationFailed === R[417]
-R.MisdirectedRequest === R[421]
-R.UnprocessableEntity === R[422]
-R.Locked === R[423]
-R.FailedDependency === R[424]
-R.UnorderedCollection === R[425]
-R.UpgradeRequired === R[426]
-R.PreconditionRequired === R[428]
-R.TooManyRequests === R[429]
-R.RequestHeaderFieldsTooLarge === R[431]
-R.UnavailableForLegalReasons === R[451]
-R.InternalServerError === R[500]
-R.NotImplemented === R[501]
-R.BadGateway === R[502]
-R.ServiceUnavailable === R[503]
-R.GatewayTimeout === R[504]
-R.HTTPVersionNotSupported === R[505]
-R.VariantAlsoNegotiates === R[506]
-R.InsufficientStorage === R[507]
-R.LoopDetected === R[508]
-R.BandwidthLimitExceeded === R[509]
-R.NotExtended === R[510]
-R.NetworkAuthenticationRequired === R[511]
+R(status, body, headers)
+R.Continue(body, headers)
+R.SwitchingProtocols(body, headers)
+R.Processing(body, headers)
+R.OK(body, headers)
+R.Created(body, headers)
+R.Accepted(body, headers)
+R.NonAuthoritativeInformation(body, headers)
+R.NoContent(body, headers)
+R.ResetContent(body, headers)
+R.PartialContent(body, headers)
+R.MultiStatus(body, headers)
+R.AlreadyReported(body, headers)
+R.IMUsed(body, headers)
+R.MultipleChoices(body, headers)
+R.MovedPermanently(body, headers)
+R.Found(body, headers)
+R.SeeOther(body, headers)
+R.NotModified(body, headers)
+R.UseProxy(body, headers)
+R.TemporaryRedirect(body, headers)
+R.PermanentRedirect(body, headers)
+R.BadRequest(body, headers)
+R.Unauthorized(body, headers)
+R.PaymentRequired(body, headers)
+R.Forbidden(body, headers)
+R.NotFound(body, headers)
+R.MethodNotAllowed(body, headers)
+R.NotAcceptable(body, headers)
+R.ProxyAuthenticationRequired(body, headers)
+R.RequestTimeout(body, headers)
+R.Conflict(body, headers)
+R.Gone(body, headers)
+R.LengthRequired(body, headers)
+R.PreconditionFailed(body, headers)
+R.PayloadTooLarge(body, headers)
+R.URITooLong(body, headers)
+R.UnsupportedMediaType(body, headers)
+R.RangeNotSatisfiable(body, headers)
+R.ExpectationFailed(body, headers)
+R.MisdirectedRequest(body, headers)
+R.UnprocessableEntity(body, headers)
+R.Locked(body, headers)
+R.FailedDependency(body, headers)
+R.UnorderedCollection(body, headers)
+R.UpgradeRequired(body, headers)
+R.PreconditionRequired(body, headers)
+R.TooManyRequests(body, headers)
+R.RequestHeaderFieldsTooLarge(body, headers)
+R.UnavailableForLegalReasons(body, headers)
+R.InternalServerError(body, headers)
+R.NotImplemented(body, headers)
+R.BadGateway(body, headers)
+R.ServiceUnavailable(body, headers)
+R.GatewayTimeout(body, headers)
+R.HTTPVersionNotSupported(body, headers)
+R.VariantAlsoNegotiates(body, headers)
+R.InsufficientStorage(body, headers)
+R.LoopDetected(body, headers)
+R.BandwidthLimitExceeded(body, headers)
+R.NotExtended(body, headers)
+R.NetworkAuthenticationRequired(body, headers)
+```
 ```
