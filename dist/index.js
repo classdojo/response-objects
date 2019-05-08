@@ -276,6 +276,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, BadRequest);
+        Object.defineProperty(resp, "name", { value: "BadRequestError" });
         resp.status = resp.statusCode = 400;
         resp.body = body;
         resp.headers = headers;
@@ -288,6 +289,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, Unauthorized);
+        Object.defineProperty(resp, "name", { value: "UnauthorizedError" });
         resp.status = resp.statusCode = 401;
         resp.body = body;
         resp.headers = headers;
@@ -300,6 +302,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, PaymentRequired);
+        Object.defineProperty(resp, "name", { value: "PaymentRequiredError" });
         resp.status = resp.statusCode = 402;
         resp.body = body;
         resp.headers = headers;
@@ -312,6 +315,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, Forbidden);
+        Object.defineProperty(resp, "name", { value: "ForbiddenError" });
         resp.status = resp.statusCode = 403;
         resp.body = body;
         resp.headers = headers;
@@ -324,6 +328,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, NotFound);
+        Object.defineProperty(resp, "name", { value: "NotFoundError" });
         resp.status = resp.statusCode = 404;
         resp.body = body;
         resp.headers = headers;
@@ -336,6 +341,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, MethodNotAllowed);
+        Object.defineProperty(resp, "name", { value: "MethodNotAllowedError" });
         resp.status = resp.statusCode = 405;
         resp.body = body;
         resp.headers = headers;
@@ -348,6 +354,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, NotAcceptable);
+        Object.defineProperty(resp, "name", { value: "NotAcceptableError" });
         resp.status = resp.statusCode = 406;
         resp.body = body;
         resp.headers = headers;
@@ -360,6 +367,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, ProxyAuthenticationRequired);
+        Object.defineProperty(resp, "name", { value: "ProxyAuthenticationRequiredError" });
         resp.status = resp.statusCode = 407;
         resp.body = body;
         resp.headers = headers;
@@ -372,6 +380,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, RequestTimeout);
+        Object.defineProperty(resp, "name", { value: "RequestTimeoutError" });
         resp.status = resp.statusCode = 408;
         resp.body = body;
         resp.headers = headers;
@@ -384,6 +393,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, Conflict);
+        Object.defineProperty(resp, "name", { value: "ConflictError" });
         resp.status = resp.statusCode = 409;
         resp.body = body;
         resp.headers = headers;
@@ -396,6 +406,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, Gone);
+        Object.defineProperty(resp, "name", { value: "GoneError" });
         resp.status = resp.statusCode = 410;
         resp.body = body;
         resp.headers = headers;
@@ -408,6 +419,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, LengthRequired);
+        Object.defineProperty(resp, "name", { value: "LengthRequiredError" });
         resp.status = resp.statusCode = 411;
         resp.body = body;
         resp.headers = headers;
@@ -420,6 +432,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, PreconditionFailed);
+        Object.defineProperty(resp, "name", { value: "PreconditionFailedError" });
         resp.status = resp.statusCode = 412;
         resp.body = body;
         resp.headers = headers;
@@ -432,6 +445,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, PayloadTooLarge);
+        Object.defineProperty(resp, "name", { value: "PayloadTooLargeError" });
         resp.status = resp.statusCode = 413;
         resp.body = body;
         resp.headers = headers;
@@ -444,6 +458,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, URITooLong);
+        Object.defineProperty(resp, "name", { value: "URITooLongError" });
         resp.status = resp.statusCode = 414;
         resp.body = body;
         resp.headers = headers;
@@ -456,6 +471,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, UnsupportedMediaType);
+        Object.defineProperty(resp, "name", { value: "UnsupportedMediaTypeError" });
         resp.status = resp.statusCode = 415;
         resp.body = body;
         resp.headers = headers;
@@ -468,6 +484,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, RangeNotSatisfiable);
+        Object.defineProperty(resp, "name", { value: "RangeNotSatisfiableError" });
         resp.status = resp.statusCode = 416;
         resp.body = body;
         resp.headers = headers;
@@ -480,6 +497,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, ExpectationFailed);
+        Object.defineProperty(resp, "name", { value: "ExpectationFailedError" });
         resp.status = resp.statusCode = 417;
         resp.body = body;
         resp.headers = headers;
@@ -492,6 +510,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, MisdirectedRequest);
+        Object.defineProperty(resp, "name", { value: "MisdirectedRequestError" });
         resp.status = resp.statusCode = 421;
         resp.body = body;
         resp.headers = headers;
@@ -504,6 +523,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, UnprocessableEntity);
+        Object.defineProperty(resp, "name", { value: "UnprocessableEntityError" });
         resp.status = resp.statusCode = 422;
         resp.body = body;
         resp.headers = headers;
@@ -516,6 +536,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, Locked);
+        Object.defineProperty(resp, "name", { value: "LockedError" });
         resp.status = resp.statusCode = 423;
         resp.body = body;
         resp.headers = headers;
@@ -528,6 +549,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, FailedDependency);
+        Object.defineProperty(resp, "name", { value: "FailedDependencyError" });
         resp.status = resp.statusCode = 424;
         resp.body = body;
         resp.headers = headers;
@@ -540,6 +562,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, UnorderedCollection);
+        Object.defineProperty(resp, "name", { value: "UnorderedCollectionError" });
         resp.status = resp.statusCode = 425;
         resp.body = body;
         resp.headers = headers;
@@ -552,6 +575,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, UpgradeRequired);
+        Object.defineProperty(resp, "name", { value: "UpgradeRequiredError" });
         resp.status = resp.statusCode = 426;
         resp.body = body;
         resp.headers = headers;
@@ -564,6 +588,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, PreconditionRequired);
+        Object.defineProperty(resp, "name", { value: "PreconditionRequiredError" });
         resp.status = resp.statusCode = 428;
         resp.body = body;
         resp.headers = headers;
@@ -576,6 +601,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, TooManyRequests);
+        Object.defineProperty(resp, "name", { value: "TooManyRequestsError" });
         resp.status = resp.statusCode = 429;
         resp.body = body;
         resp.headers = headers;
@@ -588,6 +614,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, RequestHeaderFieldsTooLarge);
+        Object.defineProperty(resp, "name", { value: "RequestHeaderFieldsTooLargeError" });
         resp.status = resp.statusCode = 431;
         resp.body = body;
         resp.headers = headers;
@@ -600,6 +627,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, UnavailableForLegalReasons);
+        Object.defineProperty(resp, "name", { value: "UnavailableForLegalReasonsError" });
         resp.status = resp.statusCode = 451;
         resp.body = body;
         resp.headers = headers;
@@ -612,6 +640,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, InternalServerError);
+        Object.defineProperty(resp, "name", { value: "InternalServerErrorError" });
         resp.status = resp.statusCode = 500;
         resp.body = body;
         resp.headers = headers;
@@ -624,6 +653,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, NotImplemented);
+        Object.defineProperty(resp, "name", { value: "NotImplementedError" });
         resp.status = resp.statusCode = 501;
         resp.body = body;
         resp.headers = headers;
@@ -636,6 +666,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, BadGateway);
+        Object.defineProperty(resp, "name", { value: "BadGatewayError" });
         resp.status = resp.statusCode = 502;
         resp.body = body;
         resp.headers = headers;
@@ -648,6 +679,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, ServiceUnavailable);
+        Object.defineProperty(resp, "name", { value: "ServiceUnavailableError" });
         resp.status = resp.statusCode = 503;
         resp.body = body;
         resp.headers = headers;
@@ -660,6 +692,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, GatewayTimeout);
+        Object.defineProperty(resp, "name", { value: "GatewayTimeoutError" });
         resp.status = resp.statusCode = 504;
         resp.body = body;
         resp.headers = headers;
@@ -672,6 +705,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, HTTPVersionNotSupported);
+        Object.defineProperty(resp, "name", { value: "HTTPVersionNotSupportedError" });
         resp.status = resp.statusCode = 505;
         resp.body = body;
         resp.headers = headers;
@@ -684,6 +718,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, VariantAlsoNegotiates);
+        Object.defineProperty(resp, "name", { value: "VariantAlsoNegotiatesError" });
         resp.status = resp.statusCode = 506;
         resp.body = body;
         resp.headers = headers;
@@ -696,6 +731,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, InsufficientStorage);
+        Object.defineProperty(resp, "name", { value: "InsufficientStorageError" });
         resp.status = resp.statusCode = 507;
         resp.body = body;
         resp.headers = headers;
@@ -708,6 +744,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, LoopDetected);
+        Object.defineProperty(resp, "name", { value: "LoopDetectedError" });
         resp.status = resp.statusCode = 508;
         resp.body = body;
         resp.headers = headers;
@@ -720,6 +757,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, BandwidthLimitExceeded);
+        Object.defineProperty(resp, "name", { value: "BandwidthLimitExceededError" });
         resp.status = resp.statusCode = 509;
         resp.body = body;
         resp.headers = headers;
@@ -732,6 +770,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, NotExtended);
+        Object.defineProperty(resp, "name", { value: "NotExtendedError" });
         resp.status = resp.statusCode = 510;
         resp.body = body;
         resp.headers = headers;
@@ -744,6 +783,7 @@ function R(code, body, headers = {}) {
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
         Error.captureStackTrace(resp, NetworkAuthenticationRequired);
+        Object.defineProperty(resp, "name", { value: "NetworkAuthenticationRequiredError" });
         resp.status = resp.statusCode = 511;
         resp.body = body;
         resp.headers = headers;
