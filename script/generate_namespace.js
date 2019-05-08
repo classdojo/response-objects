@@ -2,17 +2,15 @@ const { STATUS_CODES } = require("http");
 
 const skipStatus = ["306", "418"];
 
-const STATUS_CODES_KEYS = Object.keys(STATUS_CODES).filter(
-  code => !skipStatus.includes(code)
-);
+const STATUS_CODES_KEYS = Object.keys(STATUS_CODES).filter(code => !skipStatus.includes(code));
 
 const getName = code => STATUS_CODES[code].replace(/[\s+-]/g, "");
 
 const types = `
 export interface BaseResponseObject<T> {
-  body: T;
-  status: number;
-  headers: Headers;
+  readonly body: T;
+  readonly status: number;
+  readonly headers: Headers;
 }
 
 export interface ResponseObject<T> extends BaseResponseObject<T> {
@@ -38,11 +36,9 @@ function toString(this: {status: number}) {
   return \`Responses.\${getName(this.status)} \${JSON.stringify(this)}\`;
 }`;
 
-const protoCode =
-  "const proto: ResponseObject<undefined> = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {} };";
+const protoCode = "const proto: ResponseObject<undefined> = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {} };";
 
-const errProtoCode =
-  "const errProto: ErrorResponseObject<undefined> = Object.assign(Object.create(Error.prototype), proto);";
+const errProtoCode = "const errProto: ErrorResponseObject<undefined> = Object.assign(Object.create(Error.prototype), proto);";
 
 const rFunction = `
 function R(code: number): ResponseObject<void>
@@ -85,6 +81,7 @@ function generateResponseConstructor(code) {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, ${name});
+      Object.defineProperty(resp, "name", { value: "${name}Error" });
       resp.status = resp.statusCode = ${code};
       resp.body = body;
       resp.headers = headers;
@@ -106,8 +103,7 @@ function generateResponseConstructor(code) {
   }`;
 }
 
-
-function generateNamespaceAlias (code) {
+function generateNamespaceAlias(code) {
   const name = getName(code);
   return `export const ${name} = R.${name}`;
 }
