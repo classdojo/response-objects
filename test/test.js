@@ -41,7 +41,7 @@ Object.keys(STATUS_CODES)
       if (statusCode >= 400) {
         it("is an error", function () {
           expect(resp instanceof Error).toBe(true);
-          expect(resp.stack).toBeA("string");
+          expect(typeof resp.stack).toBe("string");
         });
       }
 
@@ -87,7 +87,7 @@ Object.keys(STATUS_CODES)
 
   describe("miscellaneous", function () {
     it("R is a function", function () {
-      expect(R).toBeA("function");
+      expect(typeof R).toBe("function");
     });
 
     it("no accidental header polution via prototype", () => {
@@ -99,7 +99,7 @@ Object.keys(STATUS_CODES)
 
     it("the constructor is the top stack frame", () => {
       const e = R.InternalServerError();
-      expect(e.stack).toBeA("string");
+      expect(typeof e.stack).toBe("string");
       const frames = e.stack.split("\n");
       frames.shift(); // top frame is error name, dump it
 
