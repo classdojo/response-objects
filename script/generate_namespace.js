@@ -75,9 +75,9 @@ function generateResponseConstructor(code) {
 
   if (code >= 400) {
     return `
-    export function ${name}(): ResponseObject<void>;
-    export function ${name}<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function ${name}<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function ${name}(): ErrorResponseObject<void>;
+    export function ${name}<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function ${name}<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, ${name});

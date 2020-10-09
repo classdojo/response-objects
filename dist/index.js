@@ -557,19 +557,19 @@ function R(code, body, headers = {}) {
         return resp;
     }
     R.FailedDependency = FailedDependency;
-    function UnorderedCollection(body, headers = {}) {
+    function TooEarly(body, headers = {}) {
         if (responses.has(body))
             throw new Error("Object is already a response");
         const resp = Object.create(errProto);
-        Error.captureStackTrace(resp, UnorderedCollection);
-        Object.defineProperty(resp, "name", { value: "UnorderedCollectionError" });
+        Error.captureStackTrace(resp, TooEarly);
+        Object.defineProperty(resp, "name", { value: "TooEarlyError" });
         resp.status = resp.statusCode = 425;
         resp.body = body;
         resp.headers = headers;
         responses.add(resp);
         return resp;
     }
-    R.UnorderedCollection = UnorderedCollection;
+    R.TooEarly = TooEarly;
     function UpgradeRequired(body, headers = {}) {
         if (responses.has(body))
             throw new Error("Object is already a response");
@@ -840,7 +840,7 @@ exports.MisdirectedRequest = R.MisdirectedRequest;
 exports.UnprocessableEntity = R.UnprocessableEntity;
 exports.Locked = R.Locked;
 exports.FailedDependency = R.FailedDependency;
-exports.UnorderedCollection = R.UnorderedCollection;
+exports.TooEarly = R.TooEarly;
 exports.UpgradeRequired = R.UpgradeRequired;
 exports.PreconditionRequired = R.PreconditionRequired;
 exports.TooManyRequests = R.TooManyRequests;

@@ -317,9 +317,9 @@ namespace R {
     return resp;
   }
 
-    export function BadRequest(): ResponseObject<void>;
-    export function BadRequest<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function BadRequest<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function BadRequest(): ErrorResponseObject<void>;
+    export function BadRequest<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function BadRequest<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, BadRequest);
@@ -331,9 +331,9 @@ namespace R {
       return resp;
     }
 
-    export function Unauthorized(): ResponseObject<void>;
-    export function Unauthorized<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function Unauthorized<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function Unauthorized(): ErrorResponseObject<void>;
+    export function Unauthorized<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function Unauthorized<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, Unauthorized);
@@ -345,9 +345,9 @@ namespace R {
       return resp;
     }
 
-    export function PaymentRequired(): ResponseObject<void>;
-    export function PaymentRequired<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function PaymentRequired<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function PaymentRequired(): ErrorResponseObject<void>;
+    export function PaymentRequired<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function PaymentRequired<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, PaymentRequired);
@@ -359,9 +359,9 @@ namespace R {
       return resp;
     }
 
-    export function Forbidden(): ResponseObject<void>;
-    export function Forbidden<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function Forbidden<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function Forbidden(): ErrorResponseObject<void>;
+    export function Forbidden<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function Forbidden<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, Forbidden);
@@ -373,9 +373,9 @@ namespace R {
       return resp;
     }
 
-    export function NotFound(): ResponseObject<void>;
-    export function NotFound<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function NotFound<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function NotFound(): ErrorResponseObject<void>;
+    export function NotFound<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function NotFound<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, NotFound);
@@ -387,9 +387,9 @@ namespace R {
       return resp;
     }
 
-    export function MethodNotAllowed(): ResponseObject<void>;
-    export function MethodNotAllowed<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function MethodNotAllowed<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function MethodNotAllowed(): ErrorResponseObject<void>;
+    export function MethodNotAllowed<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function MethodNotAllowed<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, MethodNotAllowed);
@@ -401,9 +401,9 @@ namespace R {
       return resp;
     }
 
-    export function NotAcceptable(): ResponseObject<void>;
-    export function NotAcceptable<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function NotAcceptable<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function NotAcceptable(): ErrorResponseObject<void>;
+    export function NotAcceptable<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function NotAcceptable<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, NotAcceptable);
@@ -415,9 +415,9 @@ namespace R {
       return resp;
     }
 
-    export function ProxyAuthenticationRequired(): ResponseObject<void>;
-    export function ProxyAuthenticationRequired<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function ProxyAuthenticationRequired<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function ProxyAuthenticationRequired(): ErrorResponseObject<void>;
+    export function ProxyAuthenticationRequired<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function ProxyAuthenticationRequired<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, ProxyAuthenticationRequired);
@@ -429,9 +429,9 @@ namespace R {
       return resp;
     }
 
-    export function RequestTimeout(): ResponseObject<void>;
-    export function RequestTimeout<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function RequestTimeout<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function RequestTimeout(): ErrorResponseObject<void>;
+    export function RequestTimeout<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function RequestTimeout<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, RequestTimeout);
@@ -443,9 +443,9 @@ namespace R {
       return resp;
     }
 
-    export function Conflict(): ResponseObject<void>;
-    export function Conflict<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function Conflict<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function Conflict(): ErrorResponseObject<void>;
+    export function Conflict<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function Conflict<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, Conflict);
@@ -457,9 +457,9 @@ namespace R {
       return resp;
     }
 
-    export function Gone(): ResponseObject<void>;
-    export function Gone<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function Gone<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function Gone(): ErrorResponseObject<void>;
+    export function Gone<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function Gone<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, Gone);
@@ -471,9 +471,9 @@ namespace R {
       return resp;
     }
 
-    export function LengthRequired(): ResponseObject<void>;
-    export function LengthRequired<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function LengthRequired<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function LengthRequired(): ErrorResponseObject<void>;
+    export function LengthRequired<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function LengthRequired<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, LengthRequired);
@@ -485,9 +485,9 @@ namespace R {
       return resp;
     }
 
-    export function PreconditionFailed(): ResponseObject<void>;
-    export function PreconditionFailed<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function PreconditionFailed<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function PreconditionFailed(): ErrorResponseObject<void>;
+    export function PreconditionFailed<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function PreconditionFailed<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, PreconditionFailed);
@@ -499,9 +499,9 @@ namespace R {
       return resp;
     }
 
-    export function PayloadTooLarge(): ResponseObject<void>;
-    export function PayloadTooLarge<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function PayloadTooLarge<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function PayloadTooLarge(): ErrorResponseObject<void>;
+    export function PayloadTooLarge<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function PayloadTooLarge<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, PayloadTooLarge);
@@ -513,9 +513,9 @@ namespace R {
       return resp;
     }
 
-    export function URITooLong(): ResponseObject<void>;
-    export function URITooLong<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function URITooLong<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function URITooLong(): ErrorResponseObject<void>;
+    export function URITooLong<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function URITooLong<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, URITooLong);
@@ -527,9 +527,9 @@ namespace R {
       return resp;
     }
 
-    export function UnsupportedMediaType(): ResponseObject<void>;
-    export function UnsupportedMediaType<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function UnsupportedMediaType<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function UnsupportedMediaType(): ErrorResponseObject<void>;
+    export function UnsupportedMediaType<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function UnsupportedMediaType<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, UnsupportedMediaType);
@@ -541,9 +541,9 @@ namespace R {
       return resp;
     }
 
-    export function RangeNotSatisfiable(): ResponseObject<void>;
-    export function RangeNotSatisfiable<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function RangeNotSatisfiable<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function RangeNotSatisfiable(): ErrorResponseObject<void>;
+    export function RangeNotSatisfiable<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function RangeNotSatisfiable<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, RangeNotSatisfiable);
@@ -555,9 +555,9 @@ namespace R {
       return resp;
     }
 
-    export function ExpectationFailed(): ResponseObject<void>;
-    export function ExpectationFailed<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function ExpectationFailed<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function ExpectationFailed(): ErrorResponseObject<void>;
+    export function ExpectationFailed<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function ExpectationFailed<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, ExpectationFailed);
@@ -569,9 +569,9 @@ namespace R {
       return resp;
     }
 
-    export function MisdirectedRequest(): ResponseObject<void>;
-    export function MisdirectedRequest<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function MisdirectedRequest<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function MisdirectedRequest(): ErrorResponseObject<void>;
+    export function MisdirectedRequest<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function MisdirectedRequest<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, MisdirectedRequest);
@@ -583,9 +583,9 @@ namespace R {
       return resp;
     }
 
-    export function UnprocessableEntity(): ResponseObject<void>;
-    export function UnprocessableEntity<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function UnprocessableEntity<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function UnprocessableEntity(): ErrorResponseObject<void>;
+    export function UnprocessableEntity<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function UnprocessableEntity<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, UnprocessableEntity);
@@ -597,9 +597,9 @@ namespace R {
       return resp;
     }
 
-    export function Locked(): ResponseObject<void>;
-    export function Locked<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function Locked<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function Locked(): ErrorResponseObject<void>;
+    export function Locked<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function Locked<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, Locked);
@@ -611,9 +611,9 @@ namespace R {
       return resp;
     }
 
-    export function FailedDependency(): ResponseObject<void>;
-    export function FailedDependency<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function FailedDependency<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function FailedDependency(): ErrorResponseObject<void>;
+    export function FailedDependency<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function FailedDependency<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, FailedDependency);
@@ -625,13 +625,13 @@ namespace R {
       return resp;
     }
 
-    export function UnorderedCollection(): ResponseObject<void>;
-    export function UnorderedCollection<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function UnorderedCollection<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function TooEarly(): ErrorResponseObject<void>;
+    export function TooEarly<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function TooEarly<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
-      Error.captureStackTrace(resp, UnorderedCollection);
-      Object.defineProperty(resp, "name", { value: "UnorderedCollectionError" });
+      Error.captureStackTrace(resp, TooEarly);
+      Object.defineProperty(resp, "name", { value: "TooEarlyError" });
       resp.status = resp.statusCode = 425;
       resp.body = body;
       resp.headers = headers;
@@ -639,9 +639,9 @@ namespace R {
       return resp;
     }
 
-    export function UpgradeRequired(): ResponseObject<void>;
-    export function UpgradeRequired<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function UpgradeRequired<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function UpgradeRequired(): ErrorResponseObject<void>;
+    export function UpgradeRequired<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function UpgradeRequired<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, UpgradeRequired);
@@ -653,9 +653,9 @@ namespace R {
       return resp;
     }
 
-    export function PreconditionRequired(): ResponseObject<void>;
-    export function PreconditionRequired<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function PreconditionRequired<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function PreconditionRequired(): ErrorResponseObject<void>;
+    export function PreconditionRequired<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function PreconditionRequired<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, PreconditionRequired);
@@ -667,9 +667,9 @@ namespace R {
       return resp;
     }
 
-    export function TooManyRequests(): ResponseObject<void>;
-    export function TooManyRequests<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function TooManyRequests<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function TooManyRequests(): ErrorResponseObject<void>;
+    export function TooManyRequests<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function TooManyRequests<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, TooManyRequests);
@@ -681,9 +681,9 @@ namespace R {
       return resp;
     }
 
-    export function RequestHeaderFieldsTooLarge(): ResponseObject<void>;
-    export function RequestHeaderFieldsTooLarge<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function RequestHeaderFieldsTooLarge<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function RequestHeaderFieldsTooLarge(): ErrorResponseObject<void>;
+    export function RequestHeaderFieldsTooLarge<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function RequestHeaderFieldsTooLarge<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, RequestHeaderFieldsTooLarge);
@@ -695,9 +695,9 @@ namespace R {
       return resp;
     }
 
-    export function UnavailableForLegalReasons(): ResponseObject<void>;
-    export function UnavailableForLegalReasons<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function UnavailableForLegalReasons<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function UnavailableForLegalReasons(): ErrorResponseObject<void>;
+    export function UnavailableForLegalReasons<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function UnavailableForLegalReasons<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, UnavailableForLegalReasons);
@@ -709,9 +709,9 @@ namespace R {
       return resp;
     }
 
-    export function InternalServerError(): ResponseObject<void>;
-    export function InternalServerError<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function InternalServerError<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function InternalServerError(): ErrorResponseObject<void>;
+    export function InternalServerError<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function InternalServerError<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, InternalServerError);
@@ -723,9 +723,9 @@ namespace R {
       return resp;
     }
 
-    export function NotImplemented(): ResponseObject<void>;
-    export function NotImplemented<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function NotImplemented<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function NotImplemented(): ErrorResponseObject<void>;
+    export function NotImplemented<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function NotImplemented<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, NotImplemented);
@@ -737,9 +737,9 @@ namespace R {
       return resp;
     }
 
-    export function BadGateway(): ResponseObject<void>;
-    export function BadGateway<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function BadGateway<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function BadGateway(): ErrorResponseObject<void>;
+    export function BadGateway<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function BadGateway<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, BadGateway);
@@ -751,9 +751,9 @@ namespace R {
       return resp;
     }
 
-    export function ServiceUnavailable(): ResponseObject<void>;
-    export function ServiceUnavailable<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function ServiceUnavailable<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function ServiceUnavailable(): ErrorResponseObject<void>;
+    export function ServiceUnavailable<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function ServiceUnavailable<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, ServiceUnavailable);
@@ -765,9 +765,9 @@ namespace R {
       return resp;
     }
 
-    export function GatewayTimeout(): ResponseObject<void>;
-    export function GatewayTimeout<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function GatewayTimeout<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function GatewayTimeout(): ErrorResponseObject<void>;
+    export function GatewayTimeout<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function GatewayTimeout<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, GatewayTimeout);
@@ -779,9 +779,9 @@ namespace R {
       return resp;
     }
 
-    export function HTTPVersionNotSupported(): ResponseObject<void>;
-    export function HTTPVersionNotSupported<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function HTTPVersionNotSupported<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function HTTPVersionNotSupported(): ErrorResponseObject<void>;
+    export function HTTPVersionNotSupported<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function HTTPVersionNotSupported<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, HTTPVersionNotSupported);
@@ -793,9 +793,9 @@ namespace R {
       return resp;
     }
 
-    export function VariantAlsoNegotiates(): ResponseObject<void>;
-    export function VariantAlsoNegotiates<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function VariantAlsoNegotiates<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function VariantAlsoNegotiates(): ErrorResponseObject<void>;
+    export function VariantAlsoNegotiates<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function VariantAlsoNegotiates<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, VariantAlsoNegotiates);
@@ -807,9 +807,9 @@ namespace R {
       return resp;
     }
 
-    export function InsufficientStorage(): ResponseObject<void>;
-    export function InsufficientStorage<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function InsufficientStorage<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function InsufficientStorage(): ErrorResponseObject<void>;
+    export function InsufficientStorage<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function InsufficientStorage<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, InsufficientStorage);
@@ -821,9 +821,9 @@ namespace R {
       return resp;
     }
 
-    export function LoopDetected(): ResponseObject<void>;
-    export function LoopDetected<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function LoopDetected<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function LoopDetected(): ErrorResponseObject<void>;
+    export function LoopDetected<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function LoopDetected<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, LoopDetected);
@@ -835,9 +835,9 @@ namespace R {
       return resp;
     }
 
-    export function BandwidthLimitExceeded(): ResponseObject<void>;
-    export function BandwidthLimitExceeded<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function BandwidthLimitExceeded<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function BandwidthLimitExceeded(): ErrorResponseObject<void>;
+    export function BandwidthLimitExceeded<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function BandwidthLimitExceeded<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, BandwidthLimitExceeded);
@@ -849,9 +849,9 @@ namespace R {
       return resp;
     }
 
-    export function NotExtended(): ResponseObject<void>;
-    export function NotExtended<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function NotExtended<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function NotExtended(): ErrorResponseObject<void>;
+    export function NotExtended<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function NotExtended<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, NotExtended);
@@ -863,9 +863,9 @@ namespace R {
       return resp;
     }
 
-    export function NetworkAuthenticationRequired(): ResponseObject<void>;
-    export function NetworkAuthenticationRequired<T> (body: T, headers?: Headers): ResponseObject<T>
-    export function NetworkAuthenticationRequired<T> (body?: T, headers: Headers = {}): ResponseObject<T> {
+    export function NetworkAuthenticationRequired(): ErrorResponseObject<void>;
+    export function NetworkAuthenticationRequired<T> (body: T, headers?: Headers): ErrorResponseObject<T>
+    export function NetworkAuthenticationRequired<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, NetworkAuthenticationRequired);
@@ -927,7 +927,7 @@ export const MisdirectedRequest = R.MisdirectedRequest
 export const UnprocessableEntity = R.UnprocessableEntity
 export const Locked = R.Locked
 export const FailedDependency = R.FailedDependency
-export const UnorderedCollection = R.UnorderedCollection
+export const TooEarly = R.TooEarly
 export const UpgradeRequired = R.UpgradeRequired
 export const PreconditionRequired = R.PreconditionRequired
 export const TooManyRequests = R.TooManyRequests
