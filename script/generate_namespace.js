@@ -12,19 +12,19 @@ const types = `
 export type AllStatusCodes = ${STATUS_CODES_KEYS.join(" | ")};
 export type ErrorStatusCodes = ${STATUS_CODES_KEYS.filter((c) => c.startsWith("4") || c.startsWith("5")).join(" | ")};
 
-export interface BaseResponseObject<T, Code extends AllStatusCodes> {
+export interface BaseResponseObject<T, S extends AllStatusCodes> {
   readonly body: T;
-  readonly status: Code;
+  readonly status: S;
   readonly headers: Headers;
 }
 
-export interface ResponseObject<T, Code extends AllStatusCodes> extends BaseResponseObject<T, Code> {
-  statusCode: Code,
-  toJSON(): BaseResponseObject<T, Code>;
+export interface ResponseObject<T, S extends AllStatusCodes = AllStatusCodes> extends BaseResponseObject<T, S> {
+  statusCode: S,
+  toJSON(): BaseResponseObject<T, S>;
   toString(): string;
 }
 
-export interface ErrorResponseObject<T, Code extends ErrorStatusCodes> extends ResponseObject<T, Code>, Error {}
+export interface ErrorResponseObject<T, S extends ErrorStatusCodes = ErrorStatusCodes> extends ResponseObject<T, S>, Error {}
 
 export interface Headers {
   [header: string]: number | string | string[] | undefined;
@@ -32,7 +32,7 @@ export interface Headers {
 `;
 
 const toJSON = `
-function toJSON<Code extends AllStatusCodes>(this: {body: any, status: Code, headers: Headers}) {
+function toJSON<S extends AllStatusCodes>(this: {body: any, status: S, headers: Headers}) {
   return { body: this.body, status: this.status, headers: this.headers };
 }`;
 
@@ -48,9 +48,9 @@ const errProtoCode =
   "const errProto: ErrorResponseObject<undefined, ErrorStatusCodes> = Object.assign(Object.create(Error.prototype), proto);";
 
 const rFunction = `
-function R<Code extends AllStatusCodes = AllStatusCodes>(code: Code): ResponseObject<void, Code>
-function R<T, Code extends AllStatusCodes = AllStatusCodes> (code: Code, body: T, headers?: Headers): ResponseObject<T, Code>
-function R<T, Code extends AllStatusCodes = AllStatusCodes> (code: Code, body?: T, headers: Headers = {}): ResponseObject<T, Code> {
+function R<S extends AllStatusCodes = AllStatusCodes>(code: S): ResponseObject<void, S>
+function R<T, S extends AllStatusCodes = AllStatusCodes> (code: S, body: T, headers?: Headers): ResponseObject<T, S>
+function R<T, S extends AllStatusCodes = AllStatusCodes> (code: S, body?: T, headers: Headers = {}): ResponseObject<T, S> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   let resp;
   if ((code as number) >= 400) {

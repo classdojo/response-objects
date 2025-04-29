@@ -1,22 +1,22 @@
 export type AllStatusCodes = 100 | 101 | 102 | 103 | 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226 | 300 | 301 | 302 | 303 | 304 | 305 | 307 | 308 | 400 | 401 | 402 | 403 | 404 | 405 | 406 | 407 | 408 | 409 | 410 | 411 | 412 | 413 | 414 | 415 | 416 | 417 | 421 | 422 | 423 | 424 | 425 | 426 | 428 | 429 | 431 | 451 | 500 | 501 | 502 | 503 | 504 | 505 | 506 | 507 | 508 | 509 | 510 | 511;
 export type ErrorStatusCodes = 400 | 401 | 402 | 403 | 404 | 405 | 406 | 407 | 408 | 409 | 410 | 411 | 412 | 413 | 414 | 415 | 416 | 417 | 421 | 422 | 423 | 424 | 425 | 426 | 428 | 429 | 431 | 451 | 500 | 501 | 502 | 503 | 504 | 505 | 506 | 507 | 508 | 509 | 510 | 511;
-export interface BaseResponseObject<T, Code extends AllStatusCodes> {
+export interface BaseResponseObject<T, S extends AllStatusCodes> {
     readonly body: T;
-    readonly status: Code;
+    readonly status: S;
     readonly headers: Headers;
 }
-export interface ResponseObject<T, Code extends AllStatusCodes> extends BaseResponseObject<T, Code> {
-    statusCode: Code;
-    toJSON(): BaseResponseObject<T, Code>;
+export interface ResponseObject<T, S extends AllStatusCodes = AllStatusCodes> extends BaseResponseObject<T, S> {
+    statusCode: S;
+    toJSON(): BaseResponseObject<T, S>;
     toString(): string;
 }
-export interface ErrorResponseObject<T, Code extends ErrorStatusCodes> extends ResponseObject<T, Code>, Error {
+export interface ErrorResponseObject<T, S extends ErrorStatusCodes = ErrorStatusCodes> extends ResponseObject<T, S>, Error {
 }
 export interface Headers {
     [header: string]: number | string | string[] | undefined;
 }
-declare function R<Code extends AllStatusCodes = AllStatusCodes>(code: Code): ResponseObject<void, Code>;
-declare function R<T, Code extends AllStatusCodes = AllStatusCodes>(code: Code, body: T, headers?: Headers): ResponseObject<T, Code>;
+declare function R<S extends AllStatusCodes = AllStatusCodes>(code: S): ResponseObject<void, S>;
+declare function R<T, S extends AllStatusCodes = AllStatusCodes>(code: S, body: T, headers?: Headers): ResponseObject<T, S>;
 declare namespace R {
     function Continue(): ResponseObject<void, 100>;
     function Continue<T>(body: T, headers?: Headers): ResponseObject<T, 100>;
