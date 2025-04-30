@@ -1,12 +1,12 @@
 {
-  "name": "response-objects",
+  "name": "@classdojo/response-objects",
   "version": "5.0.0",
   "description": "simple value objects representing HTTP responses",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git://github.com/bttmly/response-objects.git"
+    "url": "git+ssh://git@github.com/classdojo/response-objects.git"
   },
   "scripts": {
     "test": "mocha --timeout 3000 && ts-node test/import",
