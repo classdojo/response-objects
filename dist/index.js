@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UnavailableForLegalReasons = exports.RequestHeaderFieldsTooLarge = exports.TooManyRequests = exports.PreconditionRequired = exports.UpgradeRequired = exports.TooEarly = exports.FailedDependency = exports.Locked = exports.UnprocessableEntity = exports.MisdirectedRequest = exports.ExpectationFailed = exports.RangeNotSatisfiable = exports.UnsupportedMediaType = exports.URITooLong = exports.PayloadTooLarge = exports.PreconditionFailed = exports.LengthRequired = exports.Gone = exports.Conflict = exports.RequestTimeout = exports.ProxyAuthenticationRequired = exports.NotAcceptable = exports.MethodNotAllowed = exports.NotFound = exports.Forbidden = exports.PaymentRequired = exports.Unauthorized = exports.BadRequest = exports.PermanentRedirect = exports.TemporaryRedirect = exports.UseProxy = exports.NotModified = exports.SeeOther = exports.Found = exports.MovedPermanently = exports.MultipleChoices = exports.IMUsed = exports.AlreadyReported = exports.MultiStatus = exports.PartialContent = exports.ResetContent = exports.NoContent = exports.NonAuthoritativeInformation = exports.Accepted = exports.Created = exports.OK = exports.EarlyHints = exports.Processing = exports.SwitchingProtocols = exports.Continue = void 0;
+exports.Ok = exports.NetworkAuthenticationRequired = exports.NotExtended = exports.BandwidthLimitExceeded = exports.LoopDetected = exports.InsufficientStorage = exports.VariantAlsoNegotiates = exports.HTTPVersionNotSupported = exports.GatewayTimeout = exports.ServiceUnavailable = exports.BadGateway = exports.NotImplemented = exports.InternalServerError = void 0;
 const http_1 = require("http");
 const getName = (code) => http_1.STATUS_CODES[code].replace(/[\s+-]/g, "");
 const responses = new WeakSet();
@@ -9,7 +11,7 @@ function toJSON() {
 function toString() {
     return `Responses.${getName(this.status)} ${JSON.stringify(this)}`;
 }
-const proto = { toJSON, toString, body: undefined, status: 0, statusCode: 0, headers: {} };
+const proto = { toJSON, toString, body: undefined, status: 100, statusCode: 100, headers: {} };
 const errProto = Object.assign(Object.create(Error.prototype), proto);
 function R(code, body, headers = {}) {
     if (responses.has(body))
