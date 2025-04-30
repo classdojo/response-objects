@@ -12,19 +12,19 @@ const types = `
 export type AllStatusCodes = ${STATUS_CODES_KEYS.join(" | ")};
 export type ErrorStatusCodes = ${STATUS_CODES_KEYS.filter((c) => c.startsWith("4") || c.startsWith("5")).join(" | ")};
 
-export interface BaseResponseObject<T, S extends AllStatusCodes> {
+export interface BaseResponseObject<S extends AllStatusCodes, T> {
   readonly body: T;
   readonly status: S;
   readonly headers: Headers;
 }
 
-export interface ResponseObject<T, S extends AllStatusCodes = AllStatusCodes> extends BaseResponseObject<T, S> {
+export interface ResponseObject<S extends AllStatusCodes, T> extends BaseResponseObject<S, T> {
   statusCode: S,
-  toJSON(): BaseResponseObject<T, S>;
+  toJSON(): BaseResponseObject<S, T>;
   toString(): string;
 }
 
-export interface ErrorResponseObject<T, S extends ErrorStatusCodes = ErrorStatusCodes> extends ResponseObject<T, S>, Error {}
+export interface ErrorResponseObject<S extends ErrorStatusCodes, T> extends ResponseObject<S, T>, Error {}
 
 export interface Headers {
   [header: string]: number | string | string[] | undefined;
@@ -42,15 +42,15 @@ function toString(this: {status: number}) {
 }`;
 
 const protoCode =
-  "const proto: ResponseObject<undefined, AllStatusCodes> = { toJSON, toString, body: undefined, status: 100, statusCode: 100, headers: {} };";
+  "const proto: ResponseObject<AllStatusCodes, undefined> = { toJSON, toString, body: undefined, status: 100, statusCode: 100, headers: {} };";
 
 const errProtoCode =
-  "const errProto: ErrorResponseObject<undefined, ErrorStatusCodes> = Object.assign(Object.create(Error.prototype), proto);";
+  "const errProto: ErrorResponseObject<ErrorStatusCodes, undefined> = Object.assign(Object.create(Error.prototype), proto);";
 
 const rFunction = `
-function R<S extends AllStatusCodes = AllStatusCodes>(code: S): ResponseObject<void, S>
-function R<T, S extends AllStatusCodes = AllStatusCodes> (code: S, body: T, headers?: Headers): ResponseObject<T, S>
-function R<T, S extends AllStatusCodes = AllStatusCodes> (code: S, body?: T, headers: Headers = {}): ResponseObject<T, S> {
+function R<S extends AllStatusCodes>(code: S): ResponseObject<S, void>
+function R<S extends AllStatusCodes, T> (code: S, body: T, headers?: Headers): ResponseObject<S, T>
+function R<S extends AllStatusCodes, T> (code: S, body?: T, headers: Headers = {}): ResponseObject<S, T> {
   if (responses.has(body as any)) throw new Error("Object is already a response");
   let resp;
   if ((code as number) >= 400) {
@@ -82,9 +82,9 @@ function generateResponseConstructor(code) {
 
   if (code >= 400) {
     return `
-    export function ${name}(): ErrorResponseObject<void, ${code}>;
-    export function ${name}<T> (body: T, headers?: Headers): ErrorResponseObject<T, ${code}>
-    export function ${name}<T> (body?: T, headers: Headers = {}): ErrorResponseObject<T, ${code}> {
+    export function ${name}(): ErrorResponseObject<${code}, void>;
+    export function ${name}<T> (body: T, headers?: Headers): ErrorResponseObject<${code}, T>
+    export function ${name}<T> (body?: T, headers: Headers = {}): ErrorResponseObject<${code}, T> {
       if (responses.has(body as any)) throw new Error("Object is already a response");
       const resp = Object.create(errProto);
       Error.captureStackTrace(resp, ${name});
@@ -97,9 +97,9 @@ function generateResponseConstructor(code) {
     }`;
   }
   return `
-  export function ${name}(): ResponseObject<void, ${code}>;
-  export function ${name}<T> (body: T, headers?: Headers): ResponseObject<T, ${code}>
-  export function ${name}<T> (body?: T, headers: Headers = {}): ResponseObject<T, ${code}> {
+  export function ${name}(): ResponseObject<${code}, void>;
+  export function ${name}<T> (body: T, headers?: Headers): ResponseObject<${code}, T>
+  export function ${name}<T> (body?: T, headers: Headers = {}): ResponseObject<${code}, T> {
     if (responses.has(body as any)) throw new Error("Object is already a response");
     const resp = Object.create(proto);
     resp.status = resp.statusCode = ${code};
