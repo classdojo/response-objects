@@ -1,6 +1,6 @@
 {
   "name": "response-objects",
-  "version": "4.1.0",
+  "version": "5.0.0",
   "description": "simple value objects representing HTTP responses",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
