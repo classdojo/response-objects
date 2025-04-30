@@ -12,19 +12,19 @@ const types = `
 export type AllStatusCodes = ${STATUS_CODES_KEYS.join(" | ")};
 export type ErrorStatusCodes = ${STATUS_CODES_KEYS.filter((c) => c.startsWith("4") || c.startsWith("5")).join(" | ")};
 
-export interface BaseResponseObject<S extends AllStatusCodes, T> {
+export interface BaseResponseObject<S extends AllStatusCodes = AllStatusCodes, T = unknown> {
   readonly body: T;
   readonly status: S;
   readonly headers: Headers;
 }
 
-export interface ResponseObject<S extends AllStatusCodes, T> extends BaseResponseObject<S, T> {
+export interface ResponseObject<S extends AllStatusCodes = AllStatusCodes, T = unknown> extends BaseResponseObject<S, T> {
   statusCode: S,
   toJSON(): BaseResponseObject<S, T>;
   toString(): string;
 }
 
-export interface ErrorResponseObject<S extends ErrorStatusCodes, T> extends ResponseObject<S, T>, Error {}
+export interface ErrorResponseObject<S extends ErrorStatusCodes = ErrorStatusCodes, T = unknown> extends ResponseObject<S, T>, Error {}
 
 export interface Headers {
   [header: string]: number | string | string[] | undefined;

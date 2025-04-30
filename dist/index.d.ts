@@ -1,16 +1,16 @@
 export type AllStatusCodes = 100 | 101 | 102 | 103 | 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226 | 300 | 301 | 302 | 303 | 304 | 305 | 307 | 308 | 400 | 401 | 402 | 403 | 404 | 405 | 406 | 407 | 408 | 409 | 410 | 411 | 412 | 413 | 414 | 415 | 416 | 417 | 421 | 422 | 423 | 424 | 425 | 426 | 428 | 429 | 431 | 451 | 500 | 501 | 502 | 503 | 504 | 505 | 506 | 507 | 508 | 509 | 510 | 511;
 export type ErrorStatusCodes = 400 | 401 | 402 | 403 | 404 | 405 | 406 | 407 | 408 | 409 | 410 | 411 | 412 | 413 | 414 | 415 | 416 | 417 | 421 | 422 | 423 | 424 | 425 | 426 | 428 | 429 | 431 | 451 | 500 | 501 | 502 | 503 | 504 | 505 | 506 | 507 | 508 | 509 | 510 | 511;
-export interface BaseResponseObject<S extends AllStatusCodes, T> {
+export interface BaseResponseObject<S extends AllStatusCodes = AllStatusCodes, T = unknown> {
     readonly body: T;
     readonly status: S;
     readonly headers: Headers;
 }
-export interface ResponseObject<S extends AllStatusCodes, T> extends BaseResponseObject<S, T> {
+export interface ResponseObject<S extends AllStatusCodes = AllStatusCodes, T = unknown> extends BaseResponseObject<S, T> {
     statusCode: S;
     toJSON(): BaseResponseObject<S, T>;
     toString(): string;
 }
-export interface ErrorResponseObject<S extends ErrorStatusCodes, T> extends ResponseObject<S, T>, Error {
+export interface ErrorResponseObject<S extends ErrorStatusCodes = ErrorStatusCodes, T = unknown> extends ResponseObject<S, T>, Error {
 }
 export interface Headers {
     [header: string]: number | string | string[] | undefined;
