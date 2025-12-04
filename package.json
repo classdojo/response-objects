@@ -1,6 +1,6 @@
 {
   "name": "@classdojo/response-objects",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "simple value objects representing HTTP responses",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
