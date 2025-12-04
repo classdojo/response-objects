@@ -104,9 +104,7 @@ namespace R {
     return resp;
   }
 
-  export function OK(): ResponseObject<200, void>;
-  export function OK<T> (body: T, headers?: Headers): ResponseObject<200, T>
-  export function OK<T> (body?: T, headers: Headers = {}): ResponseObject<200, T> {
+  export function OK<T> (body: T, headers: Headers = {}): ResponseObject<200, T> {
     if (responses.has(body as any)) throw new Error("Object is already a response");
     const resp = Object.create(proto);
     resp.status = resp.statusCode = 200;
@@ -152,13 +150,9 @@ namespace R {
     return resp;
   }
 
-  export function NoContent(): ResponseObject<204, void>;
-  export function NoContent<T> (body: T, headers?: Headers): ResponseObject<204, T>
-  export function NoContent<T> (body?: T, headers: Headers = {}): ResponseObject<204, T> {
-    if (responses.has(body as any)) throw new Error("Object is already a response");
+  export function NoContent(headers: Headers = {}): ResponseObject<204, void> {
     const resp = Object.create(proto);
     resp.status = resp.statusCode = 204;
-    resp.body = body;
     resp.headers = headers;
     responses.add(resp);
     return resp;

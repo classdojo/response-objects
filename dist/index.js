@@ -119,12 +119,9 @@ function R(code, body, headers = {}) {
         return resp;
     }
     R.NonAuthoritativeInformation = NonAuthoritativeInformation;
-    function NoContent(body, headers = {}) {
-        if (responses.has(body))
-            throw new Error("Object is already a response");
+    function NoContent(headers = {}) {
         const resp = Object.create(proto);
         resp.status = resp.statusCode = 204;
-        resp.body = body;
         resp.headers = headers;
         responses.add(resp);
         return resp;

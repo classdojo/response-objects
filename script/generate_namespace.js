@@ -1,6 +1,8 @@
 const { STATUS_CODES } = require("http");
 
 const skipStatus = ["306", "418"];
+const requiredBodyStatuses = ["200"];
+const requiredEmptyBodyStatuses = ["204"];
 
 const STATUS_CODES_KEYS = Object.keys(STATUS_CODES).filter((code) => {
   return !skipStatus.includes(code);
@@ -96,6 +98,31 @@ function generateResponseConstructor(code) {
       return resp;
     }`;
   }
+
+  if (requiredBodyStatuses.includes(code)) {
+    return `
+  export function ${name}<T> (body: T, headers: Headers = {}): ResponseObject<${code}, T> {
+    if (responses.has(body as any)) throw new Error("Object is already a response");
+    const resp = Object.create(proto);
+    resp.status = resp.statusCode = ${code};
+    resp.body = body;
+    resp.headers = headers;
+    responses.add(resp);
+    return resp;
+  }`;
+  }
+
+  if (requiredEmptyBodyStatuses.includes(code)) {
+    return `
+  export function ${name}(headers: Headers = {}): ResponseObject<${code}, void> {
+    const resp = Object.create(proto);
+    resp.status = resp.statusCode = ${code};
+    resp.headers = headers;
+    responses.add(resp);
+    return resp;
+  }`;
+  }
+
   return `
   export function ${name}(): ResponseObject<${code}, void>;
   export function ${name}<T> (body: T, headers?: Headers): ResponseObject<${code}, T>

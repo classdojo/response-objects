@@ -26,7 +26,6 @@ declare namespace R {
     function Processing<T>(body: T, headers?: Headers): ResponseObject<102, T>;
     function EarlyHints(): ResponseObject<103, void>;
     function EarlyHints<T>(body: T, headers?: Headers): ResponseObject<103, T>;
-    function OK(): ResponseObject<200, void>;
     function OK<T>(body: T, headers?: Headers): ResponseObject<200, T>;
     function Created(): ResponseObject<201, void>;
     function Created<T>(body: T, headers?: Headers): ResponseObject<201, T>;
@@ -34,8 +33,7 @@ declare namespace R {
     function Accepted<T>(body: T, headers?: Headers): ResponseObject<202, T>;
     function NonAuthoritativeInformation(): ResponseObject<203, void>;
     function NonAuthoritativeInformation<T>(body: T, headers?: Headers): ResponseObject<203, T>;
-    function NoContent(): ResponseObject<204, void>;
-    function NoContent<T>(body: T, headers?: Headers): ResponseObject<204, T>;
+    function NoContent(headers?: Headers): ResponseObject<204, void>;
     function ResetContent(): ResponseObject<205, void>;
     function ResetContent<T>(body: T, headers?: Headers): ResponseObject<205, T>;
     function PartialContent(): ResponseObject<206, void>;
